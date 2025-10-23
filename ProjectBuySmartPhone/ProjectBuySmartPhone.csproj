@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Storefront\**" />
+    <Content Remove="Areas\Storefront\**" />
+    <EmbeddedResource Remove="Areas\Storefront\**" />
+    <None Remove="Areas\Storefront\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.21" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.21">
@@ -18,8 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Storefront\Controllers\" />
-    <Folder Include="Areas\Storefront\Views\" />
+    <Folder Include="Areas\Users\Views\" />
     <Folder Include="wwwroot\css\Admin\Home\" />
   </ItemGroup>
 
