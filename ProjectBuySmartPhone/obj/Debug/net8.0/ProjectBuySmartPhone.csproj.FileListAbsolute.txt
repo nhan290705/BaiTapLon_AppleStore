@@ -261,3 +261,4 @@ E:\Ky_01_Năm03\Lập trình Wed\ProjectBuySmartPhone\ProjectBuySmartPhone\obj\D
 E:\Ky_01_Năm03\Lập trình Wed\ProjectBuySmartPhone\ProjectBuySmartPhone\obj\Debug\net8.0\ProjectBuySmartPhone.pdb
 E:\Ky_01_Năm03\Lập trình Wed\ProjectBuySmartPhone\ProjectBuySmartPhone\obj\Debug\net8.0\ProjectBuySmartPhone.genruntimeconfig.cache
 E:\Ky_01_Năm03\Lập trình Wed\ProjectBuySmartPhone\ProjectBuySmartPhone\obj\Debug\net8.0\ref\ProjectBuySmartPhone.dll
+E:\Ky_01_Năm03\Lập trình Wed\ProjectBuySmartPhone\ProjectBuySmartPhone\obj\Debug\net8.0\ProjectBuySmartPhone.sourcelink.json

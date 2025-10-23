@@ -20,7 +20,6 @@
   <ItemGroup>
     <Folder Include="Areas\Storefront\Controllers\" />
     <Folder Include="Areas\Storefront\Views\" />
-    <Folder Include="wwwroot\css\Admin\Home\" />
   </ItemGroup>
 
 </Project>
