@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Identity\Views\" />
     <Folder Include="Areas\Users\Views\" />
     <Folder Include="wwwroot\css\Admin\Home\" />
   </ItemGroup>
