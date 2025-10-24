@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "ContainingType": "ProjectBuySmartPhone.Areas.Identity.Controllers.RegisterController",
+    "Method": "Register",
+    "RelativePath": "Identity/Register/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userRegister",
+        "Type": "ProjectBuySmartPhone.Dtos.UserRegister",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

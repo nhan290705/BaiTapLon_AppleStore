@@ -525,3 +525,4 @@ E:\CSharp\BaiTapLon_AppleStore\ProjectBuySmartPhone\obj\Debug\net8.0\refint\Proj
 E:\CSharp\BaiTapLon_AppleStore\ProjectBuySmartPhone\obj\Debug\net8.0\ProjectBuySmartPhone.pdb
 E:\CSharp\BaiTapLon_AppleStore\ProjectBuySmartPhone\obj\Debug\net8.0\ProjectBuySmartPhone.genruntimeconfig.cache
 E:\CSharp\BaiTapLon_AppleStore\ProjectBuySmartPhone\obj\Debug\net8.0\ref\ProjectBuySmartPhone.dll
+E:\CSharp\BaiTapLon_AppleStore\ProjectBuySmartPhone\bin\Debug\net8.0\BCrypt.Net-Next.dll

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ProjectBuySmartPhone.Models.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace ProjectBuySmartPhone.Dtos
 {
@@ -13,11 +14,25 @@ namespace ProjectBuySmartPhone.Dtos
         [RegularExpression(@"^(03|09)\d{8}$", ErrorMessage = "Invalid phone format")]
         public string? PhoneNumber { get; set; }
         [Required]
+        [MinLength(4, ErrorMessage = "Username must be at least 4 characters long")]
+        public string? Username { get; set; }
+        [Required]
         [MinLength(4, ErrorMessage = "Password must be at least 4 characters long")]
         public string? Password { get; set; }
         [Required]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string? ConfirmPassword { get; set; }
+        public User ToUser()
+        {
+            return new User
+            {
+                FullName = this.FullName,
+                Email = this.Email,
+                PhoneNumber = this.PhoneNumber,
+                Username = this.Username,
+                UpdatedAt = DateTime.Now,
+            };
 
+        }
     }
 }
