@@ -9,6 +9,9 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [Key]
         public int UserId { get; set; }
 
+        public string UserName { get; set; }
+
+
         [Required, MaxLength(120)]
         public string FullName { get; set; }
 
@@ -16,13 +19,11 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public string Email { get; set; }
 
         [Required, MaxLength(200)]
-        public string PasswordHash { get; set; }
+        public string Password { get; set; }
 
         [MaxLength(20)]
         public string? PhoneNumber { get; set; }
 
-        [MaxLength(300)]
-        public string? Avatar { get; set; }
 
         [MaxLength(50)]
         public string Role { get; set; } = "User";

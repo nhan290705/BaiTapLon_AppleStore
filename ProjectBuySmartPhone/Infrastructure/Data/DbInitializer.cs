@@ -22,9 +22,9 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 // 2️⃣ Seed dữ liệu mẫu cho User
                 var users = new User[]
                 {
-                    new User { FullName = "Admin", Email = "admin@gmail.com", PasswordHash = "123456", Role = "Admin", IsActive = Domain.Enums.ActiveStatus.Active },
-                    new User { FullName = "John Doe", Email = "john@gmail.com", PasswordHash = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active },
-                    new User { FullName = "Jane Smith", Email = "jane@gmail.com", PasswordHash = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active }
+                    new User { FullName = "Admin", Email = "admin@gmail.com", Password = "123456", Role = "Admin", IsActive = Domain.Enums.ActiveStatus.Active },
+                    new User { FullName = "John Doe", Email = "john@gmail.com", Password = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active },
+                    new User { FullName = "Jane Smith", Email = "jane@gmail.com", Password = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active }
                 };
                 foreach (var u in users)
                     context.Users.Add(u);
@@ -82,9 +82,9 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 // 5️⃣ Seed dữ liệu cho ProductDetail
                 var productDetails = new ProductDetail[]
                 {
-                    new ProductDetail { ProductId = 1, Color = "Silver", Size = "256GB", Sku = "IP15PRO256", Qty = 5, Price = 35000 },
-                    new ProductDetail { ProductId = 2, Color = "Black", Size = "512GB", Sku = "SSS24U512", Qty = 4, Price = 32000 },
-                    new ProductDetail { ProductId = 3, Color = "Blue", Size = "128GB", Sku = "IPADM2128", Qty = 3, Price = 22000 }
+                    new ProductDetail { ProductId = 1, Sku = "IP15PRO256" },
+                    new ProductDetail { ProductId = 2, Sku = "SSS24U512" },
+                    new ProductDetail { ProductId = 3, Sku = "IPADM2128" }
                 };
                 foreach (var d in productDetails)
                     context.ProductDetails.Add(d);
