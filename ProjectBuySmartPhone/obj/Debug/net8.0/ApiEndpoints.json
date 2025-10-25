@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "ProjectBuySmartPhone.Areas.Identity.Controller.LoginController",
+    "Method": "Login",
+    "RelativePath": "Identity/Login/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userLogin",
+        "Type": "ProjectBuySmartPhone.Dtos.UserLogin",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "ProjectBuySmartPhone.Areas.Identity.Controllers.RegisterController",
     "Method": "Register",
     "RelativePath": "Identity/Register/register",
