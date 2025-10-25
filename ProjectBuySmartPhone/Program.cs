@@ -12,12 +12,12 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 var app = builder.Build();
 
-// Initlizer Data
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    DbInitializer.Initialize(services);
-}
+//Initlizer Data
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    DbInitializer.Initialize(services);
+//}
 
 
 // Configure the HTTP request pipeline.
