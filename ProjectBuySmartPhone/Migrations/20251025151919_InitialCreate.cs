@@ -18,6 +18,7 @@ namespace ProjectBuySmartPhone.Migrations
                     ProductCategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryName = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     Slug = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -60,6 +61,10 @@ namespace ProjectBuySmartPhone.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Qty = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Storage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Ram = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Port = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ProductCategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -114,6 +119,8 @@ namespace ProjectBuySmartPhone.Migrations
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     District = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -163,11 +170,7 @@ namespace ProjectBuySmartPhone.Migrations
                 {
                     ProductDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Color = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    Size = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    Sku = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: true),
-                    Qty = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Sku = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
