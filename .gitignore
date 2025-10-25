@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 bin/
 obj/
 *.dll
@@ -16,3 +17,8 @@ obj/
 *.dll
 *.pdb
 *.cache
+=======
+.vs/
+bin/
+obj/
+>>>>>>> origin/han
