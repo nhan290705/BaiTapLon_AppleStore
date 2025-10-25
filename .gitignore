@@ -1,3 +1,8 @@
-.vs/
 bin/
+obj/
+*.dll
+*.pdb
+*.cache
+*.json.cache
+*.nuget.cachebin/
 obj/
