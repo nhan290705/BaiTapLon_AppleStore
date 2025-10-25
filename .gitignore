@@ -6,3 +6,13 @@ obj/
 *.json.cache
 *.nuget.cachebin/
 obj/
+
+# Ignore build folders
+.vs/
+bin/
+obj/
+*.user
+*.exe
+*.dll
+*.pdb
+*.cache
