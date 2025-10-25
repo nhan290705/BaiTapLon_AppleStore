@@ -11,5 +11,10 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult Dashboard()
+        {
+            return View("DashBoard");
+        }
+            
     }
 }
