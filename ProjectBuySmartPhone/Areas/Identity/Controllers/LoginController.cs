@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
+<<<<<<< HEAD:ProjectBuySmartPhone/Areas/Identity/Controller/LoginController.cs
 using ProjectBuySmartPhone.Dtos;
 using ProjectBuySmartPhone.Helpers;
 using ProjectBuySmartPhone.Models.Infrastructure;
 using Microsoft.AspNetCore.Http.HttpResults;
 
+=======
+>>>>>>> c542b8e52931e409b1110dcccca2f4115cbb3de8:ProjectBuySmartPhone/Areas/Identity/Controllers/LoginController.cs
 namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
