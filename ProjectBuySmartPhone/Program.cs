@@ -12,7 +12,7 @@ builder.Services.AddDbContext<MyDbContext>(options =>
 
 var app = builder.Build();
 
-// Initlizer Data
+//Initlizer Data
 //using (var scope = app.Services.CreateScope())
 //{
 //    var services = scope.ServiceProvider;

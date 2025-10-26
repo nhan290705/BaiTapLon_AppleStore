@@ -12,7 +12,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [Required, MaxLength(120)]
         public string? FullName { get; set; }
 
-        [Required, MaxLength(160)]
+        [Required, MaxLength(160)] 
         public string? Email { get; set; }
 
         [MaxLength(20)]
@@ -20,10 +20,12 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         
         [MaxLength(100)]
         public string? Username { get; set; }
-
+ 
+          
         [Required, MaxLength(100)]
         public string? Password { get; set; }
         public string? Role { get; set; } = RoleName.USER.ToString();
+ 
 
         public ActiveStatus IsActive { get; set; } = ActiveStatus.Active;
 

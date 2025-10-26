@@ -1,5 +1,6 @@
 ﻿using ProjectBuySmartPhone.Models.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectBuySmartPhone.Models.Domain.Entities
 {
@@ -18,6 +19,10 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [MaxLength(100)] public string? City { get; set; }
         [MaxLength(100)] public string? District { get; set; }
         [MaxLength(20)] public string? PostalCode { get; set; }
+        [MaxLength(200)] public string? Note { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+
+        public decimal TotalPrice { get; set; }
 
         // FK
         public int UserId { get; set; }
