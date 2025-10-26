@@ -2,7 +2,7 @@
 using ProjectBuySmartPhone.Dtos;
 using ProjectBuySmartPhone.Models.Infrastructure;
 
-namespace ProjectBuySmartPhone.Areas.Identity.Controller
+namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
     [Route("[area]/[controller]")]

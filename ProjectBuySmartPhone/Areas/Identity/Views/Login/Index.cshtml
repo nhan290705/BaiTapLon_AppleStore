@@ -1,0 +1,309 @@
+﻿@{
+    ViewData["Title"] = "Đăng nhập Apple Store";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" type="image/png">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #fff;
+            color: #1d1d1f;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+            header nav {
+                display: flex;
+                gap: 25px;
+                align-items: center;
+            }
+
+                header nav a {
+                    color: #1d1d1f;
+                    font-size: 14px;
+                    text-decoration: none;
+                }
+
+                    header nav a:hover {
+                        color: #0071e3;
+                    }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 40px;
+        }
+
+        .login-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+            .login-box input {
+                width: 300px;
+                padding: 14px 18px;
+                border-radius: 30px;
+                border: 1px solid #ccc;
+                font-size: 15px;
+                outline: none;
+                margin-bottom: 15px;
+            }
+
+            .login-box button {
+                width: 60px;
+                height: 40px;
+                border-radius: 50%;
+                border: none;
+                background-color: #1d1d1f;
+                color: white;
+                cursor: pointer;
+                margin-left: -50px;
+            }
+
+        .login-action {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .login-action input {
+                width: 300px;
+                height: 45px;
+                border: 1px solid #ccc;
+                border-radius: 30px 30px;
+                font-size: 15px;
+                padding: 0 18px;
+                outline: none;
+            }
+
+            .login-action button {
+                height: 47px;
+                width: 55px;
+                border: 1px solid #ccc;
+                border-left: none;
+                border-radius: 30px 30px;
+                background-color: #1d1d1f;
+                color: white;
+                cursor: pointer;
+                font-size: 18px;
+                transition: background-color 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 15px;
+            }
+
+                .login-action button:hover {
+                    background-color: #333;
+                }
+
+        .checkbox {
+            margin-top: 15px;
+        }
+
+            .checkbox input {
+                margin-right: 5px;
+            }
+
+        .links {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+            .links a {
+                color: #0071e3;
+                text-decoration: none;
+            }
+
+                .links a:hover {
+                    text-decoration: underline;
+                }
+
+        footer {
+            text-align: center;
+            font-size: 13px;
+            color: #6e6e73;
+            margin-top: 100px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 20px;
+            padding-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #0071e3;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        #password-container {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+            #password-container.show {
+                max-height: 80px;
+                opacity: 1;
+                margin-top: 15px;
+            }
+
+        #password {
+            width: 300px;
+            height: 45px;
+            border: 1px solid #ccc;
+            border-radius: 30px 30px;
+            font-size: 15px;
+            padding: 0 18px;
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple"
+                     width="16">
+            </a>
+            <a href="#">Cửa Hàng</a>
+            <a href="#">Mac</a>
+            <a href="#">iPad</a>
+            <a href="#">iPhone</a>
+            <a href="#">Watch</a>
+            <a href="#">AirPods</a>
+            <a href="#">TV & Nhà</a>
+            <a href="#">Giải Trí</a>
+            <a href="#">Phụ Kiện</a>
+            <a href="#">Hỗ Trợ</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="title">Đăng nhập để thanh toán nhanh hơn.</div>
+        <div class="subtitle">Đăng nhập vào Apple Store</div>
+
+        <form id="loginForm" class="login-box" novalidate>
+            <div class="login-action">
+                <input id="username" type="text" placeholder="Tên đăng nhập" required />
+                <button type="submit">➜</button>
+            </div>
+
+            <div id="password-container">
+                <input id="password" type="password" placeholder="Mật khẩu" required />
+            </div>
+
+            <p id="message" class=""></p>
+        </form>
+
+
+        <div class="checkbox">
+            <input type="checkbox" id="remember" />
+            <label for="remember">Lưu tôi</label>
+        </div>
+
+        <div class="links">
+            <a href="#">Bạn đã quên mật khẩu?</a><br>
+            Bạn không có Tài khoản Apple? <a href="/Identity/Register">Tạo Tài khoản Apple</a>
+        </div>
+    </main>
+
+    <footer>
+        Bạn cần hỗ trợ thêm? <a href="#" style="color:#0071e3;">Chat ngay</a> hoặc gọi 1800-1192.<br><br>
+        Giá hiển thị đã bao gồm tất cả các khoản thuế. Giao hàng miễn phí cho tất cả đơn hàng.<br>
+        Apple Store Trực Tuyến sử dụng công nghệ mã hóa chuẩn ngành để bảo vệ tính bảo mật của thông tin do bạn gửi.
+        <a href="#" style="color:#0071e3;">Chính Sách Bảo Mật</a>.<br><br>
+        Bản quyền © 2025 Apple Inc. Bảo lưu mọi quyền.<br>
+        <a href="#" style="color:#0071e3;">Chính Sách Quyền Riêng Tư</a> |
+        <a href="#" style="color:#0071e3;">Điều Khoản Sử Dụng</a> |
+        <a href="#" style="color:#0071e3;">Bán Hàng và Hoàn Tiền</a> |
+        <a href="#" style="color:#0071e3;">Pháp Lý</a> |
+        <a href="#" style="color:#0071e3;">Sơ Đồ Trang Web</a><br>
+        Việt Nam
+    </footer>
+
+    <script>
+        const form = document.getElementById('loginForm');
+        const message = document.getElementById('message');
+        const passwordContainer = document.getElementById('password-container');
+        const passwordField = document.getElementById('password');
+        let step = 1;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            message.textContent = "";
+            message.className = "";
+
+            if (step === 1) {
+                const username = document.getElementById('username').value.trim();
+                if (!username) {
+                    message.textContent = "Vui lòng nhập tên đăng nhập.";
+                    message.className = "error";
+                    return;
+                }
+
+                passwordContainer.classList.add('show');
+                passwordField.focus();
+                step = 2;
+                return;
+            }
+
+            const password = passwordField.value.trim();
+            if (!password) {
+                message.textContent = "Vui lòng nhập mật khẩu.";
+                message.className = "error";
+                return;
+            }
+
+            // Giả lập đăng nhập thành công
+            message.textContent = "Đăng nhập thành công!";
+            message.className = "success";
+
+            setTimeout(() => {
+                window.location.href = "/Home/Index";
+            }, 1000);
+        });
+    </script>
+
+
+</body>
+
+</html>
