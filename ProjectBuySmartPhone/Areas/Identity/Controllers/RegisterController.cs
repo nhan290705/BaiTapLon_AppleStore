@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
-    [Route("[area]/[controller]")]
-    [ApiController]
-    public class RegisterController : ControllerBase
+    public class RegisterController : Controller
     {
         private readonly ILogger<RegisterController> _logger;
         private readonly MyDbContext _context;
@@ -20,40 +18,43 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             _logger = logger;
             _context = context;
         }
-
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpPost]
-        [Route("register")]
         public IActionResult Index(UserRegister userRegister)
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return View(userRegister);
             }   
             var existingUser = _context.Users.FirstOrDefault(u => u.Username == userRegister.Username);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Username", "Username already exists");
-                return BadRequest(ModelState);
+                return View(userRegister);
             }
             existingUser = _context.Users.FirstOrDefault(u => u.Email == userRegister.Email);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Email", "Email already exists");
-                return BadRequest(ModelState);
+                return View(userRegister);
             }
             existingUser = _context.Users.FirstOrDefault(u => u.PhoneNumber == userRegister.PhoneNumber);  
             if (existingUser != null)
             {
                 ModelState.AddModelError("PhoneNumber", "Phone number already exists");
-                return BadRequest(ModelState);
+                return View(userRegister);
             }
             User newUser = userRegister.ToUser();
             newUser.Password = BCrypt.Net.BCrypt.HashPassword(userRegister.Password);
             _context.Users.Add(newUser);
             _context.SaveChanges();
             _logger.LogInformation($"New user registered : {newUser.Username}");
-            return Ok(new {message = "register successfully"});
+            return RedirectToAction("Index", "Home", new {area = ""});
         }
     }
 }

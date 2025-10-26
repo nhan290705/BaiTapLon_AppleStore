@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using ProjectBuySmartPhone.Dtos;
+using ProjectBuySmartPhone.Models.Domain.Entities;
 using ProjectBuySmartPhone.Models.Infrastructure;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -43,11 +44,12 @@ namespace ProjectBuySmartPhone.Helpers
         {
             return new Token
             {
-                accessToken = GenerateAccessToken(userId)
+                accessToken = GenerateAccessToken(userId),
+                refreshToken = GenerateRefreshToken(userId)
             };
         }
-        //generate access token
-        public string GenerateAccessToken(int userId)
+        //gen access token
+        private string GenerateAccessToken(int userId)
         {
             var key = Encoding.ASCII.GetBytes(_jwtKey);
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -76,6 +78,36 @@ namespace ProjectBuySmartPhone.Helpers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
             return accessToken;
+        }
+        private string GenerateRefreshToken(int userId)
+        {
+            var key = Encoding.ASCII.GetBytes(_jwtKey);
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var roles = _context.Users
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Role)
+                .FirstOrDefault();
+            string idClaim = _context.Users.FirstOrDefault(u => u.UserId == userId)?.UserId.ToString() ?? "";
+            var claims = new List<Claim>
+            {
+                new Claim("idUser", userId.ToString()),
+                new Claim("idClaim", idClaim)
+            };
+            //them claim role
+            claims.Add(new Claim(ClaimTypes.Role, roles));
+            //gan claim, signature cho token
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Audience = _jwtAudience,
+                Issuer = _jwtIssuer,
+                Subject = new ClaimsIdentity(claims),
+                IssuedAt = DateTime.Now,
+                Expires = DateTime.Now.AddMinutes(int.Parse(_accessTokenExpiredMintute)),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var refreshToken = tokenHandler.WriteToken(token);
+            return refreshToken;
         }
     }
 }

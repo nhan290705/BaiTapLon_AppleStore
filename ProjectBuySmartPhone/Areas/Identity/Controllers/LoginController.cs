@@ -1,20 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-
-<<<<<<< HEAD:ProjectBuySmartPhone/Areas/Identity/Controller/LoginController.cs
 using ProjectBuySmartPhone.Dtos;
 using ProjectBuySmartPhone.Helpers;
 using ProjectBuySmartPhone.Models.Infrastructure;
-using Microsoft.AspNetCore.Http.HttpResults;
-
-=======
->>>>>>> c542b8e52931e409b1110dcccca2f4115cbb3de8:ProjectBuySmartPhone/Areas/Identity/Controllers/LoginController.cs
 namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
-    [Route("[area]/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : Controller
     {
         private readonly ILogger<LoginController>? _logger;
         private readonly MyDbContext? _context;
@@ -25,9 +16,12 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             _context = context;
             _jwtHelper = jwtHelper;
         }
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-
-        [HttpPost("login")]
+        [HttpPost]
         public IActionResult Index(UserLogin userLogin)
         {
             if (ModelState.IsValid)
@@ -37,37 +31,40 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError("Username", "Username does not exist");
-                    return BadRequest(ModelState);
+                    return View(ModelState);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
                 {
                     ModelState.AddModelError("Password", "Incorrect password");
-                    return BadRequest(ModelState);
+                    return View(ModelState);
                 }
                 var token = _jwtHelper.GenerateTokens(user.UserId);
                 Console.WriteLine("Generated Token: " + token.accessToken);
+                Console.WriteLine("Generated Refresh Token: " + token.refreshToken);
+                Response.Cookies.Append("AccessToken", token.accessToken);
+                Response.Cookies.Append("RefreshToken", token.refreshToken);
 
+                return RedirectToAction("Index", "Home", new {area = ""});
             }
-
-            return Ok(new {message = "Login successfully"});
+            return View();
         }
-        //private IActionResult RedirectToHomeWithRole(string userId)
-        //{
-        //    var user = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userId);
-        //    ViewBag.UserName = user?.Username;
-        //    string roleName = _context.Users
-        //        .Where(u => u.UserId.ToString() == userId)
-        //        .Select(u => u.Role)
-        //        .FirstOrDefault() ?? "";
-        //    if(roleName.ToUpper() == "ADMIN")
-        //    {
-        //        return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
-        //    }
-        //    if(roleName.ToUpper() == "USER")
-        //    {
-        //        return RedirectToAction("Index", "Home", new { area = "" });
-        //    }
-        //    return RedirectToAction("Index", "Home", new { area = "" });    
-        //}
+        private IActionResult RedirectToHomeWithRole(string userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userId);
+            ViewBag.UserName = user?.Username;
+            string roleName = _context.Users
+                .Where(u => u.UserId.ToString() == userId)
+                .Select(u => u.Role)
+                .FirstOrDefault() ?? "";
+            if (roleName.ToUpper() == "ADMIN")
+            {
+                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+            }
+            if (roleName.ToUpper() == "USER")
+            {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            return RedirectToAction("Index", "Home", new { area = "" });
+        }
     }
 }
