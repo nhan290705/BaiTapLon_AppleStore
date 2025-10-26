@@ -24,7 +24,7 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 
         [HttpPost]
         [Route("register")]
-        public IActionResult Register(UserRegister userRegister)
+        public IActionResult Index(UserRegister userRegister)
         {
             if(!ModelState.IsValid)
             {

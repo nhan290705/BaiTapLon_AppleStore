@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ProjectBuySmartPhone.Dtos;
-using ProjectBuySmartPhone.Models.Infrastructure;
+using System.Diagnostics;
 
-namespace ProjectBuySmartPhone.Areas.Identity.Controller
+using ProjectBuySmartPhone.Dtos;
+using ProjectBuySmartPhone.Helpers;
+using ProjectBuySmartPhone.Models.Infrastructure;
+using Microsoft.AspNetCore.Http.HttpResults;
+
+namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
     [Route("[area]/[controller]")]
@@ -11,13 +15,17 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controller
     {
         private readonly ILogger<LoginController>? _logger;
         private readonly MyDbContext? _context;
-        public LoginController(ILogger<LoginController> logger, MyDbContext context)
+        private readonly JwtHelper _jwtHelper;
+       public LoginController(ILogger<LoginController> logger, MyDbContext context, JwtHelper jwtHelper)
         {
             _logger = logger;
             _context = context;
+            _jwtHelper = jwtHelper;
         }
+
+
         [HttpPost("login")]
-        public IActionResult Login(UserLogin userLogin)
+        public IActionResult Index(UserLogin userLogin)
         {
             if (ModelState.IsValid)
             {
@@ -33,9 +41,30 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controller
                     ModelState.AddModelError("Password", "Incorrect password");
                     return BadRequest(ModelState);
                 }
+                var token = _jwtHelper.GenerateTokens(user.UserId);
+                Console.WriteLine("Generated Token: " + token.accessToken);
 
             }
+
             return Ok(new {message = "Login successfully"});
         }
+        //private IActionResult RedirectToHomeWithRole(string userId)
+        //{
+        //    var user = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userId);
+        //    ViewBag.UserName = user?.Username;
+        //    string roleName = _context.Users
+        //        .Where(u => u.UserId.ToString() == userId)
+        //        .Select(u => u.Role)
+        //        .FirstOrDefault() ?? "";
+        //    if(roleName.ToUpper() == "ADMIN")
+        //    {
+        //        return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+        //    }
+        //    if(roleName.ToUpper() == "USER")
+        //    {
+        //        return RedirectToAction("Index", "Home", new { area = "" });
+        //    }
+        //    return RedirectToAction("Index", "Home", new { area = "" });    
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProjectBuySmartPhone.Helpers;
 using ProjectBuySmartPhone.Models.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,8 +10,10 @@ builder.Services.AddControllersWithViews();
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
-
+//add jwthelper to dependency injection
+builder.Services.AddScoped<JwtHelper>();
 var app = builder.Build();
+Console.WriteLine("JWT Secret Key: " + ProjectBuySmartPhone.Helpers.JwtHelper.GenerateJwtKey());
 
 //Initlizer Data
 //using (var scope = app.Services.CreateScope())

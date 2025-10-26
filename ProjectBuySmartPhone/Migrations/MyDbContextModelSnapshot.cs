@@ -384,6 +384,33 @@ namespace ProjectBuySmartPhone.Migrations
                     b.ToTable("ProductImage", (string)null);
                 });
 
+            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TokenName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken", (string)null);
+                });
+
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -400,13 +427,18 @@ namespace ProjectBuySmartPhone.Migrations
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -544,6 +576,17 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.Blog", b =>
                 {
                     b.Navigation("BlogComments");
@@ -582,6 +625,8 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("ProductComments");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
