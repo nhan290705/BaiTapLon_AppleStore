@@ -4,6 +4,7 @@ using ProjectBuySmartPhone.Models.Domain.Entities;
 using ProjectBuySmartPhone.Models.Infrastructure;
 using BCrypt.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
@@ -18,13 +19,17 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             _logger = logger;
             _context = context;
         }
+        
+
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
-
+        
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Index(UserRegister userRegister)
         {
             if(!ModelState.IsValid)

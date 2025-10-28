@@ -36,6 +36,5 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public virtual ICollection<BlogComment>? BlogComments { get; set; }
         public virtual ICollection<ProductComment>? ProductComments { get; set; }
         public virtual ICollection<Order>? Orders { get; set; }
-        public virtual ICollection<RefreshToken>? RefreshTokens { get; set; }
     }
 }

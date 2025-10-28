@@ -3,7 +3,6 @@
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
     public class ScreenAdminController : Controller
     {
 
@@ -11,9 +10,9 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         {
             return View();
         }
-        public IActionResult Dashboard()
+        public IActionResult DashBoard()
         {
-            return View("DashBoard");
+            return View();
         }
             
     }

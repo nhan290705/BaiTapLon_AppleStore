@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ProjectBuySmartPhone.Dtos;
 using ProjectBuySmartPhone.Helpers;
 using ProjectBuySmartPhone.Models.Infrastructure;
+using System.IdentityModel.Tokens.Jwt;
 namespace ProjectBuySmartPhone.Areas.Identity.Controllers
 {
     [Area("Identity")]
@@ -16,11 +18,12 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             _context = context;
             _jwtHelper = jwtHelper;
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Index(UserLogin userLogin)
         {
@@ -31,23 +34,42 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
                 if (user == null)
                 {
                     ModelState.AddModelError("Username", "Username does not exist");
-                    return View(ModelState);
+                    return View(userLogin);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
                 {
                     ModelState.AddModelError("Password", "Incorrect password");
-                    return View(ModelState);
+                    return View(userLogin);
                 }
+                var isHttps = HttpContext.Request.IsHttps;
                 var token = _jwtHelper.GenerateTokens(user.UserId);
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var accessJwt = tokenHandler.ReadJwtToken(token.accessToken);
+                var refreshJwt = tokenHandler.ReadJwtToken(token.refreshToken);
                 Console.WriteLine("Generated Token: " + token.accessToken);
                 Console.WriteLine("Generated Refresh Token: " + token.refreshToken);
-                Response.Cookies.Append("AccessToken", token.accessToken);
-                Response.Cookies.Append("RefreshToken", token.refreshToken);
+                // add token vao cookie
+                Response.Cookies.Append("AccessToken", token.accessToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Lax,
+                    Expires = accessJwt.ValidTo
+                });
 
-                return RedirectToAction("Index", "Home", new {area = ""});
+                Response.Cookies.Append("RefreshToken", token.refreshToken, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Lax,
+                    Expires = refreshJwt.ValidTo
+                });
+                Console.WriteLine("login thanh cong");
+                return RedirectToHomeWithRole(user.UserId.ToString());
             }
-            return View();
+            return View(userLogin);
         }
+        // Redirect user to home page based on their role
         private IActionResult RedirectToHomeWithRole(string userId)
         {
             var user = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userId);
@@ -58,7 +80,7 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
                 .FirstOrDefault() ?? "";
             if (roleName.ToUpper() == "ADMIN")
             {
-                return RedirectToAction("Index", "Dashboard", new { area = "Admin" });
+                return RedirectToAction("Index", "ScreenAdmin", new { area = "Admin" });
             }
             if (roleName.ToUpper() == "USER")
             {

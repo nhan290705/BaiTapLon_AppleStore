@@ -71,8 +71,8 @@ namespace ProjectBuySmartPhone.Helpers
                 Audience = _jwtAudience,
                 Issuer = _jwtIssuer,
                 Subject = new ClaimsIdentity(claims),
-                IssuedAt = DateTime.Now,
-                Expires = DateTime.Now.AddMinutes(int.Parse(_accessTokenExpiredMintute)),
+                IssuedAt = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_accessTokenExpiredMintute)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -101,13 +101,78 @@ namespace ProjectBuySmartPhone.Helpers
                 Audience = _jwtAudience,
                 Issuer = _jwtIssuer,
                 Subject = new ClaimsIdentity(claims),
-                IssuedAt = DateTime.Now,
-                Expires = DateTime.Now.AddMinutes(int.Parse(_accessTokenExpiredMintute)),
+                IssuedAt = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_refreshTokenExpiredDay)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+            //add refresh token vao db
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var refreshToken = tokenHandler.WriteToken(token);
+            
             return refreshToken;
         }
+        public Token? refreshTokens(string oldRefreshToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtKey);
+
+            try
+            {
+                //  Xác thực refresh token bằng key gốc
+                var principal = tokenHandler.ValidateToken(oldRefreshToken, new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidIssuer = _jwtIssuer,
+                    ValidateAudience = true,
+                    ValidAudience = _jwtAudience,
+                    ValidateLifetime = true, // kiểm tra hạn luôn
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
+
+                //  Lấy claim idUser
+                var userIdClaim = principal.FindFirst("idUser");
+                if (userIdClaim == null)
+                {
+                    _logger.LogWarning("refresh token khong chua user id");
+                    return null;
+                }
+
+                int userId = int.Parse(userIdClaim.Value);
+
+                //  Kiểm tra user tồn tại trong DB
+                var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+                if (user == null)
+                {
+                    _logger.LogWarning("User không tồn tại cho refresh token");
+                    return null;
+                }
+
+                //  Sinh access token mới, giữ refresh token cũ
+                var newAccessToken = GenerateAccessToken(userId);
+
+                _logger.LogInformation($" Access token mới được sinh cho user {userId}");
+
+                return new Token
+                {
+                    accessToken = newAccessToken,
+                    refreshToken = oldRefreshToken
+                };
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                _logger.LogWarning(" Refresh token đã hết hạn");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($" Lỗi refresh token: {ex.Message}");
+                return null;
+            }
+        }
+
+
     }
 }

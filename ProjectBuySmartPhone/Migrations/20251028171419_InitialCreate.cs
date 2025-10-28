@@ -137,28 +137,6 @@ namespace ProjectBuySmartPhone.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RefreshToken",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TokenName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isActive = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshToken", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_RefreshToken_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductComment",
                 columns: table => new
                 {
@@ -345,11 +323,6 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "IX_ProductImage_ProductId",
                 table: "ProductImage",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_UserId",
-                table: "RefreshToken",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -366,9 +339,6 @@ namespace ProjectBuySmartPhone.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductImage");
-
-            migrationBuilder.DropTable(
-                name: "RefreshToken");
 
             migrationBuilder.DropTable(
                 name: "Blog");

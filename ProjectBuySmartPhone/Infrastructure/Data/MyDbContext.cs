@@ -35,7 +35,6 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
             modelBuilder.Entity<ProductComment>().ToTable(nameof(ProductComment));
             modelBuilder.Entity<Order>().ToTable(nameof(Order));
             modelBuilder.Entity<OrderDetail>().ToTable(nameof(OrderDetail));
-            modelBuilder.Entity<RefreshToken>().ToTable(nameof(RefreshToken));
 
             modelBuilder.Entity<Blog>()
                 .HasOne(b => b.User)
@@ -108,12 +107,7 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 .HasForeignKey(od => od.ProductDetailId)
                 .OnDelete(DeleteBehavior.Restrict); // hoặc NoAction
 
-        // REFRESH TOKEN ↔ USER
-            modelBuilder.Entity<RefreshToken>()
-                .HasOne(rt => rt.User)
-                .WithMany(u => u.RefreshTokens)
-                .HasForeignKey(rt => rt.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+       
         }
     }
 }

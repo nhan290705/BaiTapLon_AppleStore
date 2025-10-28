@@ -231,11 +231,11 @@
         <div class="title">Đăng nhập để thanh toán nhanh hơn.</div>
         <div class="subtitle">Đăng nhập vào Apple Store</div>
 
-        <form asp-action="Index" asp-controller="Login" asp-area="Identity" method="post">
-            <input asp-for="Username" placeholder="Tên đăng nhập" />
+        <form asp-action="Index" asp-controller="Login" asp-area="Identity" method="post" id="LoginForm">
+            <input asp-for="Username" placeholder="Tên đăng nhập" required />
             <span asp-validation-for="Username" class="text-danger"></span>
 
-            <input asp-for="Password" type="password" placeholder="Mật khẩu" />
+            <input asp-for="Password" type="password" placeholder="Mật khẩu" required/>
             <span asp-validation-for="Password" class="text-danger"></span>
 
             <div class="bottom-options">
