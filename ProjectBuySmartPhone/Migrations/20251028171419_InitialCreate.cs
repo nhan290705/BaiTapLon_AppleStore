@@ -34,7 +34,8 @@ namespace ProjectBuySmartPhone.Migrations
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
