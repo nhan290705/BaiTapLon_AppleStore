@@ -9,7 +9,10 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [Key]
         public int OrderId { get; set; }
 
-        public OrderStatus Status { get; set; } = OrderStatus.Pending;
+        public int StatusOrderId { get; set; }
+        [ForeignKey("StatusOrderId")]
+        public virtual StatusOrder? StatusOrder { get; set; }  
+
         public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cod;
         public ShippingMethod ShippingMethod { get; set; } = ShippingMethod.Standard;
 
