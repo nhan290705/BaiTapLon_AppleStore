@@ -104,7 +104,7 @@
                             <td class="py-4 px-4 text-gray-800">@order.RecipientName</td>
                             <td class="py-4 px-4 text-gray-700">@order.RecipientPhone</td>
                             <td class="py-4 px-4 text-gray-700">@order.ShippingAddress</td>
-                            <td class="py-4 px-4 font-semibold text-gray-800">@order.TotalPrice.ToString("N0") VNĐ</td>
+                            <td class="py-4 px-4 font-semibold text-gray-800">@order.TotalPrice.ToString() VNĐ</td>
                             <td class="py-4 px-4">
                                 @{
                                     var status = order.StatusOrderId;
