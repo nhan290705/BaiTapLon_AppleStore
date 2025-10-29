@@ -58,5 +58,4 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-await Task.Delay(500);
 app.Run();
