@@ -1,0 +1,170 @@
+﻿
+
+@{
+    ViewData["Title"] = "Order";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<ProjectBuySmartPhone.Models.Domain.Entities.Order>;
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+    /* Override Bootstrap styles cho select */
+    select.no-bootstrap {
+        color: #1f2937 !important;
+        background-color: white !important;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
+
+        select.no-bootstrap option {
+            color: #1f2937 !important;
+            background-color: white !important;
+        }
+
+    .form-control-custom {
+        padding: 8px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        outline: none;
+        color: black;
+        transition: all 0.2s ease;
+    }
+
+        .form-control-custom:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+</style>
+
+<div class="bg-white rounded-xl shadow-sm p-6">
+    <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-4">
+            <form method="get" style="display: flex; align-items: center; gap: 16px;">
+                <input type="text"
+                       name="searchTerm"
+                       placeholder="Tìm kiếm đơn hàng..."
+                       value="@ViewBag.SearchTerm"
+                       class="form-control-custom"
+                       style="width: 256px;" />
+
+                @await Component.InvokeAsync("StatusOrderMenu")
+                </select>
+
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    Tìm kiếm
+                </button>
+            </form>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Hủy bootstrap-select nếu có
+                    if (typeof $.fn.selectpicker !== 'undefined') {
+                        $('select.no-bootstrap').selectpicker('destroy');
+                    }
+
+                    // Xóa tất cả clone đã bị tạo
+                    document.querySelectorAll('.bootstrap-select').forEach(el => el.remove());
+
+                    // Hiển thị lại select thật
+                    document.querySelectorAll('select.no-bootstrap').forEach(sel => {
+                        sel.style.display = 'block';
+                    });
+                });
+            </script>
+        </div>
+
+        <a href="@Url.Action("Create", "Order")" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+            + Tạo đơn mới
+        </a>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead>
+                <tr class="border-b border-gray-200 bg-gray-50">
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Mã đơn</th>
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Người nhận</th>
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Số điện thoại</th>
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Tổng tiền</th>
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Trạng thái</th>
+                    <th class="text-left py-4 px-4 text-gray-700 font-semibold">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var order in Model)
+                    {
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                            <td class="py-4 px-4 font-semibold text-blue-600">@order.OrderId</td>
+                            <td class="py-4 px-4 text-gray-800">@order.RecipientName</td>
+                            <td class="py-4 px-4 text-gray-700">@order.RecipientPhone</td>
+                            <td class="py-4 px-4 text-gray-700">@order.ShippingAddress</td>
+                            <td class="py-4 px-4 font-semibold text-gray-800">@order.TotalPrice.ToString() VNĐ</td>
+                            <td class="py-4 px-4">
+                                @{
+                                    var status = order.StatusOrderId;
+                                    string statusClass = "";
+                                    string statusText = "";
+                                    Console.WriteLine(status);
+                                    switch (status)
+                                    {
+                                        case 1:
+                                            statusClass = "bg-yellow-200 text-yellow-1300 text-xl font-semibold";
+                                            statusText = "Chờ xử lý";
+                                            break;
+                                        case 2:
+                                            statusClass = "bg-blue-200 text-blue-1300 text-xl font-semibold";
+                                            statusText = "Đang xử lý";
+                                            break;
+                                        case 3:
+                                            statusClass = "bg-green-200 text-green-1300 text-xl font-semibold";
+                                            statusText = "Hoàn thành";
+                                            break;
+                                        case 4:
+                                            statusClass = "bg-purple-200 text-red-1300 text-xl font-semibold";
+                                            statusText = "Đang giao hàng";
+                                            break;
+                                        case 5:
+                                            statusClass = "bg-red-100 text-red-800 text-xl font-semibold";
+                                            statusText = "Đã hủy";
+                                            break;
+                                        default:
+                                            statusClass = "bg-gray-100 text-gray-800 text-xl font-semibold";
+                                            statusText = "Không rõ";
+                                            break;
+                                    }
+                                }
+                                <span class="@statusClass px-3 py-1 rounded-full text-xs font-medium">@statusText</span>
+                            </td>
+                            <td class="py-4 px-4">
+                                <div class="flex gap-2">
+                                    <a href="@Url.Action("Details", "Order", new { id = order.OrderId })" class="text-blue-600 hover:text-blue-700 font-medium text-l">
+                                        Chi tiết
+                                    </a>
+                                    <a href="@Url.Action("Edit", "Order", new { id = order.OrderId })" class="text-green-600 hover:text-green-700 font-medium text-l">
+                                        Sửa
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="py-8 px-4 text-center text-gray-500">
+                            Không có đơn hàng nào
+                        </td>
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+@Html.PagedListPager(Model,page=>Url.Action("Index",new{page = page}))
