@@ -1,5 +1,6 @@
 ﻿using ProjectBuySmartPhone.Models.Domain.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectBuySmartPhone.Models.Domain.Entities
 {
@@ -10,7 +11,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
 
         [Required, MaxLength(220)]
         public string Title { get; set; }
-
+        [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }
 
         public BlogStatus Status { get; set; } = BlogStatus.Draft;
