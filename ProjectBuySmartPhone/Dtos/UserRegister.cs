@@ -6,7 +6,9 @@ namespace ProjectBuySmartPhone.Dtos
     public class UserRegister
     {
         [Required]
-        public string? FullName { get; set; }
+        public string? FirstName { get; set; }
+        [Required]
+        public string? LastName { get; set; }  
         [Required]
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@gmail\.com$", ErrorMessage = "Invalid email format")]
         public string? Email { get; set; }
@@ -26,7 +28,8 @@ namespace ProjectBuySmartPhone.Dtos
         {
             return new User
             {
-                FullName = this.FullName,
+                FirstName = this.FirstName,
+                LastName = this.LastName,
                 Email = this.Email,
                 PhoneNumber = this.PhoneNumber,
                 Username = this.Username,

@@ -3,17 +3,11 @@
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ScreenAdminController : Controller
+    public class ProductController : Controller
     {
-
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult DashBoard()
-        {
-            return View();
-        }
-            
     }
 }
