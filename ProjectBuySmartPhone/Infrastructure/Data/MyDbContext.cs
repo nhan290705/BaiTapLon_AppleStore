@@ -109,7 +109,11 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 .HasOne(od => od.ProductDetail)
                 .WithMany(pd => pd.OrderDetails)
                 .HasForeignKey(od => od.ProductDetailId)
-                .OnDelete(DeleteBehavior.Restrict); 
+
+
+                .OnDelete(DeleteBehavior.Restrict); // hoặc NoAction
+
+       
         }
     }
 }
