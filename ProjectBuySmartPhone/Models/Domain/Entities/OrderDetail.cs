@@ -6,7 +6,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
     public class OrderDetail : BaseEntity
     {
         [Key]
-        public int OrderDetailId { get; set; }
+        [MaxLength(200)] public string? OrderDetailId { get; set; }
 
         public int Qty { get; set; }
 

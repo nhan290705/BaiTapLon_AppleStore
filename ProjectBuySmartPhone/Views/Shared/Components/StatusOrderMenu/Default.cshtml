@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder>
+
+<select name="status"
+        class="no-bootstrap form-control-custom"
+        data-bs-toggle="none"
+        style="min-width: 180px;">
+    <option value="">Tất cả trạng thái</option>
+    @if (Model != null && Model.Any())
+    {
+        var selectedStatus = ViewBag.Status as int?;
+
+        foreach (var status in Model)
+        {
+            <option value="@status.StatusOrderId" selected="@(selectedStatus == status.StatusOrderId)">
+                @status.Name
+            </option>
+        }
+    }
+</select>

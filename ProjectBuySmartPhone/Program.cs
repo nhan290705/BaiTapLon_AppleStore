@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectBuySmartPhone.Models.Infrastructure;
+using ProjectBuySmartPhone.Responsitory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,8 @@ builder.Services.AddControllersWithViews();
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
+builder.Services.AddScoped<IStatusResponsitory, StatusResponsitory>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 var app = builder.Build();
 
