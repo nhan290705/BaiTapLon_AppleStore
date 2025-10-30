@@ -9,7 +9,7 @@ namespace ProjectBuySmartPhone.Dtos.Products
         public string ProductName { get; init; } = "";
         public string Color { get; init; } = "";
         public string Port { get; init; } = "";
-        public decimal Ram { get; init; }
+        public string Ram { get; init; }
         public int Qty { get; init; }
         public decimal Discount { get; init; }
         public decimal Price { get; init; }
