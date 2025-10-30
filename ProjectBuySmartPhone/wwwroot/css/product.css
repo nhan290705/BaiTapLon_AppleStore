@@ -1,0 +1,69 @@
+﻿/* Hàng ảnh chạy ngang + scroll ngang */
+.img-scroll-row {
+    display: flex !important; /* ép flex cho chắc */
+    flex-wrap: nowrap !important; /* không xuống dòng */
+    overflow-x: auto; /* scroll ngang khi tràn */
+    overflow-y: hidden;
+    gap: 12px; /* khoảng cách giữa ảnh */
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fafafa;
+    scroll-behavior: smooth;
+}
+
+/* Mỗi item là một “ô” cố định, không cho rộng 100% */
+.img-item {
+    flex: 0 0 auto !important;
+    width: 120px !important; /* khóa chiều rộng */
+}
+
+/* Khung ảnh + shadow + bo góc */
+.img-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
+    transition: transform .2s ease-in-out;
+}
+
+    .img-wrap:hover {
+        transform: scale(1.04);
+    }
+
+    /* Ảnh fill khung, không méo */
+    .img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+/* Nhãn Main */
+.badge-main {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    font-size: 12px;
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 4px;
+    opacity: .95;
+}
+
+/* scrollbar đẹp hơn (optional) */
+.img-scroll-row::-webkit-scrollbar {
+    height: 8px;
+}
+
+.img-scroll-row::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 4px;
+}
+
+    .img-scroll-row::-webkit-scrollbar-thumb:hover {
+        background: #888;
+    }
