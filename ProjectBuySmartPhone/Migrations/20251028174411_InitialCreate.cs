@@ -29,12 +29,27 @@ namespace ProjectBuySmartPhone.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StatusOrder",
+                columns: table => new
+                {
+                    StatusOrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusOrder", x => x.StatusOrderId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -110,7 +125,7 @@ namespace ProjectBuySmartPhone.Migrations
                 {
                     OrderId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<int>(type: "int", nullable: false),
+                    StatusOrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     ShippingMethod = table.Column<int>(type: "int", nullable: false),
                     RecipientName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
@@ -128,6 +143,12 @@ namespace ProjectBuySmartPhone.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Order_StatusOrder_StatusOrderId",
+                        column: x => x.StatusOrderId,
+                        principalTable: "StatusOrder",
+                        principalColumn: "StatusOrderId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Order_User_UserId",
                         column: x => x.UserId,
@@ -241,8 +262,7 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "OrderDetail",
                 columns: table => new
                 {
-                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderDetailId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Qty = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LineTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -282,6 +302,11 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "IX_BlogComment_UserId",
                 table: "BlogComment",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_StatusOrderId",
+                table: "Order",
+                column: "StatusOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_UserId",
@@ -347,6 +372,9 @@ namespace ProjectBuySmartPhone.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductDetail");
+
+            migrationBuilder.DropTable(
+                name: "StatusOrder");
 
             migrationBuilder.DropTable(
                 name: "User");

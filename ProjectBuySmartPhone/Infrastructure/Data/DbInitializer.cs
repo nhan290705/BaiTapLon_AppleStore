@@ -20,14 +20,16 @@
 //                }
 
 
-                //// 2️⃣ Seed dữ liệu mẫu cho User
-                //var users = new User[]
-                //{
-                //    new User { FullName = "Admin", Email = "admin@gmail.com", Password = "123456", Role = "Admin", IsActive = Domain.Enums.ActiveStatus.Active },
-                //    new User { FullName = "John Doe", Email = "john@gmail.com", Password = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active },
-                //    new User { FullName = "Jane Smith", Email = "jane@gmail.com", Password = "123456", Role = "Customer", IsActive = Domain.Enums.ActiveStatus.Active }
-                //};
-                //foreach (var u in users)
-                //    context.Users.Add(u);
-                //context.SaveChanges();
+//                // 2️⃣ Seed dữ liệu mẫu cho User
+//                var users = new User[]
+//                {
+//                    new User { FirstName = "Admin",LastName = "Han", Email = "admin@gmail.com", Password = "admin", Role = "Admin", IsActive = Domain.Enums.ActiveStatus.Active },
 
+//                };
+//                foreach (var u in users)
+//                    context.Users.Add(u);
+//                context.SaveChanges();
+//            }
+//        }
+//    }
+//}

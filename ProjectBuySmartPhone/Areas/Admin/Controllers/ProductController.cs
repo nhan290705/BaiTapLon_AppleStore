@@ -13,7 +13,6 @@ using X.PagedList;
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]/[action]")]
     public class ProductController : Controller
     {
         private readonly MyDbContext _db;

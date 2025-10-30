@@ -17,18 +17,21 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public string? Description { get; set; }
 
         //[Precision(18, 2)]
+        [Required]
         public decimal Price { get; set; }
-
+        [Required]
         public int Qty { get; set; }
 
         //[Precision(5, 2)]
+
         public decimal Discount { get; set; }
-
+        [Required]
         public string Color { get; set; }
-
-        public decimal Storage {  get; set; }
-
-        public decimal Ram { get; set; }
+        [Required]
+        public string Storage {  get; set; }
+        [Required]
+        public string Ram { get; set; }
+        [Required]
         public string Port {  get; set; }
 
 

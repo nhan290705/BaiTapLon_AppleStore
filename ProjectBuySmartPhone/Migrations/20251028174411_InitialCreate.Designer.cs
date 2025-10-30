@@ -12,7 +12,8 @@ using ProjectBuySmartPhone.Models.Infrastructure;
 namespace ProjectBuySmartPhone.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20251025151919_InitialCreate")]
+
+    [Migration("20251028171419_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -139,7 +140,7 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<int>("ShippingMethod")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("StatusOrderId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
@@ -153,6 +154,8 @@ namespace ProjectBuySmartPhone.Migrations
 
                     b.HasKey("OrderId");
 
+                    b.HasIndex("StatusOrderId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Order", (string)null);
@@ -160,11 +163,9 @@ namespace ProjectBuySmartPhone.Migrations
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.OrderDetail", b =>
                 {
-                    b.Property<int>("OrderDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderDetailId"));
+                    b.Property<string>("OrderDetailId")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -387,6 +388,28 @@ namespace ProjectBuySmartPhone.Migrations
                     b.ToTable("ProductImage", (string)null);
                 });
 
+            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder", b =>
+                {
+                    b.Property<int>("StatusOrderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusOrderId"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("StatusOrderId");
+
+                    b.ToTable("StatusOrder", (string)null);
+                });
+
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -403,13 +426,18 @@ namespace ProjectBuySmartPhone.Migrations
                         .HasMaxLength(160)
                         .HasColumnType("nvarchar(160)");
 
-                    b.Property<string>("FullName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(120)
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -467,11 +495,19 @@ namespace ProjectBuySmartPhone.Migrations
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.Order", b =>
                 {
+                    b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder", "StatusOrder")
+                        .WithMany("Orders")
+                        .HasForeignKey("StatusOrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("StatusOrder");
 
                     b.Navigation("User");
                 });
@@ -574,6 +610,11 @@ namespace ProjectBuySmartPhone.Migrations
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.ProductDetail", b =>
                 {
                     b.Navigation("OrderDetails");
+                });
+
+            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.User", b =>

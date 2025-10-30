@@ -48,3 +48,10 @@ body {
 }
 
 
+.no-bootstrap {
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+    -moz-appearance: auto !important;
+    background-image: none !important;
+    background-color: white !important;
+}
