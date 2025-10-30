@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -35,6 +35,11 @@ app.UseRouting();
 
 app.UseAuthorization();
 app.MapAreaControllerRoute(
+    name: "homepage",
+    areaName: "HomePage",
+    pattern: "{controller=HomePage}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
     pattern: "Admin/{controller=ScreenAdmin}/{action=Index}/{id?}");
@@ -42,5 +47,6 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

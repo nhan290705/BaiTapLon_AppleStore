@@ -9,7 +9,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public int ProductId { get; set; }
 
         [Required, MaxLength(200)]
-        public string ProductName { get; set; }
+        public string? ProductName { get; set; }
 
         [MaxLength(200)]
         public string? Slug { get; set; }
@@ -24,12 +24,12 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         //[Precision(5, 2)]
         public decimal Discount { get; set; }
 
-        public string Color { get; set; }
+        public string? Color { get; set; }
 
-        public decimal Storage {  get; set; }
+        public decimal? Storage {  get; set; }
 
-        public decimal Ram { get; set; }
-        public string Port {  get; set; }
+        public decimal? Ram { get; set; }
+        public string? Port {  get; set; }
 
 
         public ActiveStatus Status { get; set; } = ActiveStatus.Active;
