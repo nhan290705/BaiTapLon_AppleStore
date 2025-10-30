@@ -133,6 +133,14 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateVM vm)
         {
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             // 1) Lưu Product
             var product = new Product
             {
@@ -248,6 +256,15 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ProductUpdateVM vm)
         {
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
+            if (!ModelState.IsValid)
+            {
+
+                // Trả lại view cùng lỗi validation
+                return View(vm);
+            }
             // 1) Lưu Product
             var product = new Product
             {
