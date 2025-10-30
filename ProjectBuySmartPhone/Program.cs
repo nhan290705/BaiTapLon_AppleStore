@@ -3,6 +3,7 @@ using ProjectBuySmartPhone.Configuration;
 using ProjectBuySmartPhone.Helpers;
 using ProjectBuySmartPhone.Middleware;
 using ProjectBuySmartPhone.Models.Infrastructure;
+using ProjectBuySmartPhone.Responsitory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddControllersWithViews(options =>
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
+builder.Services.AddScoped<IStatusResponsitory, StatusResponsitory>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 //add jwthelper to dependency injection
 builder.Services.AddScoped<JwtHelper>();
 

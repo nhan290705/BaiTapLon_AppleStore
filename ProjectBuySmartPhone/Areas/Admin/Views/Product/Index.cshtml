@@ -8,7 +8,7 @@
     Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
 }
 
-<div class="row clearfix">
+@* <div class="row clearfix">
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
             <div class="header">
@@ -34,11 +34,14 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>FIRST NAME</th>
-                            <th>LAST NAME</th>
-                            <th>USERNAME</th>
+                            <th>Product Name</th>
+                            <th>Color</th>
+                            <th>Port</th>
+                            <th>Ram</th>
+                            <th>Qty</th>
+                            <th>Discount</th>
+                            <th>Price</th>
                             <th>Action</th>
-                            <th>No</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,66 +95,108 @@
 <script src="~/template/plugins/jquery/jquery.min.js"></script>
 
 <script src="~/template/js/render-pagination.js"></script>
+<script src="~/template/js/common.js"></script>
 <script>
-    let sampleData = [];
-    let totalRecords = 0, pageIndex = 1, pageSize = 20;
+    let pageIndex = 1, pageSize = 10, totalRecords = 0;
+    let sortBy = 'ProductName', isAsc = true;
+    let keyword = ''; // nếu bạn có ô input search thì lấy từ đó
+
+    $(document).ready(function () {
+        fetchData();
+    });
 
     function fetchData() {
-        sampleData = [];
-        for (let i = 1; i <= 100; i++) {
-            sampleData.push({
-                Id: i,
-                FirstName: "Employee " + i,
-                LastName: "aa",
-                Username: "username " + i,
-                Username1: "username " + i
-            });
-        }
-        let tbody = $('#product-table tbody');
-        tbody.empty();
-        for (let i = (pageIndex-1) * pageSize; i < pageSize * (pageIndex-1) + pageSize; i++) {
-            tbody.append(renderTableRow(sampleData[i]));
-        }
-
-        renderPaginationBSB({
-            totalRecords: sampleData.length,
+        const req = {
             pageIndex: pageIndex,
-            pageSize: pageSize
-        }, '#custom-pagination', changePageIndex);
+            pageSize: pageSize,
+            sortBy: sortBy,
+            isAsc: isAsc,
+            name: keyword
+        };
+        showLoading();
+        $.ajax({
+            url: '/Admin/Product/Search',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(req),
+            success: function (res) {
+                console.log(res);
+                // --- Trường hợp A: API trả về PagedResult { items, totalRecords, pageIndex, pageSize }
+                if (res && res.products && Array.isArray(res.products)) {
+                    renderTable(res.products, res.pageIndex, res.pageSize);
+                    renderPaginationBSB({
+                        totalRecords: res.totalRecords,
+                        pageIndex: res.pageIndex,
+                        pageSize: res.pageSize
+                    }, '#custom-pagination', changePageIndex);
+                }
+                hideLoading();
+            },
+            error: function (xhr) {
+                hideLoading();
+                console.error(xhr);
+                alert('Có lỗi khi tải dữ liệu sản phẩm.');
+            }
+        });
     }
 
-    fetchData();
-
-    function changePageIndex(totalRecords, newPage, pageSize) {
-        totalRecords = totalRecords;
+    function changePageIndex(totalRecords, newPage, newSize) {
         pageIndex = newPage;
-        pageSize = pageSize;
-
+        pageSize = newSize;
+        totalRecords = totalRecords;
         fetchData();
     }
 
-    function renderTableRow(item) {
-        console.log(item)
-        return `
-            <tr>
-                <td>
-                    <span>${item.Id}</span>
-                </td>
-                <td>${item.FirstName}</td>
-                <td>${item.LastName || ''}</td>
-                <td>${item.Username}</td>
-                <td>${item.Username1}</td>
-                <td>
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-warning">
-                            <i class="ri-pencil-line me-1"></i> Update
+    function renderTable(items, curPage, size) {
+        const $tbody = $('#product-table tbody');
+        $tbody.empty();
+
+        if (!items || items.length === 0) {
+            $tbody.append(`<tr><td colspan="9" class="text-center">No data</td></tr>`);
+            return;
+        }
+
+        // STT theo trang: tính từ 1
+        let startNo = (curPage - 1) * size;
+
+        items.forEach((p, idx) => {
+            $tbody.append(`
+                <tr>
+                    <td>${startNo + idx + 1}</td>
+                    <td>${escapeHtml(p.productName)}</td>
+                    <td>${escapeHtml(p.color ?? '')}</td>
+                    <td>${escapeHtml(p.port ?? '')}</td>
+                    <td>${p.ram ?? ''}</td>
+                    <td>${p.qty ?? ''}</td>
+                    <td>${formatNumber(p.discount ?? 0)}</td>
+                    <td>${formatNumber(p.price ?? 0)}</td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm" data-id="${p.productId}">
+                            <i class="ri-pencil-line"></i> Update
                         </button>
-                    </div>
-                </td>
-            </tr>
-        `;
+                    </td>
+                </tr>
+            `);
+        });
     }
 
+    // Helpers
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
 
-
-</script>
+    function formatNumber(n) {
+        // tuỳ locale của bạn
+        try {
+            return Number(n).toLocaleString('vi-VN');
+        } catch {
+            return n;
+        }
+    }
+</script> *@

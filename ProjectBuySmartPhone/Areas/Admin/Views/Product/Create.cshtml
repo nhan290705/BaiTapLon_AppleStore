@@ -1,0 +1,116 @@
+﻿@model ProjectBuySmartPhone.Areas.Admin.Models.ViewModels.ProductCreateVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create Product";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+
+<div class="card">
+    <div class="header d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">Create Product</h2>
+    </div>
+    <div class="body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Product Name</label>
+                    <input asp-for="ProductName" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">SKU</label>
+                    <input asp-for="Sku" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Slug</label>
+                    <input asp-for="Slug" class="form-control" />
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold">Description</label>
+                    <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Price</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Qty</label>
+                    <input asp-for="Qty" type="number" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Discount (%)</label>
+                    <input asp-for="Discount" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <input asp-for="Status" type="number" class="form-control" />
+                </div>
+
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Color</label>
+                    <input asp-for="Color" type="color" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Storage</label>
+                    <input asp-for="Storage" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">RAM</label>
+                    <input asp-for="Ram" type="number" step="0.1" class="form-control" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Port</label>
+                    <input asp-for="Port" class="form-control" />
+                </div>
+
+                <!-- Category: chọn 1 trong 5 (1..5) -->
+                <div class="col-md-12 mb-3">
+                    <label class="form-label fw-bold d-block">Category (1 trong 5)</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="1" id="cat1">
+                        <label class="form-check-label" for="cat1">Mac</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="2" id="cat2">
+                        <label class="form-check-label" for="cat2">iPhone</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="3" id="cat3">
+                        <label class="form-check-label" for="cat3">iPad</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="4" id="cat4">
+                        <label class="form-check-label" for="cat4">Apple Watch</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="5" id="cat5">
+                        <label class="form-check-label" for="cat5">Accessory</label>
+                    </div>
+                </div>
+
+                <!-- 1 ảnh duy nhất -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Product Images (có thể chọn nhiều)</label>
+                    <input asp-for="ImageFiles" type="file" class="form-control" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.jfif" />
+                    <small class="text-muted">Giữ Ctrl/Shift để chọn nhiều ảnh.</small>
+                </div>
+
+                <!-- Chọn ảnh chính (không bắt buộc). Nếu không chọn, server sẽ lấy file đầu tiên -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Ảnh chính (index bắt đầu từ 0)</label>
+                    <input asp-for="MainImageIndex" type="number" class="form-control" value="-1" />
+                    <small class="text-muted">Để -1 nếu muốn ảnh đầu tiên là ảnh chính.</small>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-save"></i> Save
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+            </div>
+        </form>
+    </div>
+</div>

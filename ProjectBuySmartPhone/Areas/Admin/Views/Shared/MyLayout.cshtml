@@ -38,8 +38,23 @@
     <!-- Custom Css -->
     <link href="~/template/css/style.css" rel="stylesheet">
 
+    <link href="~/template/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
+    <link href="~/template/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+
+    <!-- Colorpicker Css -->
+    <link href="~/template/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css" rel="stylesheet" />
+
+    <!-- Dropzone Css -->
+    <link href="~/template/plugins/dropzone/dropzone.css" rel="stylesheet">
+
+    <!-- Multi Select Css -->
+    <link href="~/template/plugins/multi-select/css/multi-select.css" rel="stylesheet">
+
+    <!-- Bootstrap Spinner Css -->
+    <link href="~/template/plugins/jquery-spinner/css/bootstrap-spinner.css" rel="stylesheet">
+
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="~/template/css/Admin/Home/themes/all-themes.css" rel="stylesheet" />
+@*     <link href="~/template/css/themes/all-themes.css" rel="stylesheet" /> *@
 </head>
 
 <body class="theme-red">
@@ -230,7 +245,7 @@
         <div class="container-fluid">
     @RenderBody()
         </div>
-    <section/>
+    </section>
     @* <section class="content">
         <div class="container-fluid">
             <div class="block-header">
@@ -580,9 +595,10 @@
 
     <!-- Custom Js -->
     <script src="~/template/js/admin.js"></script>
-    <script src="~/template/js/pages/index.js"></script>
+    @* <script src="~/template/js/pages/index.js"></script> *@
 
     <!-- Demo Js -->
     <script src="~/template/js/demo.js"></script>
+        @await RenderSectionAsync("Scripts", required: false)
 </body>
 
