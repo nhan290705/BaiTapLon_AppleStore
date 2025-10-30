@@ -13,8 +13,8 @@ namespace ProjectBuySmartPhone.Areas.Admin.Models.ViewModels
         public int Qty { get; set; }
         public decimal Discount { get; set; }
         public string? Color { get; set; }
-        public decimal Storage { get; set; }
-        public decimal Ram { get; set; }
+        public string Storage { get; set; }
+        public string Ram { get; set; }
         public string? Port { get; set; }
         public byte Status { get; set; } = 1;
         public int ProductCategoryId { get; set; }   // nếu bạn muốn chỉ 1..5, view sẽ render radio 5 lựa chọn
