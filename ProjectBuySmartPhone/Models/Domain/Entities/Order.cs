@@ -15,10 +15,14 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
 
         public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cod;
         public ShippingMethod ShippingMethod { get; set; } = ShippingMethod.Standard;
-
+        [Required(ErrorMessage = "Vui lòng nhập tên người nhận")]
         [MaxLength(200)] public string? RecipientName { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [MaxLength(20)] public string? RecipientPhone { get; set; }
-        [MaxLength(300)] public string? ShippingAddress { get; set; }
+
+        [Required(ErrorMessage = "Vui lòng nhập địa chỉ")]
+        [MaxLength(300)] public string? ShippingAddress { get; set; }   
         [MaxLength(100)] public string? City { get; set; }
         [MaxLength(100)] public string? District { get; set; }
         [MaxLength(20)] public string? PostalCode { get; set; }

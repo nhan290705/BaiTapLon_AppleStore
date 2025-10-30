@@ -12,8 +12,7 @@ using ProjectBuySmartPhone.Models.Infrastructure;
 namespace ProjectBuySmartPhone.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-
-    [Migration("20251028171419_InitialCreate")]
+    [Migration("20251029161154_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -143,7 +142,7 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<int>("StatusOrderId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<decimal?>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -163,9 +162,12 @@ namespace ProjectBuySmartPhone.Migrations
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.OrderDetail", b =>
                 {
-                    b.Property<string>("OrderDetailId")
+                    b.Property<int?>("OrderDetailId")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("OrderDetailId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -236,8 +238,9 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Ram")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Ram")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
                         .HasMaxLength(200)
@@ -246,8 +249,9 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Storage")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Storage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -455,6 +459,7 @@ namespace ProjectBuySmartPhone.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

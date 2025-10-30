@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Them don hang moi";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+@model ProjectBuySmartPhone.Models.Domain.Entities.Order;
+
+<h2>Thêm đơn hàng mới</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<form asp-action="AddOrder" method="post">
+    <div class="form-group">
+        <label asp-for="UserId">Mã khách hàng (UserId)</label>
+        <input asp-for="UserId" class="form-control" placeholder="Nhập UserId hoặc để trống" />
+        <span asp-validation-for="UserId" class="text-danger"></span>
+        <small class="form-text text-muted">Có thể để trống nếu khách vãng lai</small>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RecipientName">Tên người nhận</label>
+        <input asp-for="RecipientName" class="form-control" />
+        <span asp-validation-for="RecipientName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RecipientPhone">Số điện thoại</label>
+        <input asp-for="RecipientPhone" class="form-control" />
+        <span asp-validation-for="RecipientPhone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="RecipientAddress">Địa chỉ giao hàng</label>
+        <input asp-for="RecipientAddress" class="form-control" />
+        <span asp-validation-for="RecipientAddress" class="text-danger"></span>
+    </div>
+
+    <hr />
+    <h4>Chi tiết sản phẩm</h4>
+    <div id="orderDetails">
+        <div class="order-detail-item mb-3">
+            <div class="row">
+                <div class="col-md-5">
+                    <label>Sản phẩm</label>
+                    <select name="ProductIds" class="form-control product-select">
+                        <option value="">-- Chọn sản phẩm --</option>
+                        @foreach (var product in ViewBag.Products)
+                        {
+                            <option value="@product.Value" data-price="@product.Price">@product.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label>Số lượng</label>
+                    <input type="number" name="Quantities" class="form-control quantity-input" value="1" min="1" />
+                </div>
+                <div class="col-md-3">
+                    <label>Giá</label>
+                    <input type="number" name="Prices" class="form-control price-input" readonly />
+                </div>
+                <div class="col-md-1">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn btn-danger btn-sm w-100 remove-detail">Xóa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success btn-sm" id="addDetailBtn">+ Thêm sản phẩm</button>
+
+    <hr />
+    <div class="form-group">
+        <label>Tổng tiền</label>
+        <input type="text" id="totalAmount" class="form-control" readonly value="0" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Lưu đơn hàng</button>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Quay lại</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Tính tổng tiền
+            function calculateTotal() {
+                let total = 0;
+                $('.order-detail-item').each(function() {
+                    let price = parseFloat($(this).find('.price-input').val()) || 0;
+                    let quantity = parseInt($(this).find('.quantity-input').val()) || 0;
+                    total += price * quantity;
+                });
+                $('#totalAmount').val(total.toFixed(2));
+            }
+
+            // Khi chọn sản phẩm
+            $(document).on('change', '.product-select', function() {
+                let selectedOption = $(this).find('option:selected');
+                let price = selectedOption.data('price');
+                $(this).closest('.order-detail-item').find('.price-input').val(price);
+                calculateTotal();
+            });
+
+            // Khi thay đổi số lượng
+            $(document).on('input', '.quantity-input', function() {
+                calculateTotal();
+            });
+
+            // Thêm sản phẩm mới
+            $('#addDetailBtn').click(function() {
+                let newDetail = $('.order-detail-item:first').clone();
+                newDetail.find('select').val('');
+                newDetail.find('.quantity-input').val(1);
+                newDetail.find('.price-input').val('');
+                $('#orderDetails').append(newDetail);
+            });
+
+            // Xóa sản phẩm
+            $(document).on('click', '.remove-detail', function() {
+                if ($('.order-detail-item').length > 1) {
+                    $(this).closest('.order-detail-item').remove();
+                    calculateTotal();
+                } else {
+                    alert('Phải có ít nhất 1 sản phẩm!');
+                }
+            });
+        });
+    </script>
+}

@@ -17,9 +17,6 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         {
             _orderRepository = orderRepository;
         }
-
-       
-
         public IActionResult Index(string searchTerm, int? status, int? page)
         {
             int pageSize = 10;
@@ -87,6 +84,42 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
             return View(order);
+        }
+
+        [Route("AddOrder")]
+        [HttpGet]
+        public IActionResult AddOrder()
+        {
+            return View();
+        }
+
+        [Route("AddOrder")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddOrder(Order order)
+        {
+            if (ModelState.IsValid)
+            {
+                // Tạo OrderId tự động
+                order.OrderId = GenerateOrderId();
+
+                order.CreatedAt = DateTime.Now;
+                order.StatusOrderId = 1;
+
+                _orderRepository.add(order);
+
+                TempData["SuccessMessage"] = "Thêm đơn hàng thành công!";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(order);
+        }
+
+        private int GenerateOrderId()
+        {
+            // Lấy số lượng order từ repository
+            var count = _orderRepository.GetAll().Count(o => o.CreatedAt.Date == DateTime.Today) + 1;
+            
+            return count;
         }
     }
 }

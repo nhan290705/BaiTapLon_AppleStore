@@ -77,7 +77,7 @@
             </script>
         </div>
 
-        <a href="@Url.Action("Create", "Order")" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+        <a href="@Url.Action("AddOrder", "Order")" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
             + Tạo đơn mới
         </a>
     </div>
@@ -123,11 +123,11 @@
                                             break;
                                         case 3:
                                             statusClass = "bg-green-200 text-green-1300 text-xl font-semibold";
-                                            statusText = "Hoàn thành";
+                                            statusText = "Đang giao hàng";
                                             break;
                                         case 4:
                                             statusClass = "bg-purple-200 text-red-1300 text-xl font-semibold";
-                                            statusText = "Đang giao hàng";
+                                            statusText = "Hoàn thành";
                                             break;
                                         case 5:
                                             statusClass = "bg-red-100 text-red-800 text-xl font-semibold";
