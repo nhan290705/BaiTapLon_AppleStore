@@ -1,0 +1,68 @@
+﻿@using ProjectBuySmartPhone.Models.Domain.Entities
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Product>
+
+@{
+    // Tính STT theo trang
+    var stt = (Model.PageNumber - 1) * Model.PageSize;
+    string selectedCategory = ViewBag.SelectedCategory as string ?? "";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Product Name</th>
+            <th>Color</th>
+            <th>Port</th>
+            <th>Ram</th>
+            <th>Qty</th>
+            <th>Discount</th>
+            <th>Price</th>
+            <th style="width: 120px;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                stt++;
+                <tr>
+                    <td>@stt</td>
+                    <td>@item.ProductName</td>
+                    <td>
+                        <span style="display:inline-block;
+                         width:20px;
+                         height:20px;
+                         border-radius:4px;
+                         border:1px solid #ccc;
+                         background-color:@item.Color;"> </span>
+                        @item.Color
+                    </td>
+                    <td>@item.Port</td>
+                    <td>@item.Ram</td>
+                    <td>@item.Qty</td>
+                    <td>@item.Discount</td>
+                    <td>@item.Price</td>
+                    <td>
+                        <a class="btn btn-xs btn-primary" href="~/Admin/Product/Update?productId=@item.ProductId">Sửa</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="9" class="text-center">Không có dữ liệu</td></tr>
+        }
+    </tbody>
+</table>
+
+<!-- Phân trang: luôn mang theo category -->
+<div id="pagination-container" class="text-right mt-3">
+    @Html.PagedListPager(
+    Model,
+    page => Url.Action("Mac", "Product", new { area = "Admin", page, category = selectedCategory })
+        )
+</div>

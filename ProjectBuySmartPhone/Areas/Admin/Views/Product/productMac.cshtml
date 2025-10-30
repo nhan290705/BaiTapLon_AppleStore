@@ -1,0 +1,208 @@
+﻿@using X.PagedList.Mvc.Core
+@using ProjectBuySmartPhone.Models.Domain.Entities
+@model X.PagedList.IPagedList<Product>
+
+@{
+    ViewData["Title"] = "ProductMac";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+
+    var categories = ViewBag.Categories as List<string> ?? new List<string>();
+    string selected = ViewBag.SelectedCategory as string;
+    selected = string.IsNullOrWhiteSpace(selected) ? "iphone" : selected;
+
+    string partial = ViewBag.PartialName as string ?? "_ProductMacList";
+}
+
+<div class="card">
+    <div class="header">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex align-items-center flex-wrap">
+                <h2 class="mb-0 me-3">List Product</h2>
+                <small class="text-muted">...</small>
+            </div>
+
+            <div class="d-flex align-items-center row">
+                <div class="col-md-3">
+                    <p>
+                        <b>Chọn danh mục:</b>
+                    </p>
+                    <select id="categorySelect" class="form-control show-tick">
+                        @foreach (var cat in categories)
+                        {
+                            var isSel = string.Equals(cat, selected, System.StringComparison.OrdinalIgnoreCase);
+                            <option value="@cat" @(isSel ? "selected" : "")>@cat</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-9">
+                    <button class="btn bg-cyan waves-effect m-b-15" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
+                            aria-controls="collapseExample">
+                        Tìm Kiếm Chi Tiết
+                    </button>
+                    <div class="collapse" id="collapseExample">
+                        <div class="well row">
+                            <div class="col-sm-12">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="keyWord" type="text" class="form-control">
+                                        <label class="form-label">Nhập Từ Khoá</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="minPrice" type="number" class="form-control">
+                                        <label class="form-label">Giá tối thiểu</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="maxPrice" type="number" class="form-control">
+                                        <label class="form-label">Giá tối đa</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="minQuantity" type="number" class="form-control">
+                                        <label class="form-label">Số lượng tối thiểu</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input id="maxQuantity" type="number" class="form-control">
+                                        <label class="form-label">Số lượng tối đa</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="btnSearch" type="button" class="btn btn-primary waves-effect">Tìm Kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="body table-responsive">
+        <div id="product-container">
+            @Html.Partial(partial, Model)  <!-- dùng biến partial (hiện đang trỏ _ProductMacList) -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showLoading(){ $('#product-container').css('opacity','0.5'); }
+        function hideLoading(){ $('#product-container').css('opacity','1'); }
+
+        // Lần đầu: nếu dropdown chưa là iPhone thì set và nạp iPhone
+        document.addEventListener('DOMContentLoaded', function () {
+            const sel = document.getElementById('categorySelect');
+            if (!sel) return;
+            const desired = 'iphone';
+            if (sel.value && sel.value.toLowerCase() === desired) return;
+
+            // tìm option 'iphone' theo value hoặc text (không phân biệt hoa thường)
+            for (let i = 0; i < sel.options.length; i++) {
+                const opt = sel.options[i];
+                if (opt.value.toLowerCase() === desired || opt.text.toLowerCase() === desired) {
+                    sel.selectedIndex = i;
+                    const url = '@Url.Action("Mac", "Product", new { area = "Admin" })' + '?category=iphone';
+                    showLoading();
+                    fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                      .then(r => r.text())
+                      .then(html => { document.getElementById('product-container').innerHTML = html; })
+                      .finally(hideLoading);
+                    break;
+                }
+            }
+        });
+
+        // Đổi danh mục → AJAX nạp lại danh sách
+        document.getElementById('categorySelect')?.addEventListener('change', function () {
+            const selected = this.value;
+            const url = '@Url.Action("Mac", "Product", new { area = "Admin" })' + '?category=' + encodeURIComponent(selected);
+            showLoading();
+            fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+              .then(r => r.text())
+              .then(html => { document.getElementById('product-container').innerHTML = html; })
+              .finally(hideLoading);
+        });
+
+           async function doSearch(page = 1) {
+          const category = document.getElementById('categorySelect')?.value || null;
+          const qs = new URLSearchParams();
+          if (category) qs.append('category', category);
+
+          const body = {
+            keyWord: document.getElementById('keyWord')?.value?.trim() || null,
+            minPrice: +document.getElementById('minPrice')?.value || null,
+            maxPrice: +document.getElementById('maxPrice')?.value || null,
+            minQuantity: +document.getElementById('minQuantity')?.value || null,
+            maxQuantity: +document.getElementById('maxQuantity')?.value || null,
+            pageIndex: page
+          };
+
+          const url = '@Url.Action("Search", "Product", new { area = "Admin" })' + (qs.toString() ? `?${qs}` : '');
+          const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value; // nếu bạn dùng ValidateAntiForgeryToken
+
+          showLoading?.();
+          try {
+            const res = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: JSON.stringify(body)
+            });
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const html = await res.text();
+            document.getElementById('product-container').innerHTML = html;
+
+            // Bắt sự kiện pager trong partial để tiếp tục POST thay vì điều hướng GET
+            wireAjaxPaging();
+          } finally {
+            hideLoading?.();
+          }
+        }
+
+        function wireAjaxPaging() {
+          document.querySelectorAll('#product-container a.page-link').forEach(a => {
+            a.addEventListener('click', function (ev) {
+              const href = this.getAttribute('href');
+              if (!href) return;
+              const url = new URL(href, window.location.origin);
+              const page = parseInt(url.searchParams.get('page') || '1', 10);
+              ev.preventDefault();
+              doSearch(page); // gọi lại POST với page tương ứng
+            });
+          });
+        }
+
+        document.getElementById('btnSearch')?.addEventListener('click', () => doSearch(1));
+
+        // Phân trang: giữ category hiện tại
+        $(document).on('click', '#pagination-container a', function (e) {
+            e.preventDefault();
+            const href = $(this).attr('href');
+            if (!href) return;
+
+            const selected = $('#categorySelect').val();
+            const url = href.indexOf('category=') >= 0
+                ? href
+                : href + (href.indexOf('?') >= 0 ? '&' : '?') + 'category=' + encodeURIComponent(selected);
+
+            showLoading();
+            $.get(url, function (html) {
+                $('#product-container').html(html);
+            }).always(hideLoading);
+        });
+    </script>
+}
