@@ -21,7 +21,6 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public int OrderId { get; set; }
         public virtual Order? Order { get; set; }
 
-        public int ProductDetailId { get; set; }
-        public virtual ProductDetail? ProductDetail { get; set; }
+        public virtual ICollection<ProductDetail>? ProductDetails { get; set; }
     }
 }

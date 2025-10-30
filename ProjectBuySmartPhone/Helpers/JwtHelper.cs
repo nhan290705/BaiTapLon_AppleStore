@@ -72,7 +72,7 @@ namespace ProjectBuySmartPhone.Helpers
                 Issuer = _jwtIssuer,
                 Subject = new ClaimsIdentity(claims),
                 IssuedAt = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_accessTokenExpiredMintute)),
+                Expires = DateTime.UtcNow.AddDays(int.Parse(_accessTokenExpiredMintute)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -20,7 +20,6 @@ builder.Services.AddScoped<IStatusResponsitory, StatusResponsitory>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 //add jwthelper to dependency injection
 builder.Services.AddScoped<JwtHelper>();
-
 //Add Authentication
 JwtConfig.BuildJwtConfig(builder);
 var app = builder.Build();
