@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Apple Store</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" type="image/png">
+    <link rel="stylesheet" href="~/css/userSetting/style.css" />
+    @RenderSection("Styles", required: false)
+    @RenderSection("Scripts", required: false)
+</head>
+
+<body>
+    <div class="user-setting-wrapper">
+        <!-- ===== Sidebar ===== -->
+        <aside class="user-sidebar">
+            <div class="sidebar-title">Tài khoản của bạn</div>
+
+            <form asp-area="Users" asp-controller="User" asp-action="Profile" method="get">
+                <button type="submit"
+                        class="sidebar-btn @(ViewData["ActiveTab"] == "Profile" ? "active" : "")">
+                    👤 Xem thông tin
+                </button>
+            </form>
+
+            <form asp-area="Users" asp-controller="User" asp-action="Edit" method="get">
+                <button type="submit"
+                        class="sidebar-btn @(ViewData["ActiveTab"] == "Edit" ? "active" : "")">
+                    ⚙️ Chỉnh sửa thông tin
+                </button>
+            </form>
+        </aside>
+
+        <!-- ===== Nội dung chính ===== -->
+        <main class="user-content">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        © 2025 Apple Store – Bản quyền thuộc Nguyễn Minh Chiến<br>
+        <a href="#">Chính Sách Quyền Riêng Tư</a> |
+        <a href="#">Điều Khoản Sử Dụng</a> |
+        <a href="#">Liên Hệ</a>
+    </footer>
+</body>
+</html>

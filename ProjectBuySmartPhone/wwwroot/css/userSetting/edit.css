@@ -1,0 +1,125 @@
+﻿/* ======== EDIT - CHỈNH SỬA THÔNG TIN ======== */
+.edit-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+/* Mỗi dòng chỉnh sửa */
+.edit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+    position: relative;
+}
+
+.row-label {
+    font-size: 15px;
+    color: #1d1d1f;
+}
+
+.edit-btn {
+    background: none;
+    border: none;
+    color: #0071e3;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+    .edit-btn:hover {
+        color: #005bb5;
+    }
+
+/* Form bật ra khi nhấn “Thay đổi” */
+.edit-form {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    z-index: 1;
+    animation: fadeIn 0.25s ease;
+}
+
+    .edit-form.show {
+        display: block;
+    }
+
+    .edit-form label {
+        font-weight: 500;
+        font-size: 14px;
+        margin-bottom: 6px;
+        display: block;
+    }
+
+    .edit-form input {
+        width: 100%;
+        padding: 10px 14px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        margin-bottom: 10px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+        .edit-form input:focus {
+            border-color: #0071e3;
+        }
+
+/* Nút Lưu / Hủy */
+.save-btn {
+    background-color: #0071e3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+    .save-btn:hover {
+        background-color: #005bb5;
+    }
+
+.cancel-btn {
+    background: none;
+    border: none;
+    color: #6e6e73;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+    .cancel-btn:hover {
+        color: #000;
+    }
+
+/* Hiệu ứng mượt khi hiển thị form */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

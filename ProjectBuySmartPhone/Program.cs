@@ -39,7 +39,21 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/") // chỉ check trang gốc
+    {
+        var accessToken = context.Request.Cookies["AccessToken"];
+        if (!string.IsNullOrEmpty(accessToken))
+        {
+            // Redirect sang HomePage
+            context.Response.Redirect("/HomePage/HomePage");
+            return;
+        }
+    }
 
+    await next();
+});
 
 app.UseRouting();
 //dki middleware token

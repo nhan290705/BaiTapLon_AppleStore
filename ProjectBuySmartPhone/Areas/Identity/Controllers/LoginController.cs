@@ -84,9 +84,9 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             }
             if (roleName.ToUpper() == "USER")
             {
-                return RedirectToAction("Index", "Home", new { area = "" });
+                return RedirectToAction("Index", "HomePage", new { area = "HomePage" });
             }
-            return RedirectToAction("Index", "Home", new { area = "" });
+            return RedirectToAction("Index", "HomePage", new { area = "HomePage" });
         }
     }
 }

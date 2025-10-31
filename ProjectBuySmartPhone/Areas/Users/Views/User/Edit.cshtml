@@ -1,0 +1,165 @@
+﻿@model ProjectBuySmartPhone.Dtos.UserUpdate
+@{
+    Layout = "~/Areas/Users/Shared/_LayoutUserSetting.cshtml";
+    ViewData["Title"] = "Chỉnh sửa thông tin tài khoản";
+    ViewData["ActiveTab"] = "Edit";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/userSetting/edit.css" />
+}
+
+<div class="edit-wrapper">
+    <h2 class="page-title">Thay đổi thông tin tài khoản</h2>
+
+    <!-- ====================== TÊN ĐỆM ====================== -->
+    <div class="edit-row">
+        <div class="row-label">Tên đệm</div>
+        <div class="row-action">
+            <button class="edit-btn" onclick="toggleEdit('firstName')">Thay đổi</button>
+        </div>
+        <div class="edit-form" id="firstName">
+            <form asp-action="UpdateUser" method="post" onsubmit="return onSubmitForm(this);">
+                <label>Tên đệm mới:</label>
+                <input asp-for="FirstName" placeholder="Nhập tên đệm mới" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="toggleEdit('firstName')">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================== TÊN CUỐI ====================== -->
+    <div class="edit-row">
+        <div class="row-label">Tên cuối</div>
+        <div class="row-action">
+            <button class="edit-btn" onclick="toggleEdit('lastName')">Thay đổi</button>
+        </div>
+        <div class="edit-form" id="lastName">
+            <form asp-action="UpdateUser" method="post" onsubmit="return onSubmitForm(this);">
+                <label>Tên cuối mới:</label>
+                <input asp-for="LastName" placeholder="Nhập tên cuối mới" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="toggleEdit('lastName')">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================== EMAIL ====================== -->
+    <div class="edit-row">
+        <div class="row-label">Email</div>
+        <div class="row-action">
+            <button class="edit-btn" onclick="toggleEdit('email')">Thay đổi</button>
+        </div>
+        <div class="edit-form" id="email">
+            <form asp-action="UpdateUser" method="post" onsubmit="return onSubmitForm(this);">
+                <label>Email hiện tại:</label>
+                <input type="text" value="@Model.Email" readonly />
+
+                <label>Email mới:</label>
+                <input asp-for="Email" placeholder="Nhập email mới" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="toggleEdit('email')">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================== SỐ ĐIỆN THOẠI ====================== -->
+    <div class="edit-row">
+        <div class="row-label">Số điện thoại</div>
+        <div class="row-action">
+            <button class="edit-btn" onclick="toggleEdit('phone')">Thay đổi</button>
+        </div>
+        <div class="edit-form" id="phone">
+            <form asp-action="UpdateUser" method="post" onsubmit="return onSubmitForm(this);">
+                <label>Số hiện tại:</label>
+                <input type="text" value="@Model.PhoneNumber" readonly />
+
+                <label>Số mới:</label>
+                <input asp-for="PhoneNumber" placeholder="Nhập số điện thoại mới" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="toggleEdit('phone')">Hủy</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================== MẬT KHẨU ====================== -->
+    <div class="edit-row">
+        <div class="row-label">Mật khẩu</div>
+        <div class="row-action">
+            <button class="edit-btn" onclick="toggleEdit('password')">Thay đổi</button>
+        </div>
+        <div class="edit-form" id="password">
+            <form asp-action="UpdateUser" method="post" onsubmit="return onSubmitForm(this);">
+                <label>Mật khẩu hiện tại:</label>
+                <input asp-for="currentPassword" type="password" placeholder="Nhập mật khẩu hiện tại" />
+                <span asp-validation-for="currentPassword" class="text-danger"></span>
+
+                <label>Mật khẩu mới:</label>
+                <input asp-for="newPassword" type="password" placeholder="Nhập mật khẩu mới" />
+                <span asp-validation-for="newPassword" class="text-danger"></span>
+
+                <label>Xác nhận mật khẩu mới:</label>
+                <input asp-for="confirmNewPassword" type="password" placeholder="Nhập lại mật khẩu mới" />
+                <span asp-validation-for="confirmNewPassword" class="text-danger"></span>
+
+                <button type="submit" class="save-btn">Lưu</button>
+                <button type="button" class="cancel-btn" onclick="toggleEdit('password')">Hủy</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        function toggleEdit(id) {
+            const target = document.getElementById(id);
+            const $form = $(target).find('form');
+
+            document.querySelectorAll('.edit-form').forEach(f => {
+                if (f.id !== id) f.classList.remove('show');
+            });
+
+            target.classList.toggle('show');
+            if (target.classList.contains('show')) {
+                $form.removeData("validator").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse($form);
+            }
+        }
+
+        function onSubmitForm(form) {
+            const $form = $(form);
+            $.validator.unobtrusive.parse($form);
+
+            if (!$form.valid()) {
+                $(form).closest('.edit-form').addClass('show');
+                return false;
+            }
+            return true;
+        }
+
+        $(document).ready(function () {
+            const hasError = $(".text-danger").filter(function () {
+                return $(this).text().trim() !== "";
+            }).length > 0;
+
+            if (hasError) {
+                const firstError = $(".text-danger").filter(function () {
+                    return $(this).text().trim() !== "";
+                }).first().closest(".edit-form");
+                firstError.addClass("show");
+            }
+        });
+    </script>
+}

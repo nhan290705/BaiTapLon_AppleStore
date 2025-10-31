@@ -1,15 +1,26 @@
-﻿namespace ProjectBuySmartPhone.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ProjectBuySmartPhone.Dtos
 {
     public class UserUpdate
     {
-        public string FirstName { get; set; } = null!;
-        public string LastName { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
-        public string Email { get; set; } = null!;
+
+        public string? FirstName { get; set; } 
+
+        public string? LastName { get; set; }
+
+        [RegularExpression(@"^(03|09)\d{8}$", ErrorMessage = "Invalid phone format")]
+        public string? PhoneNumber { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z0-9._%+-]+@gmail\.com$", ErrorMessage = "Invalid email format")]
+        public string? Email { get; set; }
 
         // password
         public string? currentPassword { get; set; }
+        [MinLength(4, ErrorMessage = "Password must be at least 4 characters long")]
         public string? newPassword { get; set; }
+
+        [Compare("newPassword", ErrorMessage = "Passwords do not match")]
         public string? confirmNewPassword { get; set; }
     }
 }

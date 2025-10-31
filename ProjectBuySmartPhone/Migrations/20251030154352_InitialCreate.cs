@@ -52,7 +52,7 @@ namespace ProjectBuySmartPhone.Migrations
                     LastName = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Role = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsActive = table.Column<int>(type: "int", nullable: false),
@@ -77,8 +77,8 @@ namespace ProjectBuySmartPhone.Migrations
                     Qty = table.Column<int>(type: "int", nullable: false),
                     Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Storage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Ram = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Storage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ram = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Port = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ProductCategoryId = table.Column<int>(type: "int", nullable: false),
@@ -135,7 +135,7 @@ namespace ProjectBuySmartPhone.Migrations
                     District = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Note = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -262,7 +262,8 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "OrderDetail",
                 columns: table => new
                 {
-                    OrderDetailId = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    OrderDetailId = table.Column<int>(type: "int", maxLength: 200, nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Qty = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LineTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
