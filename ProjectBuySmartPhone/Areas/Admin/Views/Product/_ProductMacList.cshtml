@@ -20,6 +20,7 @@
             <th>Qty</th>
             <th>Discount</th>
             <th>Price</th>
+            <th>Status</th>
             <th style="width: 120px;">Action</th>
         </tr>
     </thead>
@@ -46,6 +47,7 @@
                     <td>@item.Qty</td>
                     <td>@item.Discount</td>
                     <td>@item.Price</td>
+                    <td>@item.Status</td>
                     <td>
                         <a class="btn btn-xs btn-primary" href="~/Admin/Product/Update?productId=@item.ProductId">Sửa</a>
                     </td>
@@ -54,7 +56,7 @@
         }
         else
         {
-            <tr><td colspan="9" class="text-center">Không có dữ liệu</td></tr>
+            <tr><td colspan="10" class="text-center">Không có dữ liệu</td></tr>
         }
     </tbody>
 </table>

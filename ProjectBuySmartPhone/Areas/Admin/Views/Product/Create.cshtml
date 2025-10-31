@@ -1,8 +1,12 @@
-﻿@model ProjectBuySmartPhone.Areas.Admin.Models.ViewModels.ProductCreateVM
+﻿@using ProjectBuySmartPhone.Models.Domain.Entities
+@using ProjectBuySmartPhone.Models.Domain.Enums
+@model ProjectBuySmartPhone.Areas.Admin.Models.ViewModels.ProductCreateVM
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create Product";
     Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+
+    var categories = ViewBag.Categories as List<ProductCategory> ?? new List<ProductCategory>();
 }
 
 <div class="card">
@@ -16,10 +20,12 @@
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Product Name</label>
                     <input asp-for="ProductName" class="form-control" />
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">SKU</label>
                     <input asp-for="Sku" class="form-control" />
+                    <span asp-validation-for="Sku" class="text-danger"></span>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Slug</label>
@@ -34,71 +40,102 @@
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Price</label>
                     <input asp-for="Price" type="number" step="0.01" class="form-control" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Qty</label>
                     <input asp-for="Qty" type="number" class="form-control" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Discount (%)</label>
                     <input asp-for="Discount" type="number" step="0.01" class="form-control" />
+                    <span asp-validation-for="Discount" class="text-danger"></span>
                 </div>
-                <div class="col-md-3 mb-3">
+                @* <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Status</label>
                     <input asp-for="Status" type="number" class="form-control" />
+                </div> *@
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <select asp-for="Status" asp-items="Html.GetEnumSelectList<ActiveStatus>()" class="form-control">
+                       
+                    </select>
                 </div>
 
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Color</label>
                     <input asp-for="Color" type="color" class="form-control" />
+                    <span asp-validation-for="Color" class="text-danger"></span>
                 </div>
-                <div class="col-md-3 mb-3">
+                @*<div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">Storage</label>
                     <input asp-for="Storage" class="form-control" />
+                    <span asp-validation-for="Storage" class="text-danger"></span>
+                </div> *@
+                <div class="col-md-3 mb-3">
+                    <label class="form-label fw-bold">STORGE</label>
+                    <select asp-for="Storage" class="form-control">
+                        <option value="">-- Chọn STORGE --</option>
+                        <option value="64 GB">64 GB</option>
+                        <option value="128 GB">128 GB</option>
+                        <option value="256 GB">256 GB</option>
+                        <option value="512 GB">512 GB</option>
+                        <option value="1 TB">1 TB</option>
+                    </select>
+                    <span asp-validation-for="Storage" class="text-danger"></span>
                 </div>
                 <div class="col-md-3 mb-3">
                     <label class="form-label fw-bold">RAM</label>
-                    <input asp-for="Ram" type="number" step="0.1" class="form-control" />
+                    <select asp-for="Ram" class="form-control">
+                        <option value="">-- Chọn RAM --</option>
+                        <option value="4 GB">4 GB</option>
+                        <option value="6 GB">6 GB</option>
+                        <option value="8 GB">8 GB</option>
+                        <option value="12 GB">12 GB</option>
+                        <option value="16 GB">16 GB</option>
+                        <option value="32 GB">32 GB</option>
+                    </select>
+                    <span asp-validation-for="Ram" class="text-danger"></span>
                 </div>
+
                 <div class="col-md-3 mb-3">
-                    <label class="form-label fw-bold">Port</label>
-                    <input asp-for="Port" class="form-control" />
+                    <label class="form-label fw-bold">Cổng kết nối</label>
+                    <select asp-for="Port" class="form-control">
+                        <option value="">-- Chọn cổng kết nối --</option>
+                        <option value="USB Type-C">USB Type-C</option>
+                        <option value="USB 3.0">USB 3.0</option>
+                        <option value="Lightning">Lightning</option>
+                        <option value="Jack 3.5mm">Jack 3.5mm</option>
+                        <option value="HDMI">HDMI</option>
+                        <option value="Micro USB">Micro USB</option>
+                    </select>
+                    <span asp-validation-for="Port" class="text-danger"></span>
                 </div>
 
                 <!-- Category: chọn 1 trong 5 (1..5) -->
-                <div class="col-md-12 mb-3">
+                <div class="col-md-4 mb-3">
                     <label class="form-label fw-bold d-block">Category (1 trong 5)</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="1" id="cat1">
-                        <label class="form-check-label" for="cat1">Mac</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="2" id="cat2">
-                        <label class="form-check-label" for="cat2">iPhone</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="3" id="cat3">
-                        <label class="form-check-label" for="cat3">iPad</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="4" id="cat4">
-                        <label class="form-check-label" for="cat4">Apple Watch</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" asp-for="ProductCategoryId" value="5" id="cat5">
-                        <label class="form-check-label" for="cat5">Accessory</label>
-                    </div>
+                    <select asp-for="ProductCategoryId" class="form-control show-tick">
+                        @foreach (var cat in categories)
+                        {
+                            <option value="@cat.ProductCategoryId">@cat.CategoryName</option>
+                        }
+                    </select>
                 </div>
+                <div class="col-md-8"></div>
+
 
                 <!-- 1 ảnh duy nhất -->
-                <div class="mb-3">
+                <div class="col-md-12 mb-3">
                     <label class="form-label fw-bold">Product Images (có thể chọn nhiều)</label>
                     <input asp-for="ImageFiles" type="file" class="form-control" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.jfif" />
                     <small class="text-muted">Giữ Ctrl/Shift để chọn nhiều ảnh.</small>
+                    <span asp-validation-for="ImageFiles" class="text-danger"></span>
                 </div>
 
                 <!-- Chọn ảnh chính (không bắt buộc). Nếu không chọn, server sẽ lấy file đầu tiên -->
-                <div class="mb-3">
+                <div class="col-md-2 mb-3">
                     <label class="form-label fw-bold">Ảnh chính (index bắt đầu từ 0)</label>
                     <input asp-for="MainImageIndex" type="number" class="form-control" value="-1" />
                     <small class="text-muted">Để -1 nếu muốn ảnh đầu tiên là ảnh chính.</small>
@@ -109,7 +146,7 @@
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Save
                 </button>
-                <a asp-action="Index" class="btn btn-secondary">Back to list</a>
+                <a asp-action="Mac" class="btn btn-secondary">Back to list</a>
             </div>
         </form>
     </div>

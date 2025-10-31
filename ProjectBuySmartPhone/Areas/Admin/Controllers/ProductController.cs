@@ -122,7 +122,9 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            // Không cần chuẩn bị dữ liệu gì thêm (radio category sẽ hard-code ở View)
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
             return View(new ProductCreateVM());
         }
 
@@ -131,6 +133,14 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductCreateVM vm)
         {
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
+            if (!ModelState.IsValid)
+            {
+                return View(vm);
+            }
+
             // 1) Lưu Product
             var product = new Product
             {
@@ -203,6 +213,9 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Update(int productId)
         {
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
             var product = await _db.Products
                 .AsNoTracking()
                 .Include(p => p.ProductDetails)
@@ -222,7 +235,7 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
                 Storage = product.Storage,
                 Ram = product.Ram,
                 Port = product.Port,
-                Status = byte.Parse(product.Status.ToString()),
+                Status = (byte)product.Status,
                 ProductCategoryId = product.ProductCategoryId,
                 Sku = product.ProductDetails?.FirstOrDefault()?.Sku ?? "",
                 ExistingImages = product.ProductImages
@@ -243,6 +256,15 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(ProductUpdateVM vm)
         {
+            var categories = _db.ProductCategories
+                .ToList();
+            ViewBag.Categories = categories;
+            if (!ModelState.IsValid)
+            {
+
+                // Trả lại view cùng lỗi validation
+                return View(vm);
+            }
             // 1) Lưu Product
             var product = new Product
             {
