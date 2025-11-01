@@ -1,4 +1,4 @@
-﻿@font-face {
+﻿﻿@font-face {
     font-family: Apple;
     src: url("/fonts/sf-pro-display_regular.ttf");
 }
@@ -210,14 +210,14 @@ nav {
 
 .section5-1, .section5-2 {
     width: 50%;
-    height: 90vh; 
+    height: 90vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     margin: 3px;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .section5-1 {
@@ -241,24 +241,24 @@ nav {
 
 .section6-1, .section6-2 {
     width: 50%;
-    height: 90vh; 
+    height: 60vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     margin: 3px;
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 }
 
 .section6-1 {
-    background-image: url("/images/card4.jpg"); 
-    background-color: #000; 
+    background-image: url("/images/card4.jpg");
+    background-color: #000;
 }
 
 .section6-2 {
-    background-image: url("/images/card5.jpg"); 
-    background-color: #fff; 
+    background-image: url("/images/card5.jpg");
+    background-color: #fff;
 }
 
 .text5 {
@@ -348,38 +348,6 @@ footer {
     color: #9d9da4;
 }
 
-.footer1 {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 30px;
-    margin: 0px 250px 0px 220px;
-}
-
-    .footer1 a {
-        color: #6b6b71;
-    }
-
-    .footer1 .text1 {
-        padding-bottom: 10px;
-        color: #9d9da4;
-    }
-
-    .footer1 .text2 {
-        padding-bottom: 10px;
-        color: #9d9da4;
-    }
-
-    .footer1 .text3 {
-        padding-bottom: 10px;
-        color: #9d9da4;
-    }
-
-    .footer1 .text4 {
-        padding-bottom: 10px;
-        color: #9d9da4;
-    }
-
 .footer3 {
     border-top: 1px solid rgba(0, 0, 0, 0.222);
     padding-left: 30px;
@@ -422,6 +390,7 @@ footer {
     padding-left: 100px;
     cursor: pointer;
 }
+
 .footer2 {
     line-height: 189%;
     display: flex;
@@ -430,6 +399,7 @@ footer {
     margin: 30px 250px 0px 250px;
     cursor: default;
 }
+
     .footer2 a:hover {
         text-decoration: underline;
     }
@@ -608,10 +578,11 @@ footer {
         }
 
     .hero-section2 {
-        background-image: url("/images/iphone15white.jpg");
+        background-image: url("/images/iphone_air-small.jpg");
         background-repeat: no-repeat;
         background-size: cover;
     }
+
     .text1 h2 {
         font-size: 9vh;
     }
@@ -627,6 +598,7 @@ footer {
     .hero {
         background-image: url("/images/iphon15resp.jpg");
     }
+
     .hero-p h2 {
         font-size: 5vh;
     }
@@ -654,6 +626,7 @@ footer {
         /* height: 100%; */
         height: 150vh;
     }
+
     .section5-1 {
         background-image: url("/images/card2.jpg");
     }
@@ -677,6 +650,7 @@ footer {
     .s5 {
         background-image: url("/images/resp5.jpg");
     }
+
     footer {
         width: 414px;
         height: 1450px;
@@ -772,6 +746,7 @@ footer {
     }
 }
 
+
 /* --- NAV USER (menu tài khoản) --- */
 .nav-user {
     height: 50vh;
@@ -783,10 +758,10 @@ footer {
     pointer-events: none;
 }
 
-.nav-user.active {
-    top: 5%;
-    pointer-events: all;
-}
+    .nav-user.active {
+        top: 5%;
+        pointer-events: all;
+    }
 
 .nav-top-user {
     height: 50vh;
@@ -812,27 +787,27 @@ footer {
     gap: 12px;
 }
 
-.nav-top-user .store1 h4 {
-    color: rgba(255, 255, 255, 0.5);
-    font-weight: 500;
-    margin-bottom: 10px;
-}
+    .nav-top-user .store1 h4 {
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
 
-.nav-top-user .store1 a {
-    text-decoration: none;
-    color: white;
-    font-size: 1.1rem;
-    font-weight: 500;
-    transition: color 0.3s;
-}
+    .nav-top-user .store1 a {
+        text-decoration: none;
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 500;
+        transition: color 0.3s;
+    }
 
-.nav-top-user .store1 a:hover {
-    color: #2997ff;
-}
+        .nav-top-user .store1 a:hover {
+            color: #2997ff;
+        }
 
 /* ------------------ NAV USER (clone từ nav3) ------------------ */
 .nav-user {
-    margin-top:-10px;
+    margin-top: -10px;
     height: 50vh;
     position: absolute;
     top: -100%;
@@ -893,8 +868,162 @@ footer {
         display: flex;
         flex-direction: column;
     }
+
 .swiper, .mySwiper, .swiper-wrapper {
     position: relative !important;
     z-index: 10 !important;
     overflow: visible !important;
+}
+
+
+/* ==== FOOTER2 CHUẨN APPLE - CĂN 5 CỘT NGANG HÀNG ==== */
+.footer2 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 cột đều nhau */
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 40px 30px; /* tăng padding-top cho thoáng */
+    align-items: start; /* căn tất cả lên cùng hàng trên */
+    justify-items: start;
+    background-color: #f5f5f7;
+    box-sizing: border-box;
+}
+
+/* Mỗi cột */
+.footer2 > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 100%; /* đảm bảo các cột cao bằng nhau */
+}
+
+/* Tiêu đề */
+.footer2 h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    white-space: nowrap;
+}
+
+/* Liên kết */
+.footer2 a {
+    display: block;
+    color: #6e6e73;
+    text-decoration: none;
+    font-size: 13px;
+    margin: 4px 0;
+    transition: color 0.2s ease;
+}
+
+.footer2 a:hover {
+    color: #0071e3;
+    text-decoration: underline;
+}
+
+/* Giữ khoảng cách giữa các cột cân đối */
+.footer2 > div > *:first-child {
+    margin-top: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .footer2 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 40px;
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer2 {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 20px 25px;
+    }
+    .footer2 h4 {
+        font-size: 14px;
+    }
+}
+
+
+/* === Dòng bản quyền === */
+.footer3 {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    max-width: 1100px;
+    margin: 30px auto 0 auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.footer3 .panel1 {
+    font-size: 12px;
+    color: #6e6e73;
+    text-align: left;
+}
+
+.footer3 .panel2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    list-style: none;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+}
+
+.footer3 .panel2 li {
+    color: #6e6e73;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.footer3 .panel2 li:hover {
+    color: #0071e3;
+    text-decoration: underline;
+}
+
+/* Made by */
+.footer3 .madeby {
+    font-size: 12px;
+    color: #0071e3;
+    text-decoration: none;
+}
+
+.footer3 .madeby:hover {
+    text-decoration: underline;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 900px) {
+    .footer2 {
+        justify-content: flex-start;
+        gap: 30px;
+    }
+    .footer3 {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    .footer2 {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 30px;
+    }
+    .footer3 {
+        font-size: 11px;
+        padding: 20px;
+        text-align: center;
+    }
 }

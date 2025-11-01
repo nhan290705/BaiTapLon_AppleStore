@@ -22,7 +22,6 @@
     <Folder Include="Areas\Storefront\Controllers\" />
     <Folder Include="Areas\Storefront\Views\" />
     <Folder Include="wwwroot\css\HomePage\" />
-    <Folder Include="wwwroot\js\StorePage\" />
   </ItemGroup>
 
   <ItemGroup>
