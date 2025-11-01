@@ -6,8 +6,8 @@ namespace ProjectBuySmartPhone.Responsitory
     {
         Order add(Order order);
         Order update(Order order);
-        Order delete(string id);
-        Order getOrder(string id);
+        Order delete(int id);
+        Order getOrder(int id);
         IQueryable<Order> GetAll(); // Dùng IQueryable để có thể filter sau
     }
 }

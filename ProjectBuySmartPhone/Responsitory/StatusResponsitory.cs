@@ -18,7 +18,7 @@ namespace ProjectBuySmartPhone.Responsitory
             return statusOrder;
         }
 
-        public StatusOrder delete(string id)
+        public StatusOrder delete(int id)
         {
             throw new NotImplementedException();
         }

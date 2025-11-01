@@ -23,10 +23,10 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
         public DbSet<ProductComment> ProductComments { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<StatusOrder> StatusOrders { get; set; }  
+        public DbSet<StatusOrder> StatusOrders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        { 
+        {
             modelBuilder.Entity<User>().ToTable(nameof(User));
             modelBuilder.Entity<Blog>().ToTable(nameof(Blog));
             modelBuilder.Entity<BlogComment>().ToTable(nameof(BlogComment));
@@ -37,7 +37,7 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
             modelBuilder.Entity<ProductComment>().ToTable(nameof(ProductComment));
             modelBuilder.Entity<Order>().ToTable(nameof(Order));
             modelBuilder.Entity<OrderDetail>().ToTable(nameof(OrderDetail));
-            modelBuilder.Entity<StatusOrder>().ToTable(nameof(StatusOrder));  
+            modelBuilder.Entity<StatusOrder>().ToTable(nameof(StatusOrder));
 
             modelBuilder.Entity<Blog>()
                 .HasOne(b => b.User)
@@ -61,7 +61,7 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.StatusOrder)
                 .WithMany(s => s.Orders)
@@ -109,15 +109,13 @@ namespace ProjectBuySmartPhone.Models.Infrastructure
                 .HasForeignKey(od => od.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<OrderDetail>()
-                .HasOne(od => od.ProductDetail)
-                .WithMany(pd => pd.OrderDetails)
-                .HasForeignKey(od => od.ProductDetailId)
+            modelBuilder.Entity<ProductDetail>()
+                .HasOne(pd => pd.OrderDetail)
+                .WithMany(od => od.ProductDetails)
+                .HasForeignKey(pd => pd.OrderDetailId)
+                .OnDelete(DeleteBehavior.Restrict);
 
 
-                .OnDelete(DeleteBehavior.Restrict); // hoặc NoAction
-
-       
         }
     }
 }
