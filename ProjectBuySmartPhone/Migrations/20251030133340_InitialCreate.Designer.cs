@@ -12,11 +12,7 @@ using ProjectBuySmartPhone.Models.Infrastructure;
 namespace ProjectBuySmartPhone.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-<<<<<<<< HEAD:ProjectBuySmartPhone/Migrations/20251030154352_InitialCreate.Designer.cs
-    [Migration("20251030154352_InitialCreate")]
-========
-    [Migration("20251030071219_InitialCreate")]
->>>>>>>> cb045565052342090a41b3e004141a6665b7fe83:ProjectBuySmartPhone/Migrations/20251030071219_InitialCreate.Designer.cs
+    [Migration("20251030133340_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -129,14 +125,17 @@ namespace ProjectBuySmartPhone.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("RecipientName")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("RecipientPhone")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("ShippingAddress")
+                        .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
@@ -182,9 +181,6 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductDetailId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Qty")
                         .HasColumnType("int");
 
@@ -197,8 +193,6 @@ namespace ProjectBuySmartPhone.Migrations
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductDetailId");
 
                     b.ToTable("OrderDetail", (string)null);
                 });
@@ -347,6 +341,9 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("OrderDetailId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -358,6 +355,8 @@ namespace ProjectBuySmartPhone.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ProductDetailId");
+
+                    b.HasIndex("OrderDetailId");
 
                     b.HasIndex("ProductId");
 
@@ -529,15 +528,7 @@ namespace ProjectBuySmartPhone.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.ProductDetail", "ProductDetail")
-                        .WithMany("OrderDetails")
-                        .HasForeignKey("ProductDetailId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Order");
-
-                    b.Navigation("ProductDetail");
                 });
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.Product", b =>
@@ -572,11 +563,18 @@ namespace ProjectBuySmartPhone.Migrations
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.ProductDetail", b =>
                 {
+                    b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.OrderDetail", "OrderDetail")
+                        .WithMany("ProductDetails")
+                        .HasForeignKey("OrderDetailId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("ProjectBuySmartPhone.Models.Domain.Entities.Product", "Product")
                         .WithMany("ProductDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("OrderDetail");
 
                     b.Navigation("Product");
                 });
@@ -602,6 +600,11 @@ namespace ProjectBuySmartPhone.Migrations
                     b.Navigation("OrderDetails");
                 });
 
+            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.OrderDetail", b =>
+                {
+                    b.Navigation("ProductDetails");
+                });
+
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.Product", b =>
                 {
                     b.Navigation("ProductComments");
@@ -614,11 +617,6 @@ namespace ProjectBuySmartPhone.Migrations
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.ProductCategory", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.ProductDetail", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder", b =>

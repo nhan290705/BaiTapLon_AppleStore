@@ -6,7 +6,7 @@ namespace ProjectBuySmartPhone.Responsitory
     {
         StatusOrder add(StatusOrder statusOrder);
         StatusOrder update(StatusOrder statusOrder);
-        StatusOrder delete(string  id);
+        StatusOrder delete(int  id);
         StatusOrder getStatusOrder(int id);
         IEnumerable<StatusOrder> GetAll();
     }

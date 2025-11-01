@@ -13,6 +13,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public string FirstName { get; set; }
         [Required, MaxLength(120)]
         public string LastName { get; set; }
+        public string? Address;
 
         [Required, MaxLength(160)] 
         public string Email { get; set; }
