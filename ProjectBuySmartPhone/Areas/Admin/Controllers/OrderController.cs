@@ -5,7 +5,6 @@ using ProjectBuySmartPhone.Models.Domain.Entities;
 using ProjectBuySmartPhone.Models.Infrastructure;
 using ProjectBuySmartPhone.Responsitory;
 using X.PagedList;
-using X.PagedList.Extensions;
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]

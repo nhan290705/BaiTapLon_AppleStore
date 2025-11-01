@@ -24,8 +24,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
-    <PackageReference Include="X.PagedList" Version="10.5.9" />
-    <PackageReference Include="X.PagedList.Mvc.Core" Version="10.5.9" />
+    <PackageReference Include="X.PagedList" Version="8.4.7" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Storefront\Controllers\" />
+    <Folder Include="Areas\Storefront\Views\" />
+    <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
   <ItemGroup>
