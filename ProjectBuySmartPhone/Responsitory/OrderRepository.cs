@@ -21,7 +21,7 @@ namespace ProjectBuySmartPhone.Responsitory
             return order;
         }
 
-        public Order delete(string id)
+        public Order delete(int id)
         {
             var order = _db.Orders.Find(id);
             if (order != null)
@@ -37,7 +37,7 @@ namespace ProjectBuySmartPhone.Responsitory
             return _db.Orders.AsNoTracking();
         }
 
-        public Order getOrder(string id)
+        public Order getOrder(int id)
         {
             return _db.Orders.Find(id);
         }

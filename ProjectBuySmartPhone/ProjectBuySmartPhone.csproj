@@ -34,9 +34,4 @@
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Storefront\Controllers\" />
-    <Folder Include="Areas\Storefront\Views\" />
-  </ItemGroup>
-
 </Project>

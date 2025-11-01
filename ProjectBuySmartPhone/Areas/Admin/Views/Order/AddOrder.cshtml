@@ -1,0 +1,369 @@
+﻿@{
+    ViewData["Title"] = "Them don hang moi";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+@model ProjectBuySmartPhone.Models.Domain.Entities.Order
+
+<div class="container-fluid">
+    <h2 class="mb-4">Thêm đơn hàng mới</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <ul class="mb-0">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <form asp-action="AddOrder" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="card border mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Thông tin người nhận</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label asp-for="UserId">Mã khách hàng (UserId)</label>
+                    <input asp-for="UserId" type="text" class="form-control border"
+                           value="" placeholder="Nhập UserId hoặc để trống" />
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                    <small class="form-text text-muted">Có thể để trống nếu khách vãng lai</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RecipientName">Tên người nhận <span class="text-danger">*</span></label>
+                    <input asp-for="RecipientName" class="form-control border" required />
+                    <span asp-validation-for="RecipientName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RecipientPhone">Số điện thoại <span class="text-danger">*</span></label>
+                    <input asp-for="RecipientPhone" class="form-control border" required />
+                    <span asp-validation-for="RecipientPhone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ShippingAddress">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                    <textarea asp-for="ShippingAddress" class="form-control border" rows="2" required></textarea>
+                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="City">Thành phố</label>
+                            <input asp-for="City" class="form-control border" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="District">Quận/Huyện</label>
+                            <input asp-for="District" class="form-control border" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PostalCode">Mã bưu điện</label>
+                            <input asp-for="PostalCode" class="form-control border" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="PaymentMethod">Phương thức thanh toán</label>
+                            <select asp-for="PaymentMethod" class="form-control border">
+                                <option value="">-- Chọn phương thức --</option>
+                                <!-- ✅ Sửa value cho đúng enum -->
+                                <option value="0">COD (Thanh toán khi nhận hàng)</option>
+                                <option value="1">Chuyển khoản ngân hàng</option>
+                                <option value="2">Thẻ tín dụng</option>
+                                <option value="3">Ví Momo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ShippingMethod">Phương thức vận chuyển</label>
+                            <select asp-for="ShippingMethod" class="form-control border">
+                                <option value="">-- Chọn phương thức --</option>
+                                <!-- ✅ Sửa value cho đúng enum -->
+                                <option value="0">Tiêu chuẩn (3-5 ngày)</option>
+                                <option value="1">Nhanh (1-2 ngày)</option>
+                                <option value="2">Hỏa tốc (trong ngày)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Note">Ghi chú</label>
+                    <textarea asp-for="Note" class="form-control border" rows="2" placeholder="Ghi chú thêm về đơn hàng..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="card border mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-shopping-cart"></i> Chọn sản phẩm <span class="text-danger">*</span></h5>
+            </div>
+            <div class="card-body">
+                @{
+                    var productDetailsList = ViewBag.ProductDetails as IEnumerable<dynamic>;
+                }
+
+                @if (productDetailsList != null && productDetailsList.Any())
+                {
+                    var categories = productDetailsList
+                    .GroupBy(p => (string)(p.CategoryName ?? "Khác"))
+                    .OrderBy(g => g.Key)
+                    .ToList();
+
+                    <!-- Filter by Category -->
+                    <div class="mb-4">
+                        <label class="font-weight-bold">Lọc theo danh mục:</label>
+                        <div class="btn-group flex-wrap" role="group" id="categoryFilter">
+                            <button type="button" class="btn btn-outline-primary active" data-category="all">
+                                Tất cả (@productDetailsList.Count())
+                            </button>
+                            @foreach (var category in categories)
+                            {
+                                <button type="button" class="btn btn-outline-primary" data-category="@category.Key">
+                                    @category.Key (@category.Count())
+                                </button>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Products Grid grouped by Category -->
+                    <div id="productDetailsContainer">
+                        @foreach (var category in categories)
+                        {
+                            <div class="category-section mb-4" data-category="@category.Key">
+                                <h5 class="text-primary border-bottom pb-2 mb-3">
+                                    <i class="fas fa-tag"></i> @category.Key
+                                </h5>
+                                <div class="row">
+                                    @foreach (var pd in category)
+                                    {
+                                        <div class="col-md-6 col-lg-4 col-xl-3 mb-3 product-item" data-category="@category.Key">
+                                            <div class="card h-100 border product-detail-card">
+                                                <div class="card-body">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox"
+                                                               class="custom-control-input product-checkbox"
+                                                               name="ProductDetailIds"
+                                                               value="@pd.Value"
+                                                               id="pd_@pd.Value"
+                                                               data-price="@pd.Price">
+                                                        <label class="custom-control-label w-100" for="pd_@pd.Value">
+                                                            <div class="product-name mb-2">@pd.Text</div>
+                                                            <div class="product-price">
+                                                                <span class="badge badge-success px-3 py-2">
+                                                                    @string.Format("{0:N0}", pd.Price) VNĐ
+                                                                </span>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="alert alert-info border">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Lưu ý:</strong> Mỗi sản phẩm chi tiết chỉ có thể thuộc về một đơn hàng duy nhất
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-warning border">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Không có sản phẩm nào khả dụng. Tất cả sản phẩm đã được gán vào đơn hàng hoặc hết hàng.
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card border mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-calculator"></i> Tổng quan đơn hàng</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Số lượng sản phẩm đã chọn:</h6>
+                        <h4><span id="selectedCount" class="badge badge-primary">0</span></h4>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <h6>Tổng tiền tạm tính:</h6>
+                        <h3><span id="totalAmount" class="text-success">0 VNĐ</span></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mb-5">
+            <button type="submit" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-save"></i> Lưu đơn hàng
+            </button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ml-2">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Tính tổng tiền và số lượng
+            function calculateTotal() {
+                let total = 0;
+                let count = 0;
+
+                $('.product-checkbox:checked').each(function() {
+                    let price = parseFloat($(this).data('price')) || 0;
+                    total += price;
+                    count++;
+                });
+
+                $('#totalAmount').text(total.toLocaleString('vi-VN') + ' VNĐ');
+                $('#selectedCount').text(count);
+            }
+
+            // Filter by category
+            $('#categoryFilter button').click(function() {
+                $('#categoryFilter button').removeClass('active');
+                $(this).addClass('active');
+
+                let category = $(this).data('category');
+
+                if (category === 'all') {
+                    $('.category-section').show();
+                    $('.product-item').show();
+                } else {
+                    $('.category-section').hide();
+                    $('.category-section[data-category="' + category + '"]').show();
+                }
+            });
+
+            // Khi click vào card, toggle checkbox
+            $('.product-detail-card').click(function(e) {
+                // Nếu click trực tiếp vào checkbox thì bỏ qua
+                if ($(e.target).is('input[type="checkbox"]')) {
+                    return;
+                }
+
+                let checkbox = $(this).find('.product-checkbox');
+                checkbox.prop('checked', !checkbox.prop('checked')).trigger('change');
+            });
+
+            // Khi thay đổi checkbox
+            $('.product-checkbox').change(function() {
+                if ($(this).is(':checked')) {
+                    $(this).closest('.product-detail-card').addClass('border-success shadow-sm bg-light');
+                } else {
+                    $(this).closest('.product-detail-card').removeClass('border-success shadow-sm bg-light');
+                }
+                calculateTotal();
+            });
+
+            // Validate khi submit
+            $('form').submit(function(e) {
+                let checkedCount = $('.product-checkbox:checked').length;
+
+                if (checkedCount === 0) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn ít nhất 1 sản phẩm!');
+                    $('html, body').animate({
+                        scrollTop: $('#productDetailsContainer').offset().top - 100
+                    }, 500);
+                    return false;
+                }
+
+                return true;
+            });
+
+            // Initial calculation
+            calculateTotal();
+        });
+    </script>
+
+    <style>
+        .form-control.border,
+        .card.border {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .product-detail-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .product-detail-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+            }
+
+            .product-detail-card.border-success {
+                border-width: 2px !important;
+                border-color: #28a745 !important;
+            }
+
+        .product-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            margin-top: 8px;
+        }
+
+        .category-section h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        #categoryFilter {
+            display: flex;
+            gap: 8px;
+        }
+
+            #categoryFilter .btn {
+                margin-bottom: 8px;
+            }
+
+        .custom-control-label {
+            cursor: pointer;
+        }
+
+        .badge-success {
+            font-size: 0.9rem;
+        }
+    </style>
+}

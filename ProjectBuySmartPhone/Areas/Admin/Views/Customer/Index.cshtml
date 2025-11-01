@@ -1,0 +1,218 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@model IPagedList<ProjectBuySmartPhone.Models.Domain.Entities.User>
+
+@{
+    ViewData["Title"] = "Quản lý khách hàng";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-users"></i> Quản lý khách hàng</h2>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm khách hàng
+        </a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <!-- Search Form -->
+    <div class="card border mb-4">
+        <div class="card-body">
+            <form asp-action="Index" method="get" class="form-inline">
+                <div class="form-group mr-3">
+                    <label class="mr-2">Tìm kiếm:</label>
+                    <input type="text" name="searchTerm" value="@ViewBag.SearchTerm"
+                           class="form-control" placeholder="Tên, email, SĐT, username..." style="width: 300px;" />
+                </div>
+                <button type="submit" class="btn btn-primary mr-2">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-redo"></i> Reset
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer List -->
+    <div class="card border">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="thead-light">
+                        <tr>
+                            <th style="width: 80px;">ID</th>
+                            <th>Tên khách hàng</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Địa chỉ</th>
+                            <th style="width: 150px;">Ngày tạo</th>
+                            <th style="width: 220px;" class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td><strong>#@user.UserId</strong></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-circle mr-2">
+                                                @if (!string.IsNullOrEmpty(user.LastName))
+                                                {
+                                                    @user.LastName.Substring(0, 1).ToUpper()
+                                                }
+                                                else
+                                                {
+                                                    <span>?</span>
+                                                }
+                                            </div>
+                                            <strong>@(user.LastName ?? "N/A")</strong>
+                                        </div>
+                                    </td>
+                                    <td>@user.Username</td>
+                                    <td>@user.Email</td>
+                                    <td>@(user.PhoneNumber ?? "N/A")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(user.Address))
+                                        {
+                                            @(user.Address.Length > 40 ? user.Address.Substring(0, 40) + "..." : user.Address)
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <small>@(user.CreatedAt.ToString("dd/MM/yyyy") ?? "N/A")</small>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="Details" asp-route-id="@user.UserId"
+                                           class="btn btn-sm btn-info" title="Chi tiết">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@user.UserId"
+                                           class="btn btn-sm btn-warning" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="ChangePassword" asp-route-id="@user.UserId"
+                                           class="btn btn-sm btn-primary" title="Đổi mật khẩu">
+                                            <i class="fas fa-key"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-danger"
+                                                onclick="confirmDelete(@user.UserId, '@user.LastName')" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">Không có khách hàng nào</p>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (Model != null && Model.PageCount > 1)
+    {
+        <div class="mt-4 d-flex justify-content-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchTerm = ViewBag.SearchTerm }),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                DisplayLinkToFirstPage = PagedListDisplayMode.Always,
+                DisplayLinkToLastPage = PagedListDisplayMode.Always,
+                LinkToFirstPageFormat = "Đầu",
+                LinkToLastPageFormat = "Cuối",
+                LinkToPreviousPageFormat = "«",
+                LinkToNextPageFormat = "»"
+            })
+    </div>
+    <div class="text-center mt-2">
+        <small class="text-muted">
+            Trang @Model.PageNumber / @Model.PageCount | Tổng @Model.TotalItemCount khách hàng
+        </small>
+    </div>
+        }
+</div>
+
+<!-- Delete Confirmation Modal -->
+<form id="deleteForm" method="post" asp-action="Delete">
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="deleteUserId" name="id" />
+</form>
+
+@section Scripts {
+    <script>
+        function confirmDelete(userId, userName) {
+            if (confirm(`Bạn có chắc chắn muốn xóa khách hàng "${userName}"?\n\nLưu ý: Không thể xóa nếu khách hàng có đơn hàng.`)) {
+                document.getElementById('deleteUserId').value = userId;
+                document.getElementById('deleteForm').submit();
+            }
+        }
+
+        // Auto hide alerts
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+
+    <style>
+        .card.border {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .avatar-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+    </style>
+}

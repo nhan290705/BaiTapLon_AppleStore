@@ -9,7 +9,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public int ProductId { get; set; }
 
         [Required, MaxLength(200)]
-        public string? ProductName { get; set; }
+        public string ProductName { get; set; }
 
         [MaxLength(200)]
         public string? Slug { get; set; }
@@ -25,7 +25,6 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         //[Precision(5, 2)]
 
         public decimal Discount { get; set; }
-
         [Required]
         public string Color { get; set; }
         [Required]
@@ -34,6 +33,8 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public string Ram { get; set; }
         [Required]
         public string Port {  get; set; }
+
+
         public ActiveStatus Status { get; set; } = ActiveStatus.Active;
 
         // FK -> Category
