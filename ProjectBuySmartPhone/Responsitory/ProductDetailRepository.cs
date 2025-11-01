@@ -19,7 +19,7 @@ namespace ProjectBuySmartPhone.Responsitory
             return productDetail;
         }
 
-        public ProductDetail delete(string id)
+        public ProductDetail delete(int id)
         {
             var productDetail = _db.ProductDetails.Find(id);
             if (productDetail != null)
@@ -35,7 +35,7 @@ namespace ProjectBuySmartPhone.Responsitory
             return _db.ProductDetails.AsNoTracking();
         }
 
-        public ProductDetail getProductDetail(string id)
+        public ProductDetail getProductDetail(int id)
         {
             return _db.ProductDetails.Find(id);
         }

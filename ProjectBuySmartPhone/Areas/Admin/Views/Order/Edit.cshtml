@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = "Chỉnh sửa đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+    var statusOrders = ViewBag.StatusOrders as IEnumerable<ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder> ?? new List<ProjectBuySmartPhone.Models.Domain.Entities.StatusOrder>();
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+@model ProjectBuySmartPhone.Models.Domain.Entities.Order
+
+<div class="container-fluid">
+    <h2 class="mb-4">Chỉnh sửa đơn hàng: #@Model.OrderId</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <ul class="mb-0">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="OrderId" />
+        <input type="hidden" asp-for="UserId" />
+        <input type="hidden" asp-for="CreatedAt" />
+        <input type="hidden" asp-for="TotalPrice" />
+
+        <div class="card border mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user-edit"></i> Thông tin đơn hàng</h5>
+            </div>
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label asp-for="StatusOrderId" class="font-weight-bold">Trạng thái đơn hàng <span class="text-danger">*</span></label>
+                    @if (statusOrders != null && statusOrders.Any())
+                    {
+                        <select asp-for="StatusOrderId" class="form-control border" required>
+                            <option value="">-- Chọn trạng thái --</option>
+                            @foreach (var status in statusOrders)
+                            {
+                                <option value="@status.StatusOrderId" selected="@(status.StatusOrderId == Model.StatusOrderId)">
+                                    @status.Name
+                                </option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">Không có dữ liệu trạng thái đơn hàng</div>
+                        <input type="hidden" asp-for="StatusOrderId" />
+                    }
+                    <span asp-validation-for="StatusOrderId" class="text-danger"></span>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <label asp-for="UserId">Mã khách hàng (UserId)</label>
+                    <input type="text" class="form-control border" value="@(Model.UserId?.ToString() ?? "Khách vãng lai")" readonly />
+                    <small class="form-text text-muted">Không thể thay đổi mã khách hàng.</small>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RecipientName" class="font-weight-bold">Tên người nhận <span class="text-danger">*</span></label>
+                    <input asp-for="RecipientName" class="form-control border" required />
+                    <span asp-validation-for="RecipientName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="RecipientPhone" class="font-weight-bold">Số điện thoại <span class="text-danger">*</span></label>
+                    <input asp-for="RecipientPhone" class="form-control border" required />
+                    <span asp-validation-for="RecipientPhone" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ShippingAddress" class="font-weight-bold">Địa chỉ giao hàng <span class="text-danger">*</span></label>
+                    <textarea asp-for="ShippingAddress" class="form-control border" rows="2" required></textarea>
+                    <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="City">Thành phố</label>
+                            <input asp-for="City" class="form-control border" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="District">Quận/Huyện</label>
+                            <input asp-for="District" class="form-control border" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label asp-for="PostalCode">Mã bưu điện</label>
+                            <input asp-for="PostalCode" class="form-control border" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="PaymentMethod">Phương thức thanh toán</label>
+                            <select asp-for="PaymentMethod" class="form-control border" asp-items="Html.GetEnumSelectList<ProjectBuySmartPhone.Models.Domain.Enums.PaymentMethod>()">
+                                <option value="">-- Chọn phương thức --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="ShippingMethod">Phương thức vận chuyển</label>
+                            <select asp-for="ShippingMethod" class="form-control border" asp-items="Html.GetEnumSelectList<ProjectBuySmartPhone.Models.Domain.Enums.ShippingMethod>()">
+                                <option value="">-- Chọn phương thức --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Note">Ghi chú</label>
+                    <textarea asp-for="Note" class="form-control border" rows="2" placeholder="Ghi chú thêm về đơn hàng..."></textarea>
+                </div>
+
+                <hr />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Ngày tạo</label>
+                            <input type="text" class="form-control border bg-light" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Tổng tiền</label>
+                            <input type="text" class="form-control border bg-light" value="@(Model.TotalPrice.HasValue ? Model.TotalPrice.Value.ToString("N0") + " VNĐ" : "0 VNĐ")" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Trạng thái hiện tại</label>
+                            <input type="text" class="form-control border bg-light" value="@(Model.StatusOrder?.Name ?? "Chưa xác định")" readonly />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group mb-5">
+            <button type="submit" class="btn btn-primary btn-lg px-5">
+                <i class="fas fa-save"></i> Lưu thay đổi
+            </button>
+            <a asp-action="Index" class="btn btn-secondary btn-lg px-5 ml-2">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    
+    <script>
+        $(document).ready(function() {
+            // Tự động ẩn thông báo sau 3 giây
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 3000);
+
+            // Xác nhận trước khi submit
+            $('form').on('submit', function(e) {
+                if (!confirm('Bạn có chắc chắn muốn cập nhật đơn hàng này?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+}

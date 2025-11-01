@@ -5,9 +5,9 @@ namespace ProjectBuySmartPhone.Responsitory
     public interface IProductDetailRepository
     {
         ProductDetail add(ProductDetail productDetail);
-        ProductDetail delete(string id);
+        ProductDetail delete(int id);
         IQueryable<ProductDetail> GetAll();
-        ProductDetail getProductDetail(string id);
+        ProductDetail getProductDetail(int id);
         ProductDetail update(ProductDetail productDetail);
     }
 }

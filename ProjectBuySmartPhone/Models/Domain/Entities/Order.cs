@@ -32,7 +32,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         public decimal? TotalPrice { get; set; }
 
         // FK
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public virtual User? User { get; set; }
 
         // 1-n

@@ -18,6 +18,9 @@ builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
 builder.Services.AddScoped<IStatusResponsitory, StatusResponsitory>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IProductDetailRepository, ProductDetailRepository>();
+builder.Services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //add jwthelper to dependency injection
 builder.Services.AddScoped<JwtHelper>();
 //Add Authentication

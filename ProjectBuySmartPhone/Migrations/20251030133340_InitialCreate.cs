@@ -128,9 +128,9 @@ namespace ProjectBuySmartPhone.Migrations
                     StatusOrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     ShippingMethod = table.Column<int>(type: "int", nullable: false),
-                    RecipientName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    RecipientPhone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
+                    RecipientName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    RecipientPhone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    ShippingAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     District = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
@@ -183,28 +183,6 @@ namespace ProjectBuySmartPhone.Migrations
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "UserId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductDetail",
-                columns: table => new
-                {
-                    ProductDetailId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Sku = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductDetail", x => x.ProductDetailId);
-                    table.ForeignKey(
-                        name: "FK_ProductDetail_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,7 +246,6 @@ namespace ProjectBuySmartPhone.Migrations
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LineTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
-                    ProductDetailId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -281,12 +258,35 @@ namespace ProjectBuySmartPhone.Migrations
                         principalTable: "Order",
                         principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductDetail",
+                columns: table => new
+                {
+                    ProductDetailId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Sku = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    OrderDetailId = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductDetail", x => x.ProductDetailId);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_ProductDetail_ProductDetailId",
-                        column: x => x.ProductDetailId,
-                        principalTable: "ProductDetail",
-                        principalColumn: "ProductDetailId",
+                        name: "FK_ProductDetail_OrderDetail_OrderDetailId",
+                        column: x => x.OrderDetailId,
+                        principalTable: "OrderDetail",
+                        principalColumn: "OrderDetailId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductDetail_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -320,11 +320,6 @@ namespace ProjectBuySmartPhone.Migrations
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_ProductDetailId",
-                table: "OrderDetail",
-                column: "ProductDetailId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Product_ProductCategoryId",
                 table: "Product",
                 column: "ProductCategoryId");
@@ -338,6 +333,11 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "IX_ProductComment_UserId",
                 table: "ProductComment",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductDetail_OrderDetailId",
+                table: "ProductDetail",
+                column: "OrderDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductDetail_ProductId",
@@ -357,10 +357,10 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "BlogComment");
 
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "ProductComment");
 
             migrationBuilder.DropTable(
-                name: "ProductComment");
+                name: "ProductDetail");
 
             migrationBuilder.DropTable(
                 name: "ProductImage");
@@ -369,22 +369,22 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "Blog");
 
             migrationBuilder.DropTable(
+                name: "OrderDetail");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
                 name: "Order");
 
             migrationBuilder.DropTable(
-                name: "ProductDetail");
+                name: "ProductCategory");
 
             migrationBuilder.DropTable(
                 name: "StatusOrder");
 
             migrationBuilder.DropTable(
                 name: "User");
-
-            migrationBuilder.DropTable(
-                name: "Product");
-
-            migrationBuilder.DropTable(
-                name: "ProductCategory");
         }
     }
 }

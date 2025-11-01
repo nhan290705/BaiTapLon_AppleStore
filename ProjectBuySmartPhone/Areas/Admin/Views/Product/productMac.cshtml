@@ -29,8 +29,15 @@
                     <select id="categorySelect" class="form-control show-tick">
                         @foreach (var cat in categories)
                         {
-                            var isSel = string.Equals(cat, selected, System.StringComparison.OrdinalIgnoreCase);
-                            <option value="@cat" @(isSel ? "selected" : "")>@cat</option>
+                            var isSel = string.Equals(cat, selected, StringComparison.OrdinalIgnoreCase);
+                            if (isSel)
+                            {
+                                <option value="@cat" selected="selected">@cat</option>
+                            }
+                            else
+                            {
+                                <option value="@cat">@cat</option>
+                            }
                         }
                     </select>
                 </div>
