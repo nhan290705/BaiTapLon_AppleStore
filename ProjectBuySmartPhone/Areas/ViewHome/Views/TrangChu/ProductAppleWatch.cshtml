@@ -1,0 +1,390 @@
+﻿@using System.Text.Json
+@using System.Text.Encodings.Web
+@using ProjectBuySmartPhone.Models.Domain.Entities
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<Product>
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+
+
+@{
+    ViewData["Title"] = "Danh sách iPhone";
+    Product ProductDetail = null;
+    string modal = "";
+    if (ViewBag.PP != null)
+    {
+        ProductDetail = ViewBag.PP;
+        modal = "display: flex;";
+    }
+    var imgs = ProductDetail?.ProductImages?.ToList() ?? new List<ProductImage>();
+    Layout = "~/Areas/ViewHome/Views/Shared/StoreLayout.cshtml";
+}
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="iPhone VA Studio">
+    <meta name="keywords" content="HTML, CSS, JavaScript, Bootstrap">
+    <meta name="author" content="Nguyễn Thế Sơn">
+    <title>iPhone</title>
+    <link rel="icon" type="image/png" href="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/imgHeader/logoweb.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <link rel="stylesheet" href="~/2024_BTLWeb_Group1/ShowProduct.css">
+    <link rel="stylesheet" href="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/styleheader.css">   <!-- CSS cho header -->
+    <script src="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/Jsheader.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+
+    <!-- Thêm Slick CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+    <link rel="stylesheet" href="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/iphone.css">
+
+    <!-- JS cho iphone -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+</head>
+<body>
+
+
+    <!-- Iphone -->
+    <!-- Video show iPhone -->
+    <div class="section-zero">
+        <div class="inner-header">
+            <div class="left-header">
+                <h1>Apple Watch</h1>
+            </div>
+            <div class="right-header">
+                <h3>Công nghệ trên cổ tay bạn</h3>
+            </div>
+        </div>
+        <div class="video">
+            <video controls muted loop autoplay class="wlcome-video-video" src="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/videoIphone/medium_2x.mp4"></video>
+        </div>
+    </div>
+
+    <!-- Section-one -->
+    <div class="section section-one">
+        <div class="inner-wrap">
+            <h1 class="inner-title">iPhone 16 Pro</h1>
+            <h2 class="inner-sub-title">Hello, Apple Intelligence.</h2>
+            <div class="inner-buttons">
+                <a href="#" class="button button1">Learn more</a>
+                <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html" class="button button2">Buy</a>
+            </div>
+            <p class="inner-desc">Apple Intelligence coming this fall!</p>
+        </div>
+    </div>
+    <!--End Section-one -->
+    <!-- Section-two -->
+    <div class="section section-two">
+        <div class="inner-wrap">
+            <h1 class="inner-title">iPhone 16</h1>
+            <h2 class="inner-sub-title">Hello, Apple Intelligence.</h2>
+            <div class="inner-buttons">
+                <a href="#" class="button button1">Learn more</a>
+                <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html" class="button button2">Buy</a>
+            </div>
+            <p class="inner-desc">Apple Intelligence coming this fall!</p>
+        </div>
+    </div>
+    <!--End Section-two -->
+    <!-- Image Slider -->
+    @*     <div class="section-three">
+        <div class="slider-container">
+            <div class="slider">
+                <div>
+                    <div class="Slide" style="background-image: ~/2024_BTLWeb_Group1/NguyenTheSon_232631049/imgPhone/slick1.jpg; background-size: cover;"></div>
+                </div>
+                <div>
+                    <div class="Slide" style="background-image: url(~/2024_BTLWeb_Group1/NguyenTheSon_232631049/imgPhone/slick2.jpg);"></div>
+                </div>
+                <div>
+                    <div class="Slide" style="background-image: url(~/2024_BTLWeb_Group1/NguyenTheSon_232631049/imgPhone/slick3.jpg);"></div>
+                </div>
+                <div>
+                    <div class="Slide" style="background-image: url(~/2024_BTLWeb_Group1/NguyenTheSon_232631049/imgPhone/slick4.jpg);"></div>
+                </div>
+            </div>
+            <h1 id="buyiphone">iPhone</h1>
+            <h2>Đâu là lựa chọn phù hợp với bạn?</h2>
+        </div>
+    </div> *@
+    <!--End Image Slider -->
+    <!-- Section-Four -->
+
+
+    <div class="section-four" id="list-product-show">
+        <div class="container mt-4">
+            <div class="row">
+
+                @foreach (var p in Model)
+                {
+                    var mainImage = p.ProductImages?.FirstOrDefault(img => img.IsMain)?.ImageUrl
+                    ?? p.ProductImages?.FirstOrDefault()?.ImageUrl
+                    ?? "no-image.jpg";
+                    <div class="col-lg-3 col-sm-6">
+                        <a href="~/ViewHome/TrangChu/InforAppleWatch?productId=@p.ProductId&page=@Model.PageNumber"
+                           data-product-name="@p.ProductName"
+                           data-product-image="@Url.Content($"~/images/products/{mainImage}")"
+                           data-product-colors='["#9BABF6", "#B1D5D3", "#F3AADA", "#FAFAFA", "#3C4144"]'
+                           style="text-decoration: none; color: inherit;">
+
+                            <div class="product-card" id="iphonelink1">
+                                <div class="new-badge">
+                                    <i class="fas fa-tag"></i>Mới
+                                </div>
+                                <img alt="@p.ProductName" height="600px" src="@Url.Content($"~/images/products/{mainImage}")" width="200">
+                                <h5>@p.ProductName</h5>
+                                <div class="price">@p.Price</div>
+                                <div class="old-price">24.990.000₫</div>
+                                <div class="discount">@p.Discount %</div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="pagination-container" class="d-flex justify-content-center mt-3">
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("ListAppleWatch", "TrangChu", new { area = "ViewHome", page }),
+                new PagedListRenderOptions
+                {
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" },
+                    UlElementClasses = new[] { "pagination", "mb-0" },
+                    MaximumPageNumbersToDisplay = 5,
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayLinkToFirstPage = PagedListDisplayMode.Never,
+                    DisplayLinkToLastPage = PagedListDisplayMode.Never
+                }
+                )
+    </div>
+
+    <!--End Section-four-->
+    <!-- Modal-Section-four  -->
+    <!-- iPhong16 -->
+    @if (ProductDetail != null)
+    {
+        <div id="productModal" class="custom-modal">
+            <div class="modal-overlay" onclick="closeModal2()"></div>
+            <div class="modal-content-large">
+                <span class="close-btn" onclick="closeModal2()">&times;</span>
+
+                <div class="modal-header">
+                    <h1>@ProductDetail.ProductName</h1>
+                </div>
+
+                <div class="modal-body overflow-auto">
+                    <!-- Slider ảnh -->
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            @for (var i = 0; i < imgs.Count; i++)
+                            {
+                                <button type="button"
+                                        data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="@i"
+                                        class="@(i == 0 ? "active" : "")"
+                                        aria-current="@(i == 0 ? "true" : "false")"
+                                        aria-label="Slide @(i + 1)">
+                                </button>
+                            }
+                        </div>
+                        <div class="carousel-inner">
+                            @for (var i = 0; i < imgs.Count; i++)
+                            {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@Url.Content($"~/images/products/{imgs[i].ImageUrl}")" class="d-block w-100" alt="...">
+                                </div>
+                            }
+
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <div class="product-options">
+                        @{
+                            // Tiện xử lý: tách màu theo dấu phẩy (nếu bạn lưu "Black, White, Blue")
+                            var colorList = (ProductDetail.Color ?? "")
+                            .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                            .ToList();
+
+                            // Tự bảo vệ null/empty cho các trường string
+                            bool HasStr(string? s) => !string.IsNullOrWhiteSpace(s);
+                        }
+
+                        <div class="product-info-card">
+                            <h4 class="info-title">Thông tin sản phẩm</h4>
+
+                            <div class="info-grid">
+                                <!-- ProductId (luôn có) -->
+                                <div class="info-row">
+                                    <span class="info-label">Mã SP</span>
+                                    <span class="info-value">@ProductDetail.ProductId</span>
+                                </div>
+
+                                @* ProductName *@
+                                @if (HasStr(ProductDetail.ProductName))
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">Tên sản phẩm</span>
+                                        <span class="info-value">@ProductDetail.ProductName</span>
+                                    </div>
+                                }
+
+                                @* Slug *@
+                                @if (HasStr(ProductDetail.Slug))
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">Slug</span>
+                                        <span class="info-value">@ProductDetail.Slug</span>
+                                    </div>
+                                }
+
+                                @* Description *@
+                                @if (HasStr(ProductDetail.Description))
+                                {
+                                    <div class="info-row info-row--full">
+                                        <span class="info-label">Mô tả</span>
+                                        <span class="info-value">@ProductDetail.Description</span>
+                                    </div>
+                                }
+
+                                @* Price (Required) *@
+                                <div class="info-row">
+                                    <span class="info-label">Giá</span>
+                                    <span class="info-value">@ProductDetail.Price.ToString("#,0") đ</span>
+                                </div>
+
+                                @* Qty (Required) + badge tình trạng *@
+                                <div class="info-row">
+                                    <span class="info-label">Tồn kho</span>
+                                    <span class="info-value">
+                                        @ProductDetail.Qty
+                                        @if (ProductDetail.Qty <= 0)
+                                        {
+                                            <span class="stock-badge out">Hết hàng</span>
+                                        }
+                                        else if (ProductDetail.Qty < 5)
+                                        {
+                                            <span class="stock-badge low">Sắp hết</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="stock-badge in">Còn hàng</span>
+                                        }
+                                    </span>
+                                </div>
+
+                                @* Discount (chỉ hiển thị khi > 0) *@
+                                @if (ProductDetail.Discount > 0)
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">Giảm</span>
+                                        <span class="info-value">@ProductDetail.Discount</span>
+                                    </div>
+                                }
+
+                                @* Storage (Required) *@
+                                @if (HasStr(ProductDetail.Storage))
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">Dung lượng</span>
+                                        <span class="info-value">@ProductDetail.Storage</span>
+                                    </div>
+                                }
+
+                                @* Ram (Required) *@
+                                @if (HasStr(ProductDetail.Ram))
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">RAM</span>
+                                        <span class="info-value">@ProductDetail.Ram</span>
+                                    </div>
+                                }
+
+                                @* Port (Required) *@
+                                @if (HasStr(ProductDetail.Port))
+                                {
+                                    <div class="info-row">
+                                        <span class="info-label">Cổng kết nối</span>
+                                        <span class="info-value">@ProductDetail.Port</span>
+                                    </div>
+                                }
+
+                                @* Color (Required): vừa text vừa chip màu (nếu parse được) *@
+                                @if (HasStr(ProductDetail.Color))
+                                {
+                                    <div class="info-row info-row--full">
+                                        <span class="info-label">Màu sắc</span>
+                                        <span class="info-value">
+                                            @ProductDetail.Color
+                                            @if (colorList.Any())
+                                            {
+                                                <span class="color-chip-list">
+                                                    @foreach (var c in colorList)
+                                                    {
+                                                        <span class="color-chip" title="@c" style="background:@c"></span>
+                                                    }
+                                                </span>
+                                            }
+                                        </span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="add-to-cart" onclick="showNotification()">Thêm vào giỏ <i class="fa-solid fa-cart-shopping"></i></button>
+                        <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html" class="buy-now">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+
+    <!-- Modal thông báo -->
+    <div class="modal" id="notificationModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeNotification()">&times;</span>
+            <h1>Tính năng đang được cập nhật!</h1>
+            <p>Xin vui lòng quay lại sau.</p>
+        </div>
+    </div>
+
+
+    <!--End Modal-Section-four  -->
+
+
+    <script src="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/ds"></script> <!--JS cho header-->
+    <script src="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/iphone.js"></script>
+    <script src="~/2024_BTLWeb_Group1/ShowProduct.js"></script>
+
+
+
+</body>
