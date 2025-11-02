@@ -165,41 +165,34 @@
 
 /* Action buttons */
 .action-buttons {
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
     margin-top: 25px;
+    display: block;
 }
 
-.add-to-cart, .buy-now {
-    flex: 1;
-    padding: 14px;
-    border: none;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin: 0 5px;
-}
-
-.add-to-cart {
-    background: #28a745;
-    color: white;
-}
-
-    .add-to-cart:hover {
-        background: #218838;
+    /* ép Bootstrap btn-dark theo style custom */
+    .action-buttons .add-to-cart {
+        display: block !important; /* ép block 100% */
+        width: 100% !important; /* full ngang */
+        background: #28a745 !important; /* màu xanh lá */
+        color: #fff !important;
+        padding: 16px 0 !important;
+        font-size: 18px;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        text-align: center;
+        transition: background 0.3s ease, transform 0.15s ease;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     }
 
-.buy-now {
-    background: #ff4d4d;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-}
+        .action-buttons .add-to-cart:hover {
+            background: #218838 !important;
+            transform: translateY(-1px);
+        }
 
-    .buy-now:hover {
-        background: #e63939;
-    }
+
+
 /* ===== Core ===== */
 .nx-slider {
     --nx-radius: 16px;

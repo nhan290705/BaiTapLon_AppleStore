@@ -38,19 +38,10 @@
 
 
 
-        <a class="giohang showPopup" id="showPopup">
+        <a class="giohang" asp-area="Cart" asp-controller="Cart" asp-action="Index">
             <i class="giohangicon fa-solid fa-cart-shopping cart-icon"></i>
             <span>Giỏ hàng</span>
         </a>
-
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <span class="close">&times;</span>
-                <h2>NỘi dung text</h2>
-                <p>Tính năng đang được đội ngũ lập trình viên phát triển, sẽ được khả dụng trong thời gian sớm nhất</p>
-                <p>Features developed by a team of programmers, will be used as soon as possible</p>
-            </div>
-        </div>
         @* Hân làm vào đây User *@
         <div class="danhmuc dropdown">
             <a class="dropdown-toggle text-light text-decoration-none" href="#" id="userDropdown"
@@ -65,7 +56,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-item" asp-area="Cart" asp-controller="Order" asp-action="MyOrders">
+                    <a class="dropdown-item" asp-area="Users" asp-controller="OrderUser" asp-action="Index">
                         <i class="fa-solid fa-box me-1"></i> Đơn hàng của tôi
                     </a>
                 </li>

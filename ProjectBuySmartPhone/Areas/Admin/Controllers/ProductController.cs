@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjectBuySmartPhone.Areas.Admin.Models.ViewModels;
@@ -13,6 +14,7 @@ using X.PagedList;
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "ADMIN")]
     public class ProductController : Controller
     {
         private readonly MyDbContext _db;

@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProjectBuySmartPhone.Responsitory;
 using ProjectBuySmartPhone.Models.Domain.Entities;
+using ProjectBuySmartPhone.Models.Domain.Enums;
+using ProjectBuySmartPhone.Responsitory;
 
 namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
+    [Authorize(Roles = "ADMIN")]
     public class DashboardController : Controller
     {
         private readonly IOrderRepository _orderRepository;

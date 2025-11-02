@@ -19,7 +19,11 @@
         <!-- ===== Sidebar ===== -->
         <aside class="user-sidebar">
             <div class="sidebar-title">Tài khoản của bạn</div>
-
+            <form asp-area="ViewHome" asp-controller="TrangChu" asp-action="Index">
+                <button type="submit" class="sidebar-btn home-btn">
+                    🏠 Trở về trang chủ
+                </button>
+            </form>
             <form asp-area="Users" asp-controller="User" asp-action="Profile" method="get">
                 <button type="submit"
                         class="sidebar-btn @(ViewData["ActiveTab"] == "Profile" ? "active" : "")">

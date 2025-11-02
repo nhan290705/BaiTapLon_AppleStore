@@ -88,5 +88,9 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             }
             return RedirectToAction("Index", "TrangChu", new { area = "ViewHome" });
         }
+        public IActionResult AccessDenied()
+        {
+                       return View();
+        }
     }
 }

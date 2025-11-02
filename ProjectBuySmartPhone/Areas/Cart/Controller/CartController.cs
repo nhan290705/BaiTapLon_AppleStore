@@ -129,19 +129,54 @@ namespace ProjectBuySmartPhone.Areas.Cart.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        public IActionResult UpdateQuantityAjax(int productId, int quantity)
+        {
+            var cart = GetCart();
+            var item = cart.Items.FirstOrDefault(x => x.ProductId == productId);
+            if (item == null)
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm trong giỏ hàng." });
+
+            var product = _context.Products.FirstOrDefault(p => p.ProductId == productId);
+            if (product == null)
+                return Json(new { success = false, message = "Sản phẩm không tồn tại trong hệ thống." });
+
+            if (quantity <= 0)
+            {
+                cart.Items.Remove(item);
+                saveCart(cart);
+                return Json(new { success = true, remove = true, totalAmount = cart.TotalAmount.ToString("N0") });
+            }
+
+            if (quantity > product.Qty)
+            {
+                return Json(new { success = false, message = $"Chỉ còn {product.Qty} sản phẩm trong kho!" });
+            }
+
+            item.Quantity = quantity;
+            saveCart(cart);
+
+            return Json(new
+            {
+                success = true,
+                newQuantity = item.Quantity,
+                itemTotal = (item.Quantity * item.Price).ToString("N0"),
+                totalAmount = cart.TotalAmount.ToString("N0")
+            });
+        }
+
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Checkout(Order order)
+        public IActionResult CheckoutConfirm(Order order)
         {
             var userId = getCurrentUserId();
             if (userId == null)
             {
-                Console.WriteLine("khong tim thay token");
                 TempData["Error"] = "Không thể xác định người dùng. Vui lòng đăng nhập lại.";
                 return RedirectToAction("Index", "Login", new { area = "Identity" });
             }
-            var cart = GetCart();
 
-            if (!cart.Items.Any())
+            var cart = GetCart();
+            if (cart == null || !cart.Items.Any())
             {
                 TempData["Error"] = "Giỏ hàng trống!";
                 return RedirectToAction("Index");
@@ -153,14 +188,14 @@ namespace ProjectBuySmartPhone.Areas.Cart.Controllers
                 return RedirectToAction("Index");
             }
 
+            // ✅ B1: Tạo đơn hàng
             order.UserId = userId;
-            order.StatusOrderId = 1; 
+            order.StatusOrderId = 1; // 1 = Chờ xác nhận
             order.TotalPrice = cart.TotalAmount;
-
             _context.Orders.Add(order);
-            _context.SaveChanges();
+            _context.SaveChanges(); // cần để có OrderId
 
-            // ✅ Lưu OrderDetail cho từng sản phẩm trong giỏ
+            // ✅ B2: Tạo chi tiết đơn hàng & ProductDetail tương ứng
             foreach (var item in cart.Items)
             {
                 var orderDetail = new OrderDetail
@@ -172,34 +207,69 @@ namespace ProjectBuySmartPhone.Areas.Cart.Controllers
                 };
 
                 _context.OrderDetails.Add(orderDetail);
-                _context.SaveChanges(); // để có OrderDetailId ngay
+                _context.SaveChanges(); // để có OrderDetailId
 
-                // ✅ Nếu ProductDetail tồn tại thì gắn FK
-                var productDetail = _context.ProductDetails
-                    .FirstOrDefault(pd => pd.ProductId == item.ProductId && pd.OrderDetailId == null);
-
-                if (productDetail != null)
+                // ✅ B3: Tạo ProductDetail gắn với OrderDetailId (nếu ProductDetail rỗng)
+                var productDetail = new ProductDetail
                 {
-                    productDetail.OrderDetailId = orderDetail.OrderDetailId;
-                    _context.ProductDetails.Update(productDetail);
-                }
+                    ProductId = item.ProductId,
+                    Sku = Guid.NewGuid().ToString(), // SKU sinh tự động
+                    OrderDetailId = orderDetail.OrderDetailId
+                };
+                _context.ProductDetails.Add(productDetail);
 
-                // ✅ Giảm số lượng tồn kho của sản phẩm
+                // ✅ B4: Trừ tồn kho sản phẩm
                 var product = _context.Products.FirstOrDefault(p => p.ProductId == item.ProductId);
                 if (product != null)
                 {
                     product.Qty -= item.Quantity;
+                    if (product.Qty < 0) product.Qty = 0; // tránh âm kho
                 }
             }
 
             _context.SaveChanges();
 
+            // ✅ B5: Dọn giỏ hàng
             HttpContext.Session.Remove("Cart");
+
             TempData["Success"] = "Đặt hàng thành công!";
             return RedirectToAction("Success");
         }
 
+        [HttpGet]
+        public IActionResult Checkout()
+        {
+            var cart = GetCart();
+            if (cart == null || !cart.Items.Any())
+            {
+                TempData["Error"] = "Giỏ hàng trống, vui lòng thêm sản phẩm trước khi thanh toán.";
+                return RedirectToAction("Index", "Cart");
+            }
+            // 🔹 Lấy User từ token
+            var userId = getCurrentUserId();
+            if (userId == null)
+            {
+                TempData["Error"] = "Vui lòng đăng nhập để thanh toán.";
+                return RedirectToAction("Index", "Login", new { area = "Identity" });
+            }
 
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+
+            // 🔹 Gắn thông tin mặc định vào ViewBag để hiển thị trong form
+            var fullName = $"{user?.FirstName} {user?.LastName}".Trim();
+            ViewBag.RecipientName = fullName != "" ? fullName : user?.Username ?? "Khách hàng";
+            ViewBag.RecipientPhone = user?.PhoneNumber ?? "";
+            ViewBag.PostalCode = GeneratePostalCode();
+
+            return View(cart);
+        }
+        private string GeneratePostalCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 6)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         // -------------------------
         // 🟢 TRANG THÀNH CÔNG
         // -------------------------

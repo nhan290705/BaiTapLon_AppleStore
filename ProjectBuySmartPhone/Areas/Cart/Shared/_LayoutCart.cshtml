@@ -10,17 +10,21 @@
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
+    <!-- Custom CSS : topbar -->
+    <link rel="stylesheet" href="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/style/styleheader.css">  <!-- CSS cho header -->
     <!-- Custom CSS -->
 
     <link rel="stylesheet" href="~/css/Cart/style.css" />
+    @RenderSection("Scripts", required: false)
+
 </head>
 <body>
+    @if (ViewData["HideTopbar"] == null || !(bool)ViewData["HideTopbar"])
+    {
+        @await Html.PartialAsync("~/Areas/ViewHome/Views/Shared/TopBar.cshtml")
+    }
 
     <!-- Header -->
-    <header>
-        <h1><i class="fa-solid fa-cart-shopping me-2"></i>Giỏ hàng của bạn</h1>
-    </header>
 
     <!-- Thông báo -->
     <div class="container mt-3">
@@ -46,6 +50,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/script/JSheader.js"></script> <!--JS cho header-->
+
 
 </body>
 </html>
