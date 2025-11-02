@@ -28,14 +28,39 @@
             </div>
         </div>
 
-
         <div class="timkiem">
             <a id="searchPopup">
                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
             </a>
-            <input type="text" placeholder="  Bạn đang tìm sản phẩm, tin tức, workshop...">
+            <input type="text" id="searchInput" name="keyWord" placeholder="  Bạn đang tìm sản phẩm, tin tức, workshop..." />
         </div>
 
+        <script>
+            const input = document.getElementById("searchInput");
+            const icon = document.getElementById("searchPopup");
+
+            // 1️⃣ Khi nhấn Enter
+            input.addEventListener("keypress", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault(); // tránh reload mặc định
+                    searchNow();
+                }
+            });
+
+            // 2️⃣ Khi click vào icon kính lúp
+            icon.addEventListener("click", function () {
+                searchNow();
+            });
+
+            // 3️⃣ Hàm xử lý chuyển hướng URL
+            function searchNow() {
+                const keyword = input.value.trim();
+                if (keyword) {
+                    const newUrl = window.location.pathname + "?keyWord=" + encodeURIComponent(keyword);
+                    window.location.href = newUrl; // reload lại trang với param mới
+                }
+            }
+        </script>
 
 
         <a class="giohang showPopup" id="showPopup">

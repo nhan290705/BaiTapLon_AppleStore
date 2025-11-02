@@ -134,9 +134,7 @@
                     ?? "no-image.jpg";
                     <div class="col-lg-3 col-sm-6">
                         <a href="~/ViewHome/TrangChu/InforIphone?productId=@p.ProductId&page=@Model.PageNumber"
-                           data-product-name="@p.ProductName"
-                           data-product-image="@Url.Content($"~/images/products/{mainImage}")"
-                           data-product-colors='["#9BABF6", "#B1D5D3", "#F3AADA", "#FAFAFA", "#3C4144"]'
+                           
                            style="text-decoration: none; color: inherit;">
 
                             <div class="product-card" id="iphonelink1">
@@ -146,7 +144,7 @@
                                 <img alt="@p.ProductName" height="600px" src="@Url.Content($"~/images/products/{mainImage}")" width="200">
                                 <h5>@p.ProductName</h5>
                                 <div class="price">@p.Price</div>
-                                <div class="old-price">24.990.000₫</div>
+                                <div class="discount">Giảm giá</div>
                                 <div class="discount">@p.Discount %</div>
                             </div>
                         </a>

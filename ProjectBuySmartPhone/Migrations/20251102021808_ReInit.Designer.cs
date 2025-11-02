@@ -12,8 +12,13 @@ using ProjectBuySmartPhone.Models.Infrastructure;
 namespace ProjectBuySmartPhone.Migrations
 {
     [DbContext(typeof(MyDbContext))]
+<<<<<<<< HEAD:ProjectBuySmartPhone/Migrations/20251102021808_ReInit.Designer.cs
     [Migration("20251102021808_ReInit")]
     partial class ReInit
+========
+    [Migration("20251102205600_InitialCreate")]
+    partial class InitialCreate
+>>>>>>>> f1be56e (DoneSearch):ProjectBuySmartPhone/Migrations/20251102205600_InitialCreate.Designer.cs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
