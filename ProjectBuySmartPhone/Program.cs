@@ -70,10 +70,10 @@ app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-app.MapAreaControllerRoute(
-    name: "viewhome",
-    areaName: "ViewHome",
-    pattern: "ViewHome/{controller=TrangChu}/{action=TrangChu}/{id?}");
+//app.MapAreaControllerRoute(
+//    name: "viewhome",
+//    areaName: "ViewHome",
+//    pattern: "ViewHome/{controller=TrangChu}/{action=Index}/{id?}");
 
 
 app.MapAreaControllerRoute(
