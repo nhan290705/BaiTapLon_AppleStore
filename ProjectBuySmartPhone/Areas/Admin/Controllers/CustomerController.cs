@@ -27,7 +27,7 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
             int pageNumber = page ?? 1;
 
             var query = _userRepository.GetAll()
-                .Where(u => u.Role == "USER"); // Chỉ lấy khách hàng (RoleId = 2)
+                .Where(u => u.Role == "USER"); 
 
             // Tìm kiếm
             if (!string.IsNullOrEmpty(searchTerm))
