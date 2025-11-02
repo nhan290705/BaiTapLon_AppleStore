@@ -36,19 +36,19 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             {
                 return View(userRegister);
             }   
-            var existingUser = _context.Users.FirstOrDefault(u => u.Username == userRegister.Username);
+            var existingUser = _context.User.FirstOrDefault(u => u.Username == userRegister.Username);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Username", "Username already exists");
                 return View(userRegister);
             }
-            existingUser = _context.Users.FirstOrDefault(u => u.Email == userRegister.Email);
+            existingUser = _context.User.FirstOrDefault(u => u.Email == userRegister.Email);
             if (existingUser != null)
             {
                 ModelState.AddModelError("Email", "Email already exists");
                 return View(userRegister);
             }
-            existingUser = _context.Users.FirstOrDefault(u => u.PhoneNumber == userRegister.PhoneNumber);  
+            existingUser = _context.User.FirstOrDefault(u => u.PhoneNumber == userRegister.PhoneNumber);  
             if (existingUser != null)
             {
                 ModelState.AddModelError("PhoneNumber", "Phone number already exists");
@@ -56,7 +56,7 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             }
             User newUser = userRegister.ToUser();
             newUser.Password = BCrypt.Net.BCrypt.HashPassword(userRegister.Password);
-            _context.Users.Add(newUser);
+            _context.User.Add(newUser);
             _context.SaveChanges();
             _logger.LogInformation($"New user registered : {newUser.Username}");
             return RedirectToAction("Index", "Home", new {area = ""});
