@@ -11,8 +11,26 @@
         <div class="col-md-8 mx-auto">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title">@Model.Title</h3>
-                    <p class="text-muted">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3 class="card-title mb-0">@Model.Title</h3>
+
+                        <!-- ✅ Nút XÓA bài viết (chỉ hiện khi chủ bài hoặc admin đăng nhập) -->
+                        @if (User.Identity != null && User.Identity.IsAuthenticated &&
+                                                (Model.UserId.ToString() == User.FindFirst("uid")?.Value ||
+                                                User.IsInRole("admin")))
+                        {
+                            <form asp-action="Delete" asp-route-id="@Model.BlogId" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="return confirm('Bạn có chắc muốn xóa bài viết này không?');">
+                                    <i class="fa fa-trash"></i> Xóa
+                                </button>
+                            </form>
+                        }
+                    </div>
+
+                    <p class="text-muted mt-2">
                         <i class="fa fa-user mr-1"></i>
                         @($"{Model.User?.FirstName} {Model.User?.LastName}".Trim() ?? "Người dùng ẩn danh")
                         |
@@ -39,7 +57,8 @@
                         <div class="card mb-2">
                             <div class="card-body">
                                 <div class="media">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="mr-3 rounded-circle" width="45" />
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                                         class="mr-3 rounded-circle" width="45" />
                                     <div class="media-body">
                                         <h6 class="mt-0 mb-1">
                                             @($"{cmt.User?.FirstName} {cmt.User?.LastName}".Trim() ?? "Người dùng")

@@ -168,6 +168,54 @@ namespace ProjectBuySmartPhone.Controllers
             return RedirectToAction(nameof(Details), new { id = blog.BlogId });
         }
 
+        // ========== DELETE THREAD ==========
+        [HttpPost("Delete/{id:int}")]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var blog = await _db.Blogs.FindAsync(id);
+            if (blog == null)
+            {
+                TempData["Error"] = "Bài viết không tồn tại.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var userId = CurrentUserId();
+            if (userId == null)
+            {
+                TempData["Error"] = "Bạn cần đăng nhập để thực hiện hành động này.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            // ✅ Chỉ cho phép người tạo hoặc admin xóa
+            var user = await _db.User.FindAsync(userId.Value);
+            bool isOwner = blog.UserId == userId.Value;
+            bool isAdmin = user != null && user.Role?.ToLower() == "admin";
+
+            if (!isOwner && !isAdmin)
+            {
+                TempData["Error"] = "Bạn không có quyền xóa bài viết này.";
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            // ✅ Xóa tất cả comment trước khi xóa bài viết
+            var comments = _db.BlogComments.Where(c => c.BlogId == blog.BlogId);
+            _db.BlogComments.RemoveRange(comments);
+
+            // ✅ Xóa bài viết chính
+            _db.Blogs.Remove(blog);
+            await _db.SaveChangesAsync();
+
+            // ✅ Sau khi xóa, quay lại trang Forum (Index)
+            TempData["Success"] = "Xóa bài viết thành công!";
+            return RedirectToAction("Index", "Forum");
+
+
+            TempData["Success"] = "Xóa bài viết thành công!";
+            return RedirectToAction(nameof(Index));
+        }
+
         // ========== SHOW CREATE FORM ==========
         [HttpGet("Create")]
         [AllowAnonymous] // ✅ tạm thời bỏ qua đăng nhập
