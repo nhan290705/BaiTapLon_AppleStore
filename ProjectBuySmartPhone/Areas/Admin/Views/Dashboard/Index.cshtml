@@ -1,0 +1,443 @@
+﻿@model ProjectBuySmartPhone.Models.Domain.Entities.DashboardViewModel
+@{
+    ViewData["Title"] = "DASHBOARD";
+    Layout = "~/Areas/Admin/Views/Shared/MyLayout.cshtml";
+}
+
+<div class="block-header">
+    <h2>DASHBOARD</h2>
+</div>
+
+<!-- Widgets -->
+<div class="row clearfix">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-pink hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">shopping_cart</i>
+            </div>
+            <div class="content">
+                <div class="text">PENDING ORDERS</div>
+                <div class="number count-to" data-from="0" data-to="@Model.PendingOrders" data-speed="1000" data-fresh-interval="20">@Model.PendingOrders</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-cyan hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">local_shipping</i>
+            </div>
+            <div class="content">
+                <div class="text">PROCESSING ORDERS</div>
+                <div class="number count-to" data-from="0" data-to="@Model.ProcessingOrders" data-speed="1000" data-fresh-interval="20">@Model.ProcessingOrders</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-light-green hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">person</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL CUSTOMERS</div>
+                <div class="number count-to" data-from="0" data-to="@Model.TotalCustomers" data-speed="1000" data-fresh-interval="20">@Model.TotalCustomers</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="info-box bg-orange hover-expand-effect">
+            <div class="icon">
+                <i class="material-icons">inventory</i>
+            </div>
+            <div class="content">
+                <div class="text">TOTAL PRODUCTS</div>
+                <div class="number count-to" data-from="0" data-to="@Model.TotalProducts" data-speed="1000" data-fresh-interval="20">@Model.TotalProducts</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Widgets -->
+
+<!-- Revenue Chart -->
+<div class="row clearfix">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="card">
+            <div class="header">
+                <div class="row clearfix">
+                    <div class="col-xs-12 col-sm-6">
+                        <h2>REVENUE LAST 7 DAYS (VNĐ)</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="body">
+                <canvas id="revenue_chart" height="80"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #END# Revenue Chart -->
+
+<div class="row clearfix">
+    <!-- Today Stats -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="body bg-pink">
+                <div class="m-b--35 font-bold">CUSTOMERS</div>
+                <ul class="dashboard-stat-list">
+                    <li>
+                        TODAY
+                        <span class="pull-right"><b>@Model.NewCustomersToday</b> <small>USERS</small></span>
+                    </li>
+                    <li>
+                        YESTERDAY
+                        <span class="pull-right"><b>@Model.NewCustomersYesterday</b> <small>USERS</small></span>
+                    </li>
+                    <li>
+                        LAST WEEK
+                        <span class="pull-right"><b>@Model.NewCustomersLastWeek</b> <small>USERS</small></span>
+                    </li>
+                    <li>
+                        TOTAL
+                        <span class="pull-right"><b>@Model.TotalCustomers</b> <small>USERS</small></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Today Stats -->
+    
+    <!-- Revenue Stats -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="body bg-cyan">
+                <div class="m-b--35 font-bold">REVENUE (VNĐ)</div>
+                <ul class="dashboard-stat-list">
+                    <li>
+                        TODAY
+                        <span class="pull-right"><b>@string.Format("{0:N0}", Model.RevenueToday)</b></span>
+                    </li>
+                    <li>
+                        YESTERDAY
+                        <span class="pull-right"><b>@string.Format("{0:N0}", Model.RevenueYesterday)</b></span>
+                    </li>
+                    <li>
+                        LAST WEEK
+                        <span class="pull-right"><b>@string.Format("{0:N0}", Model.RevenueLastWeek)</b></span>
+                    </li>
+                    <li>
+                        LAST MONTH
+                        <span class="pull-right"><b>@string.Format("{0:N0}", Model.RevenueLastMonth)</b></span>
+                    </li>
+                    <li>
+                        TOTAL
+                        <span class="pull-right"><b>@string.Format("{0:N0}", Model.TotalRevenue)</b></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Revenue Stats -->
+    
+    <!-- Product Stats -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="body bg-teal">
+                <div class="font-bold m-b--35">PRODUCT INVENTORY</div>
+                <ul class="dashboard-stat-list">
+                    <li>
+                        TOTAL PRODUCTS
+                        <span class="pull-right"><b>@Model.TotalProducts</b></span>
+                    </li>
+                    <li>
+                        IN STOCK
+                        <span class="pull-right"><b>@Model.InStockProducts</b></span>
+                    </li>
+                    <li>
+                        OUT OF STOCK
+                        <span class="pull-right"><b>@Model.OutOfStockProducts</b></span>
+                    </li>
+                    <li>
+                        PRODUCT DETAILS
+                        <span class="pull-right"><b>@Model.TotalProductDetails</b></span>
+                    </li>
+                    <li>
+                        COMPLETED ORDERS
+                        <span class="pull-right"><b>@Model.CompletedOrders</b></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Product Stats -->
+</div>
+
+<div class="row clearfix">
+    <!-- Recent Orders -->
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div class="card">
+            <div class="header">
+                <h2>RECENT ORDERS</h2>
+                <ul class="header-dropdown m-r--5">
+                    <li>
+                        <a href="@Url.Action("Index", "Order")" class="btn btn-xs bg-deep-orange waves-effect">
+                            VIEW ALL
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-hover dashboard-task-infos">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentOrders != null && Model.RecentOrders.Any())
+                            {
+                                foreach (var order in Model.RecentOrders)
+                                {
+                                    var statusClass = order.StatusOrderId switch
+                                    {
+                                        1 => "bg-orange",
+                                        2 => "bg-blue",
+                                        3 => "bg-light-blue",
+                                        4 => "bg-green",
+                                        5 => "bg-red",
+                                        _ => "bg-grey"
+                                    };
+                                    
+                                    <tr onclick="window.location='@Url.Action("Details", "Order", new { id = order.OrderId })'" style="cursor: pointer;">
+                                        <td><strong>#@order.OrderId</strong></td>
+                                        <td>@(order.User?.LastName ?? order.RecipientName ?? "Guest")</td>
+                                        <td><span class="label @statusClass">@order.StatusOrder?.Name</span></td>
+                                        <td>@order.CreatedAt.ToString("dd/MM/yyyy")</td>
+                                        <td><strong>@string.Format("{0:N0}", order.TotalPrice ?? 0) VNĐ</strong></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">No orders yet</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Recent Orders -->
+    
+    <!-- Order Status Chart -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="card">
+            <div class="header">
+                <h2>ORDER STATUS</h2>
+            </div>
+            <div class="body">
+                <canvas id="order_status_chart" height="200"></canvas>
+                <div class="m-t-20">
+                    @if (Model.OrdersByStatus != null && Model.OrdersByStatus.Any())
+                    {
+                        foreach (var status in Model.OrdersByStatus)
+                        {
+                            var color = status.StatusId switch
+                            {
+                                1 => "#FF9800",
+                                2 => "#2196F3",
+                                3 => "#03A9F4",
+                                4 => "#4CAF50",
+                                5 => "#F44336",
+                                _ => "#9E9E9E"
+                            };
+                            
+                            <div class="m-b-10">
+                                <small style="color: @color;">■</small>
+                                <strong>@status.StatusName:</strong> @status.Count orders
+                                <span class="pull-right">@string.Format("{0:N0}", status.TotalAmount) VNĐ</span>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Order Status Chart -->
+</div>
+
+<div class="row clearfix">
+    <!-- Top Selling Products -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="header bg-deep-orange">
+                <h2 class="text-white">TOP SELLING PRODUCTS</h2>
+            </div>
+            <div class="body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Sold</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.TopSellingProducts != null && Model.TopSellingProducts.Any())
+                            {
+                                int rank = 1;
+                                foreach (var item in Model.TopSellingProducts)
+                                {
+                                    <tr>
+                                        <td><strong>@rank</strong></td>
+                                        <td>@item.Product.ProductName</td>
+                                        <td>@item.Product.ProductCategory?.CategoryName</td>
+                                        <td><span class="label bg-green">@item.TotalSold</span></td>
+                                        <td><strong>@string.Format("{0:N0}", item.TotalRevenue) VNĐ</strong></td>
+                                    </tr>
+                                    rank++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center">No data available</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Top Selling Products -->
+    
+    <!-- Products by Category -->
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card">
+            <div class="header bg-indigo">
+                <h2 class="text-white">PRODUCTS BY CATEGORY</h2>
+            </div>
+            <div class="body">
+                <canvas id="category_chart" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- #END# Products by Category -->
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Revenue Chart (Last 7 Days)
+        var revenueCtx = document.getElementById('revenue_chart').getContext('2d');
+        var revenueData = @Html.Raw(Json.Serialize(Model.Last7DaysRevenue.Select(d => new { 
+            date = d.Date.ToString("dd/MM"), 
+            revenue = d.Revenue,
+            orders = d.OrderCount 
+        })));
+        
+        new Chart(revenueCtx, {
+            type: 'line',
+            data: {
+                labels: revenueData.map(d => d.date),
+                datasets: [{
+                    label: 'Revenue (VNĐ)',
+                    data: revenueData.map(d => d.revenue),
+                    borderColor: 'rgb(233, 30, 99)',
+                    backgroundColor: 'rgba(233, 30, 99, 0.1)',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return 'Revenue: ' + context.parsed.y.toLocaleString('vi-VN') + ' VNĐ';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString('vi-VN');
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Order Status Doughnut Chart
+        var statusCtx = document.getElementById('order_status_chart').getContext('2d');
+        var statusData = @Html.Raw(Json.Serialize(Model.OrdersByStatus));
+        
+        new Chart(statusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: statusData.map(s => s.statusName),
+                datasets: [{
+                    data: statusData.map(s => s.count),
+                    backgroundColor: [
+                        '#FF9800', // Pending
+                        '#2196F3', // Processing
+                        '#03A9F4', // Shipping
+                        '#4CAF50', // Completed
+                        '#F44336'  // Cancelled
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // Category Chart
+        var categoryCtx = document.getElementById('category_chart').getContext('2d');
+        var categoryData = @Html.Raw(Json.Serialize(Model.ProductsByCategory));
+        
+        new Chart(categoryCtx, {
+            type: 'bar',
+            data: {
+                labels: categoryData.map(c => c.categoryName),
+                datasets: [{
+                    label: 'Products',
+                    data: categoryData.map(c => c.productCount),
+                    backgroundColor: 'rgba(63, 81, 181, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
