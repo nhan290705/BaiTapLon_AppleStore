@@ -31,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Areas\Storefront\Controllers\" />
     <Folder Include="Areas\Storefront\Views\" />
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\products\" />
   </ItemGroup>
 
