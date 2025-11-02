@@ -1,0 +1,58 @@
+﻿body {
+    background-color: #f5f5f7;
+    font-family: 'Segoe UI', sans-serif;
+    color: #1d1d1f;
+}
+
+header {
+    background-color: #000;
+    padding: 10px 0;
+}
+
+    header h1 {
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        margin: 0;
+    }
+
+main {
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+footer {
+    background: #000;
+    color: #aaa;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 40px;
+}
+
+.btn-dark {
+    background-color: #000;
+    border: none;
+}
+
+    .btn-dark:hover {
+        background-color: #333;
+    }
+
+.alert {
+    margin-top: 10px;
+}
+.card {
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

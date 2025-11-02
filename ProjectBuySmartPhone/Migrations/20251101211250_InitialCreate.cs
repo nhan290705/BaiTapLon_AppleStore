@@ -136,7 +136,7 @@ namespace ProjectBuySmartPhone.Migrations
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     Note = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -240,7 +240,7 @@ namespace ProjectBuySmartPhone.Migrations
                 name: "OrderDetail",
                 columns: table => new
                 {
-                    OrderDetailId = table.Column<int>(type: "int", maxLength: 200, nullable: false)
+                    OrderDetailId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Qty = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),

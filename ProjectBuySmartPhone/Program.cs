@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<JwtAuthFilter>();
 });
-
+builder.Services.AddSession();
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
@@ -64,7 +64,7 @@ app.UseRouting();
 app.UseStaticFiles();
 app.UseMiddleware<RefreshJwtMiddleware>();
 app.UseAuthentication(); //Chien
-
+app.UseSession();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "areas",

@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Đặt hàng thành công";
+    Layout = "~/Areas/Cart/Shared/_LayoutCart.cshtml";
+}
+
+<div class="container mt-5 text-center">
+    <div class="card shadow-sm p-5">
+        <div class="mb-4">
+            <i class="fa-solid fa-circle-check text-success" style="font-size: 80px;"></i>
+        </div>
+        <h2 class="fw-bold text-success">Đặt hàng thành công!</h2>
+        <p class="text-muted mt-3">
+            Cảm ơn bạn đã mua sắm tại <b>Apple Store</b>.<br />
+            Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ sớm liên hệ để xác nhận.
+        </p>
+
+        <div class="mt-4">
+            <a href="/Store/Index" class="btn btn-dark px-4 py-2 me-2">
+                <i class="fa-solid fa-store me-1"></i> Tiếp tục mua sắm
+            </a>
+            <a href="/User/Orders" class="btn btn-outline-secondary px-4 py-2">
+                <i class="fa-solid fa-box me-1"></i> Xem đơn hàng của tôi
+            </a>
+        </div>
+    </div>
+</div>
