@@ -12,7 +12,6 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [MaxLength(40)] 
         public string? Sku { get; set; }
 
-
         // FK
         public int ProductId { get; set; }
         public virtual Product? Product { get; set; }
