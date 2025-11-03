@@ -36,17 +36,12 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
                     ModelState.AddModelError("Username", "Username does not exist");
                     return View(userLogin);
                 }
-                //if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
-                //{
-                //    ModelState.AddModelError("Password", "Incorrect password");
-                //    return View(userLogin);
-                //}
-                // ⚠️ Tạm thời dùng so sánh trực tiếp để test (không dùng BCrypt)
-                if (userLogin.Password != user.Password)
+                if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
                 {
-                    ViewBag.Error = "Sai mật khẩu!";
-                    return View("Login");
+                    ModelState.AddModelError("Password", "Incorrect password");
+                    return View(userLogin);
                 }
+               
 
                 var isHttps = HttpContext.Request.IsHttps;
                 var token = _jwtHelper.GenerateTokens(user.UserId);
