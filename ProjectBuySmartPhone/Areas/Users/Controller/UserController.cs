@@ -52,7 +52,7 @@ namespace ProjectBuySmartPhone.Areas.Users.Controllers
             if (userId == null)
                 return RedirectToAction("Index", "Login", new { area = "Identity" });
 
-            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.User.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound();
 
@@ -70,7 +70,7 @@ namespace ProjectBuySmartPhone.Areas.Users.Controllers
             if (userId == null)
                 return RedirectToAction("Index", "Login", new { area = "Identity" });
 
-            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.User.FirstOrDefault(u => u.UserId == userId);
             if (user == null)
                 return NotFound();
 
@@ -93,7 +93,7 @@ namespace ProjectBuySmartPhone.Areas.Users.Controllers
             var userId = getCurrentUserId();
             if (userId == null) return RedirectToAction("Index", "Login", new { area = "Identity" });
 
-            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.User.FirstOrDefault(u => u.UserId == userId);
             if (user == null) return NotFound();
 
             if (!ModelState.IsValid)

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjectBuySmartPhone.Models.Domain.Entities
 {
+    
     public class Order : BaseEntity
     {
         [Key]

@@ -14,6 +14,7 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
         [Column(TypeName = "nvarchar(max)")]
         public string? Content { get; set; }
 
+        [Column(TypeName = "int")]
         public BlogStatus Status { get; set; } = BlogStatus.Draft;
 
         // FK

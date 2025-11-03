@@ -253,7 +253,7 @@ namespace ProjectBuySmartPhone.Areas.Cart.Controllers
                 return RedirectToAction("Index", "Login", new { area = "Identity" });
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            var user = _context.User.FirstOrDefault(u => u.UserId == userId);
 
             // 🔹 Gắn thông tin mặc định vào ViewBag để hiển thị trong form
             var fullName = $"{user?.FirstName} {user?.LastName}".Trim();

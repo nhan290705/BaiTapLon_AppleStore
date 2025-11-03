@@ -66,6 +66,7 @@
                 <i class="giohangicon fa-solid fa-cart-shopping cart-icon"></i>
                 <span>Giỏ hàng</span>
             </a>
+
             @* Hân làm vào đây User *@
             <div class="danhmuc dropdown">
                 <a class="dropdown-toggle text-light text-decoration-none" href="#" id="userDropdown"
@@ -91,6 +92,7 @@
                         </a>
                     </li>
                 </ul>
+
             </div>
         </div>
     </header>
@@ -168,7 +170,7 @@
 
             <div class="boxmac">
                 <div class="macImgContainer">
-                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/mac.html">
+                    <a href="#">
                         <img src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/box_mac/mac1.png" alt="anh_mac" class="anhmac">
                     </a>
                 </div>
@@ -178,7 +180,7 @@
                 <h2>iPhone</h2>
                 <div class="col-12 col-md-4 box15pro">
                     <a href="~/2024_BTLWeb_Group1/NguyenTheSon_232631049/iphone.html">
-                        <img class="anhbox15pro" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/iphone17TrangChu.jpg" alt="">
+                        <img class="anhbox15pro" src="~/2024_BTLWeb_Group1/imagesNhan/17.png" alt="">
                     </a>
                 </div>
                 <div class="col boxspip">
@@ -192,7 +194,7 @@
                                         ?? a.ProductImages?.FirstOrDefault()?.ImageUrl
                                         ?? "no-image.jpg";
                                         <div class="step col-12 spip">
-                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="">
+                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="" style="object-fit: cover; height: 215px;">
                                             <h6>@a.ProductName</h6>
                                             <div class="price-wrapper">                                              
                                                 <span class="discount">- @a.Discount %</span>
@@ -214,119 +216,6 @@
                     </div>
                 </div>
             </div>
-            
-
-            @* <div class="row boxmuanhieu">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nutmuanhieu nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Dành riêng cho bạn</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nutmuanhieu nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Sản phẩm được mua kèm</button>
-                    </li>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                        <!-- Nội dung dành riêng cho bạn -->
-                        <div class="row boxspmuanhieu">
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/cusac.png" alt="">
-                                <h6>Củ sạc Apple 20W Type-C</h6>
-                                <div>
-                                    <span class="giaspip">549.000đ</span>
-                                </div>
-                                <button class="btn muaphukien muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                                
-                                
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/cap.png" alt="">
-                                <h6>Cáp USB-C Charge Apple 1m</h6>
-                                <div>
-                                    <span class="giaspip">529.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/but.png" alt="">
-                                <h6>Bút cảm ứng Apple Pencil</h6>
-                                <div>
-                                    <span class="giaspip">2.790.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/phim.png" alt="">
-                                <h6>Bàn phím iPad Pro 13inch Magic Keyboard</h6>
-                                <div>
-                                    <span class="giaspip">9.799.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <!-- Nội dung sản phẩm được mua kèm -->
-                        <div class="row boxspmuanhieu">
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/op.png" alt="">
-                                <h6>Ốp lưng iPhone 15 Pro Max Mag Safe</h6>
-                                <div>
-                                    <span class="giaspip">1.050.000đ</span>
-                                </div>
-                                <button class="btn muaphukien muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/cap.png" alt="">
-                                <h6>Cáp USB-C Charge Apple 1m</h6>
-                                <div>
-                                    <span class="giaspip">529.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/magsafe.png" alt="">
-                                <h6>Dây sạc MagSafe USB-C 1m</h6>
-                                <div>
-                                    <span class="giaspip">1.190.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-
-                            <div class="col-12 col-md spmuanhieu">
-                                <img class="anhspip" src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/img/imgMain/boxmuanhieu/airpod.png" alt="">
-                                <h6>Airpods 3 2022 Hộp sạc dây</h6>
-                                <div>
-                                    <span class="giaspip">4.090.000đ</span>
-                                </div>
-                                <button class="btn muaspip btn-success">
-                                    <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html">Mua ngay</a>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> *@
-
             <div class="boxspnoibat">
                 <div class="row tieudenb">
                     <h2>Sản phẩm nổi bật</h2>
@@ -357,11 +246,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
 
 
             <div class="row boxnhantin">

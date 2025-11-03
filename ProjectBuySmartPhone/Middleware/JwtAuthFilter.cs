@@ -1,16 +1,35 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+
 using System.IdentityModel.Tokens.Jwt;
 
 namespace ProjectBuySmartPhone.Middleware
 {
     public class JwtAuthFilter : ActionFilterAttribute
     {
+        private readonly IConfiguration _config;
+
+        public JwtAuthFilter(IConfiguration config)
+        {
+            _config = config.GetSection("Jwt");
+        }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            var descriptor = context.ActionDescriptor as Microsoft.AspNetCore.Mvc.Controllers.ControllerActionDescriptor;
+            var hasAllowAnonymous = descriptor?.MethodInfo
+                .GetCustomAttributes(typeof(AllowAnonymousAttribute), inherit: true).Any() ?? false;
+
+            if (hasAllowAnonymous)
+            {
+                base.OnActionExecuting(context);
+                return;
+            }
+
             var path = context.HttpContext.Request.Path.Value?.ToLower();
 
-            // ✅ Những đường dẫn công khai (không cần token)
+            // ✅ Các đường dẫn công khai
             string[] publicPaths =
             {
                 "/identity/login",
@@ -19,18 +38,20 @@ namespace ProjectBuySmartPhone.Middleware
                 "/favicon.ico"
             };
 
-            // Nếu là public route → bỏ qua
             if (publicPaths.Any(p => path != null && path.StartsWith(p)))
             {
                 base.OnActionExecuting(context);
                 return;
             }
 
+            // ✅ Lấy token
             var accessToken = context.HttpContext.Request.Cookies["AccessToken"];
+
             var refreshToken = context.HttpContext.Request.Cookies["RefreshToken"];
 
             // ✅ Nếu chưa có token → về Login
             if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+
             {
                 context.Result = new RedirectToRouteResult(new
                 {
@@ -89,6 +110,7 @@ namespace ProjectBuySmartPhone.Middleware
             catch (Exception ex)
             {
                 Console.WriteLine($"[JWT ERROR] {ex.Message}");
+
                 context.Result = new RedirectToRouteResult(new
                 {
                     area = "Identity",

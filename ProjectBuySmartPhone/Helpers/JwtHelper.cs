@@ -53,15 +53,17 @@ namespace ProjectBuySmartPhone.Helpers
         {
             var key = Encoding.ASCII.GetBytes(_jwtKey);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var roles = _context.Users
+            var roles = _context.User
                 .Where(u => u.UserId == userId)
                 .Select(u => u.Role)
                 .FirstOrDefault();
-            string idClaim = _context.Users.FirstOrDefault(u => u.UserId == userId)?.UserId.ToString() ?? "";
+            string idClaim = _context.User.FirstOrDefault(u => u.UserId == userId)?.UserId.ToString() ?? "";
             var claims = new List<Claim>
             {
                 new Claim("idUser", userId.ToString()),
-                new Claim("idClaim", idClaim)
+                new Claim("idClaim", idClaim),
+                new Claim("uid", userId.ToString()), // Dùng trong ForumController
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()), // Backup fallback
             };
             //them claim role
             claims.Add(new Claim(ClaimTypes.Role, roles));
@@ -83,11 +85,11 @@ namespace ProjectBuySmartPhone.Helpers
         {
             var key = Encoding.ASCII.GetBytes(_jwtKey);
             var tokenHandler = new JwtSecurityTokenHandler();
-            var roles = _context.Users
+            var roles = _context.User
                 .Where(u => u.UserId == userId)
                 .Select(u => u.Role)
                 .FirstOrDefault();
-            string idClaim = _context.Users.FirstOrDefault(u => u.UserId == userId)?.UserId.ToString() ?? "";
+            string idClaim = _context.User.FirstOrDefault(u => u.UserId == userId)?.UserId.ToString() ?? "";
             var claims = new List<Claim>
             {
                 new Claim("idUser", userId.ToString()),
@@ -102,7 +104,7 @@ namespace ProjectBuySmartPhone.Helpers
                 Issuer = _jwtIssuer,
                 Subject = new ClaimsIdentity(claims),
                 IssuedAt = DateTime.UtcNow,
-                Expires = DateTime.UtcNow.AddDays(int.Parse(_refreshTokenExpiredDay)),
+                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_refreshTokenExpiredDay)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             //add refresh token vao db
@@ -143,7 +145,7 @@ namespace ProjectBuySmartPhone.Helpers
                 int userId = int.Parse(userIdClaim.Value);
 
                 //  Kiểm tra user tồn tại trong DB
-                var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+                var user = _context.User.FirstOrDefault(u => u.UserId == userId);
                 if (user == null)
                 {
                     _logger.LogWarning("User không tồn tại cho refresh token");

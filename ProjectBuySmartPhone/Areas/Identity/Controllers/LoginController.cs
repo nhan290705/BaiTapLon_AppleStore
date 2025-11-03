@@ -29,18 +29,25 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.FirstOrDefault(u =>
+                var user = _context.User.FirstOrDefault(u =>
                     u.Username.ToUpper() == userLogin.Username.ToUpper());
                 if (user == null)
                 {
                     ModelState.AddModelError("Username", "Username does not exist");
                     return View(userLogin);
                 }
-                if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
+                //if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
+                //{
+                //    ModelState.AddModelError("Password", "Incorrect password");
+                //    return View(userLogin);
+                //}
+                // ⚠️ Tạm thời dùng so sánh trực tiếp để test (không dùng BCrypt)
+                if (userLogin.Password != user.Password)
                 {
-                    ModelState.AddModelError("Password", "Incorrect password");
-                    return View(userLogin);
+                    ViewBag.Error = "Sai mật khẩu!";
+                    return View("Login");
                 }
+
                 var isHttps = HttpContext.Request.IsHttps;
                 var token = _jwtHelper.GenerateTokens(user.UserId);
                 var tokenHandler = new JwtSecurityTokenHandler();
@@ -72,9 +79,9 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
         // Redirect user to home page based on their role
         private IActionResult RedirectToHomeWithRole(string userId)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserId.ToString() == userId);
+            var user = _context.User.FirstOrDefault(u => u.UserId.ToString() == userId);
             ViewBag.UserName = user?.Username;
-            string roleName = _context.Users
+            string roleName = _context.User
                 .Where(u => u.UserId.ToString() == userId)
                 .Select(u => u.Role)
                 .FirstOrDefault() ?? "";

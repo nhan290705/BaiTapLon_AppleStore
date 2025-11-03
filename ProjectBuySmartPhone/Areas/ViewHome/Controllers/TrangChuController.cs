@@ -26,7 +26,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                                        .ToList();
             return View("TrangChu",listIphone);
         }
-        public async Task<IActionResult> ListIphone(int page = 1)
+        public async Task<IActionResult> ListIphone(string keyWord, int page = 1)
         {
             const int pageSize = 8;
 
@@ -34,7 +34,8 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Iphone")
+                           .Where(p => p.ProductCategory.CategoryName == "Iphone"
+                           && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -43,7 +44,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
             return View("ProductIphone", pagedList);
         }
-        public async Task<IActionResult> InforIphone(int productId, int page = 1)
+        public async Task<IActionResult> InforIphone(string keyWord,int productId, int page = 1)
         {
             const int pageSize = 8;
 
@@ -51,7 +52,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Iphone")
+                           .Where(p => p.ProductCategory.CategoryName == "Iphone" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -68,7 +69,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
             return View("ProductIphone", pagedList);
         }
 
-        public async Task<IActionResult> ListMac(int page = 1)
+        public async Task<IActionResult> ListMac(string keyWord,int page = 1)
         {
             const int pageSize = 8;
 
@@ -76,7 +77,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Mac")
+                           .Where(p => p.ProductCategory.CategoryName == "Mac" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -85,7 +86,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
             return View("ProductMac", pagedList);
         }
-        public async Task<IActionResult> InforMac(int productId, int page = 1)
+        public async Task<IActionResult> InforMac(string keyWord, int productId, int page = 1)
         {
             const int pageSize = 8;
 
@@ -93,7 +94,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Mac")
+                           .Where(p => p.ProductCategory.CategoryName == "Mac" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -110,7 +111,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
             return View("ProductMac", pagedList);
         }
 
-        public async Task<IActionResult> ListIpad(int page = 1)
+        public async Task<IActionResult> ListIpad(string keyWord, int page = 1)
         {
             const int pageSize = 8;
 
@@ -118,7 +119,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Ipad")
+                           .Where(p => p.ProductCategory.CategoryName == "Ipad" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -127,7 +128,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
             return View("ProductIpad", pagedList);
         }
-        public async Task<IActionResult> InforIpad(int productId, int page = 1)
+        public async Task<IActionResult> InforIpad(string keyWord, int productId, int page = 1)
         {
             const int pageSize = 8;
 
@@ -135,7 +136,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Ipad")
+                           .Where(p => p.ProductCategory.CategoryName == "Ipad" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -154,7 +155,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
 
 
-        public async Task<IActionResult> ListAppleWatch(int page = 1)
+        public async Task<IActionResult> ListAppleWatch(string keyWord, int page = 1)
         {
             const int pageSize = 8;
 
@@ -162,7 +163,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "AppleWatch")
+                           .Where(p => p.ProductCategory.CategoryName == "AppleWatch" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -171,7 +172,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
             return View("ProductAppleWatch", pagedList);
         }
-        public async Task<IActionResult> InforAppleWatch(int productId, int page = 1)
+        public async Task<IActionResult> InforAppleWatch(string keyWord, int productId, int page = 1)
         {
             const int pageSize = 8;
 
@@ -179,7 +180,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "AppleWatch")
+                           .Where(p => p.ProductCategory.CategoryName == "AppleWatch" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -196,7 +197,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
             return View("ProductAppleWatch", pagedList);
         }
 
-        public async Task<IActionResult> ListAccessory(int page = 1)
+        public async Task<IActionResult> ListAccessory(string keyWord, int page = 1)
         {
             const int pageSize = 8;
 
@@ -204,7 +205,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Accessory")
+                           .Where(p => p.ProductCategory.CategoryName == "Accessory" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
@@ -213,7 +214,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
 
             return View("ProductAccessory", pagedList);
         }
-        public async Task<IActionResult> InforAccessory(int productId, int page = 1)
+        public async Task<IActionResult> InforAccessory(string keyWord, int productId, int page = 1)
         {
             const int pageSize = 8;
 
@@ -221,7 +222,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
                            .AsNoTracking()
                            .Include(p => p.ProductCategory)
                            .Include(p => p.ProductImages)
-                           .Where(p => p.ProductCategory.CategoryName == "Accessory")
+                           .Where(p => p.ProductCategory.CategoryName == "Accessory" && (String.IsNullOrEmpty(keyWord) || p.ProductName.ToLower().Contains(keyWord.Trim().ToLower())))
                            .OrderBy(p => p.ProductName); // ổn định thứ tự
 
             var pagedList = await query.ToPagedListAsync(page, pageSize);
