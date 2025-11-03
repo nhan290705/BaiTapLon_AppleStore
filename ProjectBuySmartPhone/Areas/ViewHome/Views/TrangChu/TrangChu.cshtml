@@ -194,7 +194,7 @@
                                         ?? a.ProductImages?.FirstOrDefault()?.ImageUrl
                                         ?? "no-image.jpg";
                                         <div class="step col-12 spip">
-                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="">
+                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="" style="object-fit: cover; height: 215px;">
                                             <h6>@a.ProductName</h6>
                                             <div class="price-wrapper">                                              
                                                 <span class="discount">- @a.Discount %</span>
