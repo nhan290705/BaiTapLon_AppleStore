@@ -12,7 +12,8 @@ using ProjectBuySmartPhone.Models.Infrastructure;
 namespace ProjectBuySmartPhone.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20251101211250_InitialCreate")]
+
+    [Migration("20251103103414_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
