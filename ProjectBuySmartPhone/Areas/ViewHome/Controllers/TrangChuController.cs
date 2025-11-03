@@ -16,6 +16,7 @@ namespace ProjectBuySmartPhone.Areas.ViewHome.Controllers
         {
             this._db = db;
         }
+        
         public IActionResult Index()
         {
             List<Product> listIphone = _db.Products

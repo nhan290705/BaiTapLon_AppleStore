@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add<JwtAuthFilter>();
 });
-
+builder.Services.AddSession();
 // Add MyDbContext to Dependency Ịnection
 builder.Services.AddDbContext<MyDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppleStore")));
@@ -46,7 +46,21 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/") // chỉ check trang gốc
+    {
+        var accessToken = context.Request.Cookies["AccessToken"];
+        if (!string.IsNullOrEmpty(accessToken))
+        {
+            // Redirect sang HomePage
+            context.Response.Redirect("/ViewHome/TrangChu");
+            return;
+        }
+    }
 
+    await next();
+});
 
 app.UseRouting();
 //dki middleware token
@@ -54,7 +68,7 @@ app.UseRouting();
 app.UseStaticFiles();
 app.UseMiddleware<RefreshJwtMiddleware>();
 app.UseAuthentication(); //Chien
-
+app.UseSession();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "areas",
@@ -63,7 +77,7 @@ app.MapControllerRoute(
 app.MapAreaControllerRoute(
     name: "viewhome",
     areaName: "ViewHome",
-    pattern: "ViewHome/{controller=TrangChu}/{action=TrangChu}/{id?}");
+    pattern: "ViewHome/{controller=TrangChu}/{action=Index}/{id?}");
 
 
 app.MapAreaControllerRoute(
@@ -76,5 +90,4 @@ app.MapAreaControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-await Task.Delay(500);
 app.Run();

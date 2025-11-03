@@ -356,8 +356,13 @@
                     </div>
 
                     <div class="action-buttons">
-                        <button class="add-to-cart" onclick="showNotification()">Thêm vào giỏ <i class="fa-solid fa-cart-shopping"></i></button>
-                        <a href="~/2024_BTLWeb_Group1/VuDinhLong_232631027/payment.html" class="buy-now">Mua ngay</a>
+                        <form asp-area="Cart" asp-controller="Cart" asp-action="AddCart" method="post" class="d-inline">
+                            <input type="hidden" name="ProductId" value="@ProductDetail.ProductId" />
+                            <input type="hidden" name="Quantity" value="1" /> <!-- Số lượng mặc định là 1 -->
+                            <button type="submit" class="btn btn-dark add-to-cart">
+                                <i class="fa-solid fa-cart-plus me-2"></i> Thêm vào giỏ hàng
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -367,14 +372,6 @@
 
 
 
-    <!-- Modal thông báo -->
-    <div class="modal" id="notificationModal">
-        <div class="modal-content">
-            <span class="close" onclick="closeNotification()">&times;</span>
-            <h1>Tính năng đang được cập nhật!</h1>
-            <p>Xin vui lòng quay lại sau.</p>
-        </div>
-    </div>
 
 
     <!--End Modal-Section-four  -->

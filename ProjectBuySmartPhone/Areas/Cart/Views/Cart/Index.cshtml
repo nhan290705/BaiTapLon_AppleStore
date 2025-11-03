@@ -1,0 +1,137 @@
+﻿@model ProjectBuySmartPhone.Models.Domain.Session.ShoppingCart
+@using ProjectBuySmartPhone.Models.Domain.Enums
+@{
+    ViewData["Title"] = "Giỏ hàng của bạn";
+    Layout = "~/Areas/Cart/Shared/_LayoutCart.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">
+        <i class="fa-solid fa-cart-shopping me-2"></i>@ViewData["Title"]
+    </h2>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+    else if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+
+    @if (!Model.Items.Any())
+    {
+        <div class="text-center p-5">
+            <p>Giỏ hàng của bạn hiện đang trống.</p>
+            <a href="/ViewHome/TrangChu" class="btn btn-dark">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered align-middle text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr data-product-id="@item.ProductId">
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("N0") ₫</td>
+
+                        <td>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="button" class="btn btn-outline-secondary btn-sm btn-decrease">−</button>
+                                <span class="mx-2 fw-bold quantity-value">@item.Quantity</span>
+                                <button type="button" class="btn btn-outline-secondary btn-sm btn-increase">+</button>
+                            </div>
+                        </td>
+
+                        <td><span class="item-total">@((item.Quantity * item.Price).ToString("N0"))</span> ₫</td>
+
+                        <td>
+                            <form asp-action="RemoveItem" method="post" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.ProductId" />
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <form asp-action="Clear" method="post">
+                <button type="submit" class="btn btn-outline-secondary">Xóa tất cả</button>
+            </form>
+
+            <h4>
+                Tổng cộng:
+                <span class="text-danger total-amount">@Model.TotalAmount.ToString("N0")</span> ₫
+            </h4>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <a asp-action="Checkout" class="btn btn-dark px-5 py-2">
+                <i class="fa-solid fa-check me-1"></i> Xác nhận đặt hàng
+            </a>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Hàm cập nhật bằng Ajax
+            async function updateQuantity(productId, newQuantity, row) {
+                const response = await fetch('/Cart/Cart/UpdateQuantityAjax', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: `productId=${productId}&quantity=${newQuantity}`
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    if (result.remove) {
+                        row.remove();
+                    } else {
+                        row.querySelector(".quantity-value").innerText = result.newQuantity;
+                        row.querySelector(".item-total").innerText = result.itemTotal;
+                    }
+                    document.querySelector(".total-amount").innerText = result.totalAmount;
+                } else {
+                    alert(result.message || "Không thể cập nhật số lượng!");
+                }
+            }
+
+            document.querySelectorAll(".btn-increase").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const row = btn.closest("tr");
+                    const productId = row.dataset.productId;
+                    const quantityEl = row.querySelector(".quantity-value");
+                    const newQty = parseInt(quantityEl.innerText) + 1;
+                    updateQuantity(productId, newQty, row);
+                });
+            });
+
+            document.querySelectorAll(".btn-decrease").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const row = btn.closest("tr");
+                    const productId = row.dataset.productId;
+                    const quantityEl = row.querySelector(".quantity-value");
+                    const newQty = parseInt(quantityEl.innerText) - 1;
+                    if (newQty > 0) {
+                        updateQuantity(productId, newQty, row);
+                    }
+                });
+            });
+        });
+    </script>
+}

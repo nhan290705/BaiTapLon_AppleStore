@@ -1,0 +1,31 @@
+﻿@model ProjectBuySmartPhone.Models.Domain.Entities.User
+@{
+    Layout = "~/Areas/Users/Shared/_LayoutUserSetting.cshtml";
+    ViewData["Title"] = "Thông tin tài khoản";
+    ViewData["ActiveTab"] = "Profile";
+}
+
+<h2 style="margin-bottom:25px;">Thông tin tài khoản</h2>
+
+<div style="font-size:15px; line-height:1.8;">
+    <p><strong>Tên họ:</strong> @Model.FirstName</p>
+    <p><strong>Tên cuối:</strong> @Model.LastName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Số điện thoại:</strong> @Model.PhoneNumber</p>
+    <p><strong>Tên đăng nhập:</strong> @Model.Username</p>
+</div>
+<style>
+    .btn-edit {
+        display: inline-block;
+        background-color: #0071e3;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 30px;
+        text-decoration: none;
+        transition: background 0.2s ease;
+    }
+
+        .btn-edit:hover {
+            background-color: #005bb5;
+        }
+</style>

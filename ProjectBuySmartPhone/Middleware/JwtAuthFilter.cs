@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
+
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace ProjectBuySmartPhone.Middleware
 {
@@ -39,6 +37,7 @@ namespace ProjectBuySmartPhone.Middleware
                 "/identity/logout",
                 "/favicon.ico"
             };
+
             if (publicPaths.Any(p => path != null && path.StartsWith(p)))
             {
                 base.OnActionExecuting(context);
@@ -47,7 +46,12 @@ namespace ProjectBuySmartPhone.Middleware
 
             // ✅ Lấy token
             var accessToken = context.HttpContext.Request.Cookies["AccessToken"];
-            if (string.IsNullOrEmpty(accessToken))
+
+            var refreshToken = context.HttpContext.Request.Cookies["RefreshToken"];
+
+            // ✅ Nếu chưa có token → về Login
+            if (string.IsNullOrEmpty(accessToken) || string.IsNullOrEmpty(refreshToken))
+
             {
                 context.Result = new RedirectToRouteResult(new
                 {
@@ -58,41 +62,55 @@ namespace ProjectBuySmartPhone.Middleware
                 return;
             }
 
-            // ✅ Xác thực token
             try
             {
-                var jwtKey = _config["Key"];
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(jwtKey);
+                // ✅ Giải mã token để đọc role
+                var handler = new JwtSecurityTokenHandler();
+                var token = handler.ReadJwtToken(accessToken);
 
-                var principal = tokenHandler.ValidateToken(accessToken, new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = true,
-                    ValidIssuer = _config["Issuer"],
-                    ValidateAudience = true,
-                    ValidAudience = _config["Audience"],
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                }, out SecurityToken validatedToken);
+                // Lấy role trong claim (ví dụ: "ADMIN", "USER")
+                var roleClaim = token.Claims
+                    .FirstOrDefault(c => c.Type.Equals("role", StringComparison.OrdinalIgnoreCase))
+                    ?.Value;
 
-                context.HttpContext.User = principal; // ✅ Gắn user hợp lệ
-            }
-            catch (SecurityTokenExpiredException)
-            {
-                // ✅ Token hết hạn → redirect login
-                context.Result = new RedirectToRouteResult(new
+                // Lấy idUser để debug
+                var idUserClaim = token.Claims
+                    .FirstOrDefault(c => c.Type.Equals("idUser", StringComparison.OrdinalIgnoreCase))
+                    ?.Value;
+
+                // ✅ Nếu cố vào khu vực Admin mà role không phải ADMIN
+                if (path != null && path.StartsWith("/Admin") &&
+                    !string.Equals(roleClaim, "ADMIN", StringComparison.OrdinalIgnoreCase))
                 {
-                    area = "Identity",
-                    controller = "Login",
-                    action = "Index"
-                });
-                return;
+                    context.Result = new RedirectToRouteResult(new
+                    {
+                        area = "Identity",
+                        controller = "Login",
+                        action = "AccessDenied"
+                    });
+                    return;
+                }
+
+                // ✅ Nếu cố vào khu vực User mà role không phải USER
+                if (path != null && path.StartsWith("/user") &&
+                    !string.Equals(roleClaim, "USER", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Result = new RedirectToRouteResult(new
+                    {
+                        area = "Identity",
+                        controller = "Login",
+                        action = "AccessDenied"
+                    });
+                    return;
+                }
+
+                // (Tuỳ chọn) Debug in ra role để test
+                Console.WriteLine($"[JWT] Path: {path}, Role: {roleClaim}, UserId: {idUserClaim}");
             }
-            catch
+            catch (Exception ex)
             {
-                // ✅ Token lỗi → redirect login
+                Console.WriteLine($"[JWT ERROR] {ex.Message}");
+
                 context.Result = new RedirectToRouteResult(new
                 {
                     area = "Identity",

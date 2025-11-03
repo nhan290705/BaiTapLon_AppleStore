@@ -87,13 +87,17 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
                 .FirstOrDefault() ?? "";
             if (roleName.ToUpper() == "ADMIN")
             {
-                return RedirectToAction("Index", "ScreenAdmin", new { area = "Admin" });
+                return RedirectToAction("Index", "DashBoard", new { area = "Admin" });
             }
             if (roleName.ToUpper() == "USER")
             {
-                return RedirectToAction("Index", "Home", new { area = "" });
+                return RedirectToAction("Index", "TrangChu", new { area = "ViewHome" });
             }
-            return RedirectToAction("Index", "Home", new { area = "" });
+            return RedirectToAction("Index", "TrangChu", new { area = "ViewHome" });
+        }
+        public IActionResult AccessDenied()
+        {
+                       return View();
         }
     }
 }

@@ -1,0 +1,277 @@
+﻿@{
+    Layout = "~/Areas/HomePage/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Apple Store";
+}
+
+<div id="main">
+    <div id="page1">
+        <nav>
+            <div class="nav-items">
+                <i class="ri-apple-fill"></i>
+                <a id="Store" href="#">Cửa hàng</a>
+                <a href="#">Mac</a>
+                <a href="#">iPad</a>
+                <a href="#">iPhone</a>
+                <a href="#">Watch</a>
+                <a href="#">AirPods</a>
+                <a href="#">TV & Nhà</a>
+                <a href="#">Giải trí</a>
+                <a href="#">Phụ kiện</a>
+                <a href="#">Hỗ trợ</a>
+                <i class="ri-search-line"></i>
+                <i class="ri-shopping-bag-line"></i>
+                <i id="User-nav" href="#" class="ri-user-line"></i>
+            </div>
+        </nav>
+
+        <div class="nav2">
+            Thanh toán hàng tháng thật dễ dàng. Bao gồm lựa chọn lãi suất 0%.<a href="#">Tìm hiểu thêm > </a>
+        </div>
+
+        <!-- ✅ Hover menu (nav3) -->
+        <div class="nav3">
+            <div class="nav-top">
+                <div class="nav-top-store">
+                    <div class="store1">
+                        <h4>Shop</h4>
+                        <a href="/Store/Index">Mua sản phẩm mới nhất</a>
+                        <a href="/Store/Index">Mac</a>
+                        <a href="/Store/Index">iPad</a>
+                        <a href="/Store/Index">iPhone</a>
+                        <a href="/Store/Index">Apple Watch</a>
+                        <a href="/Store/Index">Phụ kiện</a>
+                    </div>
+                    <div class="store2">
+                        <h4>Liên kết nhanh</h4>
+                        <a href="#">Tình trạng đơn hàng</a>
+                        <a href="#">Apple trade in</a>
+                        <a href="#">Tài chính</a>
+                    </div>
+                    <div class="store3">
+                        <h4>Mua tại cửa hàng đặc biệt</h4>
+                        <a href="#">Giáo dục</a>
+                        <a href="#">Doanh nghiệp</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-bottom"></div>
+        </div>
+
+        <!-- ✅ Menu tài khoản user -->
+        <div class="nav-user">
+            <div class="nav-top">
+                <div class="nav-top-store">
+                    <div class="store1">
+                        <h4>Shop</h4>
+                        <a href="#">Đơn hàng của tôi</a>
+                        <a asp-area="Users" asp-controller="User" asp-action="Profile">Cài đặt tài khoản</a>
+                        <a href="#">Đăng xuất</a>
+                    </div>
+                    <div class="store2">
+                        <h4>Liên kết nhanh</h4>
+                        <a href="#">Trang cửa hàng</a>
+                        <a href="#">Trung tâm hỗ trợ</a>
+                    </div>
+                    <div class="store3">
+                        <h4>Mua sắm đặc biệt</h4>
+                        <a href="#">Apple Trade-In</a>
+                        <a href="#">Giáo dục</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-bottom"></div>
+        </div>
+
+        <!-- ✅ Subnav mobile -->
+        <div class="subnav">
+            <i class="ri-close-line"></i>
+            <a href="#">Store</a><a href="#">Mac</a><a href="#">iPad</a><a href="#">iPhone</a>
+            <a href="#">Watch</a><a href="#">AirPods</a><a href="#">TV & Home</a>
+            <a href="#">Entertainment</a><a href="#">Accessories</a><a href="#">Support</a>
+        </div>
+
+        <!-- ✅ Hero Sections -->
+        <div class="hero-section hero">
+            <div class="hero-section-img">
+                <div class="hero-section-p hero-p">
+                    <h2>iPhone 17 Pro</h2>
+                    <h3>Pro đỉnh cao.</h3>
+                    <div class="links">
+                        <a href="#">Tìm hiểu thêm <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Mua <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-section hero-section2">
+            <div class="hero-section-img">
+                <div class="hero-section-p text1">
+                    <h2>iPhone Air</h2>
+                    <h3>iPhone mỏng nhất từng có
+                        <br />Với sức mạnh pro bên trong.</h3>
+                    <div class="links">
+                        <a href="#">Tìm hiểu thêm <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Mua <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-section hero-section3">
+            <div class="hero-section-img">
+                <div class="hero-section-p text0">
+                    <h2>MacBook Pro 14""</h2>
+                    <h3>Siêu mạnh mẽ với M5.</h3>
+                    <div class="links links2">
+                        <a href="#">Tìm hiểu thêm <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Mua <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ Series 9 + Ultra -->
+        <div class="hero-section4">
+            <div class="hero-section hero-section3 section4-1">
+                <div class="hero-section-p">
+                    <img src="~/images/series9.png" alt="">
+                    <h3>Smarter. Brighter. Mightier.</h3>
+                    <div class="links">
+                        <a href="#">Learn More <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Buy <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-section hero-section3 section4-2">
+                <div class="hero-section-p text3">
+                    <img src="~/images/ultra.png" alt="">
+                    <h3>Next-level adventure.</h3>
+                    <div class="links">
+                        <a href="#">Learn More <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Buy <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ MacBook + iPad -->
+        <div class="hero-section4">
+            <div class="hero-section hero-section3 section5-1">
+                <div class="hero-section-p text4">
+                    <h3>MacBook Pro</h3>
+                    <p>Mind-blowing. Head-turning.</p>
+                    <div class="links">
+                        <a href="#">Learn More <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Buy <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-section hero-section3 section5-2">
+                <div class="hero-section-p text4">
+                    <h3>iPad</h3>
+                    <p>Lovable. Drawable. Magical.</p>
+                    <div class="links">
+                        <a href="#">Learn More <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Buy <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ AirPods + Trade -->
+        <div class="hero-section4">
+            <div class="hero-section hero-section3 section6-1">
+                <div class="hero-section-p text6">
+                    <h3>AirPods Pro</h3>
+                    <p>Adaptive Audio. Now playing.</p>
+                    <div class="links">
+                        <a href="#">Learn More <i class="ri-arrow-right-s-line"></i></a>
+                        <a href="#">Buy <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-section hero-section3 section6-2">
+                <div class="hero-section-p text5">
+                    <img src="~/images/trade.png" alt="">
+                    <p>Upgrade and save. It’s that easy.</p>
+                    <div class="links">
+                        <a href="#">See What Your Device is Worth <i class="ri-arrow-right-s-line"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ✅ Slider -->
+        <div class="slider">
+            <div class="swiper mySwiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide s1"></div>
+                    <div class="swiper-slide s2"></div>
+                    <div class="swiper-slide s3"></div>
+                    <div class="swiper-slide s4"></div>
+                    <div class="swiper-slide s5"></div>
+                </div>
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-pagination"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer2">
+        <div class="sub-footer1">
+            <h4>Shop and Learn</h4>
+            <a href="">Store</a><a href="">Mac</a><a href="">iPad</a><a href="">iPhone</a><a href="">Watch</a><a href="">AirPods</a><a href="">TV & Home</a><a href="">AirTag</a><a href="">Accessories</a><a href="">Gift Cards</a>
+
+            <h4>Apple Wallet</h4>
+            <a href="">Wallet</a>
+        </div>
+        <div class="sub-footer2">
+            <h4>Account</h4>
+            <a href="">Manage Your Apple ID</a><a href="">Apple Store Account</a><a href="">iCloud.com</a>
+
+            <h4>Entertainment</h4>
+            <a href="">Apple One</a><a href="">Apple TV+</a><a href="">Apple Music</a><a href="">Apple Arcade</a><a href="">Apple Podcasts</a><a href="">Apple Books</a><a href="">App Store</a>
+        </div>
+        <div class="sub-footer3">
+            <h4>Apple Store</h4>
+            <a href="">Find a Store</a><a href="">Genius Bar</a><a href="">Today at Apple</a><a href="">Apple Camp</a><a href="">Apple Trade in</a><a href="">Ways to Buy</a><a href="">Recycling Programme</a><a href="">Order Status</a><a href="">Shopping Help</a>
+        </div>
+        <div class="sub-footer4">
+            <h4>For Business</h4>
+            <a href="">Apple and Business</a><a href="">Shop for Business</a>
+
+            <h4>For Education</h4>
+            <a href="">Apple and Education</a><a href="">Shop for Education</a><a href="">Shop for University</a>
+
+            <h4>For Healthcare</h4>
+            <a href="">Apple in Healthcare</a><a href="">Health on Apple Watch</a>
+        </div>
+        <div class="sub-footer5">
+            <h4>Apple Values</h4>
+            <a href="">Accessibility</a><a href="">Education</a><a href="">Environment</a><a href="">Privacy</a><a href="">Supplier Responsibility</a>
+
+            <h4>About Apple</h4>
+            <a href="">Newsroom</a><a href="">Apple Leadership</a><a href="">Career Opportunities</a><a href="">Investors</a><a href="">Ethics & Compilance</a><a href="">Events</a><a href="">Contact Apple</a>
+        </div>
+    </div>
+
+    <div class="footer3">
+        <div class="panel1">
+            Copyright © 2025 Apple Inc. All rights reserved.
+        </div>
+        <div class="panel2">
+            <li>Privacy Policy</li>
+            <li>Terms of Use</li>
+            <li>Sales Policy</li>
+            <li>Legal</li>
+            <li>Site Map</li>
+        </div>
+    </div>
+</footer>

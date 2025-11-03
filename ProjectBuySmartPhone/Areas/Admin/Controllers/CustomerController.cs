@@ -1,4 +1,5 @@
 ﻿using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjectBuySmartPhone.Models.Domain.Entities;
@@ -10,6 +11,7 @@ namespace ProjectBuySmartPhone.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]/[action]")]
+    [Authorize(Roles = "ADMIN")]
     public class CustomerController : Controller
     {
         private readonly IUserRepository _userRepository;

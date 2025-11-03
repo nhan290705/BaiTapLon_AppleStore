@@ -1,4 +1,4 @@
-﻿html {
+html {
   font-size: 14px;
 }
 
@@ -20,38 +20,64 @@ html {
 body {
   margin-bottom: 60px;
 }
-.filter-inline {
+
+nav {
+    height: 40px;
+    background-color: rgb(21, 20, 20);
+    width: 100vw;
     display: flex;
-    align-items: center; /* căn giữa label và select */
-    justify-content: flex-end; /* đẩy về bên phải */
-    gap: 12px; /* khoảng cách giữa label và select */
-    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    color: white;
+    position: fixed;
+    z-index: 99;
+    padding-left: 14px;
 }
 
-.filter-inline label {
-        font-weight: 600;
-        margin: 0;
-        white-space: nowrap; /* không xuống dòng */
+.nav-items a {
+    text-decoration: none;
+    padding: 8px;
+    color: rgba(255, 255, 255, 0.241);
+}
+
+    .nav-items a:hover {
+        color: white;
     }
-.filter-inline select {
-        flex: 0 0 250px; /* cố định chiều rộng dropdown */
-        max-width: 100%;
-        height: 38px; /* đồng bộ chiều cao */
-        padding: 6px 10px;
-        border-radius: 6px;
+
+.nav-items i {
+    padding: 8px;
+    color: rgba(255, 255, 255, 0.241);
+    cursor: pointer;
 }
 
+    .nav-items i:hover {
+        color: white;
+    }
 
-/* Nếu dùng Bootstrap 5 */
-.filter-inline .form-select {
-    height: 38px;
+/* nav2 */
+.nav2 {
+    color: white;
+    background-color: #1d1d1f;
+    height: 100px;
+    margin: auto;
+    width: 100vw;
+    padding-left: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    padding-top: 45px;
 }
 
+    .nav2 a {
+        color: #2997ff;
+        padding: 5px;
+        text-decoration: none;
+    }
 
-.no-bootstrap {
-    appearance: auto !important;
-    -webkit-appearance: auto !important;
-    -moz-appearance: auto !important;
-    background-image: none !important;
-    background-color: white !important;
+/* subnav */
+.subnav {
+    height: 100vh;
+    width: 100vw;
+    display: none;
 }
