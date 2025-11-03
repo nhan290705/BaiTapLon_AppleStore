@@ -24,6 +24,10 @@ namespace ProjectBuySmartPhone.Areas.Admin.Models.ViewModels
 
         // ProductImage (chỉ 1 ảnh)
         //public IFormFile? ImageFile { get; set; }
+<<<<<<< HEAD
+=======
+        //[Required(ErrorMessage = "Phải chọn ít nhất một hình ảnh")]
+>>>>>>> 4b77db63057788e4d2cc2fa7282cbe8bf46d3315
         public List<IFormFile>? ImageFiles { get; set; }
 
         // (tuỳ chọn) index ảnh chính người dùng chọn trên form; -1 = tự lấy file đầu tiên làm ảnh chính

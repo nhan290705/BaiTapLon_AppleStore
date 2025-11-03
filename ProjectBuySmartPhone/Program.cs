@@ -24,6 +24,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //add jwthelper to dependency injection
 builder.Services.AddScoped<JwtHelper>();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<JwtAuthFilter>();
+});
 //Add Authentication
 JwtConfig.BuildJwtConfig(builder);
 var app = builder.Build();
@@ -57,9 +61,17 @@ app.MapControllerRoute(
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapAreaControllerRoute(
+    name: "viewhome",
+    areaName: "ViewHome",
+    pattern: "ViewHome/{controller=TrangChu}/{action=TrangChu}/{id?}");
+
+
+app.MapAreaControllerRoute(
     name: "admin",
     areaName: "Admin",
     pattern: "Admin/{controller=ScreenAdmin}/{action=Index}/{id?}");
+
+
 
 app.MapControllerRoute(
     name: "default",
