@@ -2,6 +2,8 @@
 @using ProjectBuySmartPhone.Models.Domain.Enums
 @{
     ViewData["Title"] = "Giỏ hàng của bạn";
+    ViewData["HideTopbar"] = true;
+
     Layout = "~/Areas/Cart/Shared/_LayoutCart.cshtml";
 }
 
@@ -78,7 +80,11 @@
             </h4>
         </div>
 
-        <div class="d-flex justify-content-end mt-4">
+        <div class="d-flex justify-content-between mt-4">
+            <a href="/ViewHome/TrangChu" class="btn btn-outline-dark px-4 py-2">
+                <i class="fa-solid fa-arrow-left me-1"></i> Tiếp tục mua hàng
+            </a>
+
             <a asp-action="Checkout" class="btn btn-dark px-5 py-2">
                 <i class="fa-solid fa-check me-1"></i> Xác nhận đặt hàng
             </a>

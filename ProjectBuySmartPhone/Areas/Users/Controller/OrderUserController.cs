@@ -33,7 +33,7 @@ namespace ProjectBuySmartPhone.Areas.Users.Controllers
             catch { return null; }
         }
         [HttpGet]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10, int? status = null, string? search = null)
         {
             var userId = GetCurrentUserId();
             if (userId == null)
@@ -42,16 +42,36 @@ namespace ProjectBuySmartPhone.Areas.Users.Controllers
                 return RedirectToAction("Index", "Login", new { area = "Identity" });
             }
 
-            // Chỉ lấy đơn của user hiện tại. Nếu bạn muốn chỉ “đã xác nhận”
-            // (ví dụ StatusOrderId = 1), thêm Where(o => o.StatusOrderId == 1)
             var query = _context.Orders
                 .AsNoTracking()
-                .Where(o => o.UserId == userId)
-                .OrderByDescending(o => o.OrderId);
+                .Include(o => o.StatusOrder)
+                .Where(o => o.UserId == userId);
 
-            var paged = await query.ToPagedListAsync(page, pageSize);
+            // ✅ Lọc theo trạng thái
+            if (status != null)
+                query = query.Where(o => o.StatusOrderId == status);
+
+            // ✅ Tìm kiếm theo mã đơn hoặc tên người nhận
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                string lower = search.ToLower();
+                query = query.Where(o =>
+                    o.RecipientName.ToLower().Contains(lower) ||
+                    o.OrderId.ToString().Contains(lower));
+            }
+
+            var paged = await query
+                .OrderByDescending(o => o.OrderId)
+                .ToPagedListAsync(page, pageSize);
+
+            // ✅ Gửi dữ liệu xuống view
+            ViewBag.StatusList = await _context.StatusOrders.AsNoTracking().ToListAsync();
+            ViewBag.CurrentStatus = status;
+            ViewBag.SearchText = search;
+
             return View(paged);
         }
+
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
