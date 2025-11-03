@@ -15,7 +15,6 @@ namespace ProjectBuySmartPhone.Models.Domain.Entities
 
         [MaxLength(120)]
         public string? LastName { get; set; }
-
         public string? Address { get; set; }
 
         [MaxLength(160)]

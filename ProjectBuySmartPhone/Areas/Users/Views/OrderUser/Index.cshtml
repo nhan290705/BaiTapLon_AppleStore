@@ -4,7 +4,6 @@
 
 @{
     ViewData["Title"] = "Đơn hàng của tôi";
-    ViewData["HideTopbar"] = true;
     Layout = "~/Areas/Cart/Shared/_LayoutCart.cshtml";
 }
 
@@ -15,7 +14,36 @@
             ← Quay về trang chủ
         </a>
     </div>
+
     <h2 class="mb-3"><i class="fa-solid fa-box me-2"></i>@ViewData["Title"]</h2>
+
+    <!-- ✅ Thanh tìm kiếm và lọc trạng thái -->
+    <form method="get" class="mb-3">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-5 col-sm-12">
+                <input type="text" name="search" class="form-control"
+                       placeholder="Tìm kiếm đơn hàng..."
+                       value="@(ViewBag.SearchText ?? "")" />
+            </div>
+
+            <div class="col-md-4 col-sm-12">
+                <select name="status" class="form-select">
+                    <option value="">Tất cả trạng thái</option>
+                    @foreach (var st in ViewBag.StatusList)
+                    {
+                        <option value="@st.StatusOrderId"
+                                @@(ViewBag.CurrentStatus == st.StatusOrderId ? "selected" : "")>
+                            @st.Name
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-3 col-sm-12">
+                <button type="submit" class="btn btn-primary w-100">Tìm kiếm</button>
+            </div>
+        </div>
+    </form>
 
     @if (TempData["Success"] != null)
     {
@@ -30,7 +58,10 @@
     {
         <div class="text-center p-5 bg-light rounded">
             <p>Chưa có đơn hàng nào.</p>
-            <a class="btn btn-dark" asp-area="ViewHome" asp-controller="TrangChu" asp-action="Index">Tiếp tục mua sắm</a>
+            <a class="btn btn-dark"
+               asp-area="ViewHome" asp-controller="TrangChu" asp-action="Index">
+                Tiếp tục mua sắm
+            </a>
         </div>
     }
     else
@@ -39,35 +70,39 @@
             <table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
-                        <th style="width:100px">Mã đơn</th>
+                        <th>Mã đơn</th>
                         <th>Người nhận</th>
-                        <th>SĐT</th>
+                        <th>Số điện thoại</th>
                         <th>Địa chỉ</th>
                         <th class="text-end">Tổng tiền</th>
                         <th class="text-center">Trạng thái</th>
-                        <th style="width:120px" class="text-center">Hành động</th>
+                        <th class="text-center">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var o in Model)
                     {
-                        var statusName = o.StatusOrder?.Name ?? $"#{o.StatusOrderId}";
                         string badgeClass = o.StatusOrderId switch
                         {
-                            1 => "badge bg-warning text-dark",   // Chờ xử lý
-                            2 => "badge bg-info text-dark",      // Đang xử lý
-                            3 => "badge bg-primary",             // Đang giao hàng
-                            4 => "badge bg-success",             // Hoàn thành
-                            5 => "badge bg-danger",              // Đã hủy
+                            1 => "badge bg-warning text-dark",
+                            2 => "badge bg-info text-dark",
+                            3 => "badge bg-primary",
+                            4 => "badge bg-success",
+                            5 => "badge bg-danger",
                             _ => "badge bg-secondary"
                         };
+
                         <tr>
                             <td><strong>@o.OrderId</strong></td>
                             <td>@o.RecipientName</td>
                             <td>@o.RecipientPhone</td>
                             <td>@o.ShippingAddress</td>
                             <td class="text-end">@((o.TotalPrice ?? 0).ToString("N0")) ₫</td>
-                            <td class="text-center"><span class="@badgeClass">@statusName</span></td>
+                            <td class="text-center">
+                                <span class="@badgeClass" style="font-family:'Segoe UI', Arial, sans-serif;">
+                                    @(o.StatusOrder?.Name ?? "Không rõ")
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <a class="btn btn-sm btn-outline-primary"
                                    asp-action="Details" asp-route-id="@o.OrderId">
@@ -82,8 +117,8 @@
 
         <div class="d-flex justify-content-center">
             @Html.PagedListPager(
-            Model,
-                page => Url.Action("MyOrders", new { page }),
+                Model,
+                page => Url.Action("Index", new { page, status = ViewBag.CurrentStatus, search = ViewBag.SearchText }),
                 new PagedListRenderOptions
                 {
                     LiElementClasses = new[] { "page-item" },
@@ -95,6 +130,6 @@
                     DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
                     DisplayLinkToNextPage = PagedListDisplayMode.Always
                 })
-    </div>
-        }
+        </div>
+    }
 </div>
