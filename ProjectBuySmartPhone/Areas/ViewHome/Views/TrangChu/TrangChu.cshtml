@@ -54,17 +54,24 @@
 
 
             <div class="timkiem">
-                <a id="searchPopup">
-                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                </a>
-                <input type="text" placeholder="  Bạn đang tìm sản phẩm, tin tức, workshop...">
+                <form method="get" class="search-form" action="#product-list">
+                    <input type="text" name="keyword" value="@Context.Request.Query["keyword"]"
+                           placeholder="Tìm sản phẩm..." class="search-input" />
+                   
+                </form>
             </div>
+
+
 
 
 
             <a class="giohang" asp-area="Cart" asp-controller="Cart" asp-action="Index">
                 <i class="giohangicon fa-solid fa-cart-shopping cart-icon"></i>
                 <span>Giỏ hàng</span>
+            </a>
+            <a class="giohang" asp-area="Blog" asp-controller="Blog" asp-action="Index">
+                <i class="fa-solid fa-comments blog-icon"></i>
+                <span>Blog</span>
             </a>
             @* Hân làm vào đây User *@
             <div class="danhmuc dropdown">
@@ -192,15 +199,19 @@
                                         ?? a.ProductImages?.FirstOrDefault()?.ImageUrl
                                         ?? "no-image.jpg";
                                         <div class="step col-12 spip">
-                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="">
-                                            <h6>@a.ProductName</h6>
+                                            <img class="anhspip" src="@Url.Content($"~/images/products/{mainImage}")" alt="" style="object-fit: cover; height: 215px;">                                            <h6>@a.ProductName</h6>
                                             <div class="price-wrapper">                                              
                                                 <span class="discount">- @a.Discount %</span>
                                             </div>
                                             <span class="giaspip">@a.Price</span>
-                                            <button class="btn muaspip btn-success">
-                                                <a href="~/ViewHome/TrangChu/ListIphone">Mua ngay</a>
-                                            </button>
+                                            <form asp-area="Cart" asp-controller="Cart" asp-action="AddCart" method="post" style="display:inline;">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="ProductId" value="@a.ProductId" />
+                                                <input type="hidden" name="Quantity" value="1" />
+                                                <button type="submit" class="btn btn-success">
+                                                    <i class="fa-solid fa-cart-plus me-1"></i> Thêm vào giỏ hàng
+                                                </button>
+                                            </form>
                                         </div>
                                     }
                                     
@@ -481,7 +492,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/script/JSheader.js"></script> <!--JS cho header-->
     <script src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/script/script.js"></script>  <!--JS cho main-->
-    <script src="~/2024_BTLWeb_Group1/Nguyen_Duy_Kien_232631018/script/validform.js"></script> <!--Valid form cho box nhap email-->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const params = new URLSearchParams(window.location.search);
+            const keyword = params.get("keyword");
 
+            // Nếu người dùng đã nhập từ khóa và kết quả có phần sản phẩm
+            if (keyword && keyword.trim() !== "") {
+                const target = document.querySelector(".spip"); // hoặc #product-list nếu bạn đặt id
+                if (target) {
+                    // cuộn mượt xuống phần sản phẩm
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        });
+    </script>
 </body>
 </html>

@@ -59,6 +59,7 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             _context.Users.Add(newUser);
             _context.SaveChanges();
             _logger.LogInformation($"New user registered : {newUser.Username}");
+            TempData["RegisterSuccess"] = "Đăng ký tài khoản thành công! Chào mừng bạn đến với Apple Store 🍎";
             return RedirectToAction("Index", "Home", new {area = ""});
         }
     }

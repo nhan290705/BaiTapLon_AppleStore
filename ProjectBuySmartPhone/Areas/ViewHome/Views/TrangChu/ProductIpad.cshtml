@@ -8,7 +8,8 @@
 
 
 @{
-    ViewData["Title"] = "Danh sách iPhone";
+    ViewData["Title"] = "Danh sách Ipad";
+    ViewData["CategoryName"] = "Ipad";
     Product ProductDetail = null;
     string modal = "";
     if (ViewBag.PP != null)
@@ -143,10 +144,9 @@
                                 <div class="new-badge">
                                     <i class="fas fa-tag"></i>Mới
                                 </div>
-                                <img alt="@p.ProductName" height="600px" src="@Url.Content($"~/images/products/{mainImage}")" width="200">
-                                <h5>@p.ProductName</h5>
+                                <img alt="@p.ProductName" src="@Url.Content($"~/images/products/{mainImage}")" width="200" style="object-fit: cover; height: 215px;">                                <h5>@p.ProductName</h5>
                                 <div class="price">@p.Price</div>
-                                <div class="old-price">24.990.000₫</div>
+                                <div class="discount">Giảm giá</div>
                                 <div class="discount">@p.Discount %</div>
                             </div>
                         </a>

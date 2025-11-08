@@ -30,11 +30,15 @@
 
 
         <div class="timkiem">
-            <a id="searchPopup">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            </a>
-            <input type="text" placeholder="  Bạn đang tìm sản phẩm, tin tức, workshop...">
+            <form method="get" class="search-form" action="#product-list">
+                <input type="text" name="keyword" value="@Context.Request.Query["keyword"]"
+                       placeholder="Tìm sản phẩm..." class="search-input" />
+               
+            </form>
         </div>
+
+
+
 
 
 

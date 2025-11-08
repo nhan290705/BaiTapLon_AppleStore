@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ProjectBuySmartPhone.Models.Domain.Entities.Product>
+@{
+    ViewData["Title"] = "Kết quả tìm kiếm";
+    Layout = "~/Areas/ViewHome/Views/Shared/StoreLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Kết quả tìm kiếm cho: "<span class="text-primary">@ViewBag.Keyword</span>"</h2>
+    <p>Danh mục: <strong>@ViewBag.Category</strong></p>
+
+    <div class="row mt-4">
+        @if (!Model.Any())
+        {
+            <div class="col-12 text-center">
+                <p>Không tìm thấy sản phẩm nào phù hợp.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var p in Model)
+            {
+                var mainImage = p.ProductImages?.FirstOrDefault(img => img.IsMain)?.ImageUrl
+                ?? p.ProductImages?.FirstOrDefault()?.ImageUrl
+                ?? "no-image.jpg";
+                <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                    <div class="card h-100 text-center shadow-sm">
+                        <img src="@Url.Content($"~/images/products/{mainImage}")" class="card-img-top" alt="@p.ProductName">
+                        <div class="card-body">
+                            <h5 class="card-title">@p.ProductName</h5>
+                            <p class="card-text text-danger">@p.Price.ToString("#,0") ₫</p>
+                            <a href="~/ViewHome/TrangChu/Infor@p.ProductCategory.CategoryName?productId=@p.ProductId"
+                               class="btn btn-outline-dark">Xem chi tiết</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

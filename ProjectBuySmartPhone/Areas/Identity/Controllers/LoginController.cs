@@ -31,14 +31,17 @@ namespace ProjectBuySmartPhone.Areas.Identity.Controllers
             {
                 var user = _context.Users.FirstOrDefault(u =>
                     u.Username.ToUpper() == userLogin.Username.ToUpper());
+               
                 if (user == null)
                 {
                     ModelState.AddModelError("Username", "Username does not exist");
+                    TempData["LoginFail"] = "Đăng nhập thất bại! Tên tài khoản không tồn tại.";
                     return View(userLogin);
                 }
                 if (!BCrypt.Net.BCrypt.Verify(userLogin.Password, user.Password))
                 {
                     ModelState.AddModelError("Password", "Incorrect password");
+                    TempData["LoginFail"] = "Đăng nhập thất bại! Mật khẩu không chính xác.";
                     return View(userLogin);
                 }
                 var isHttps = HttpContext.Request.IsHttps;
