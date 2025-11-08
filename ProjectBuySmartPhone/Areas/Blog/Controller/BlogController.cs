@@ -22,12 +22,30 @@ namespace ProjectBuySmartPhone.Controllers
         // --- helpers ---
         private int? CurrentUserId()
         {
-            var sub = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (int.TryParse(sub, out var id)) return id;
+            if (!User.Identity?.IsAuthenticated ?? false)
+            {
+                Console.WriteLine("❌ User not authenticated");
+                return null;
+            }
 
-            var uid = User.FindFirst("uid")?.Value;
-            if (int.TryParse(uid, out var id2)) return id2;
+            // ✅ Đọc từ claim "idUser" (như trong JwtHelper)
+            var userIdClaim = User.FindFirst("idUser")?.Value;
 
+            if (!string.IsNullOrEmpty(userIdClaim) && int.TryParse(userIdClaim, out var userId))
+            {
+                Console.WriteLine($"✅ Found UserId: {userId}");
+                return userId;
+            }
+
+            // Fallback: thử các claim khác
+            var nameIdentifier = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(nameIdentifier) && int.TryParse(nameIdentifier, out var id2))
+            {
+                Console.WriteLine($"✅ Found UserId from NameIdentifier: {id2}");
+                return id2;
+            }
+
+            Console.WriteLine("❌ Could not find UserId in claims");
             return null;
         }
 
@@ -88,6 +106,13 @@ namespace ProjectBuySmartPhone.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                foreach (var claim in User.Claims)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+                }
+            }
             var blog = await _db.Blogs
                 .Include(b => b.User)
                 .Include(b => b.BlogComments)
@@ -99,45 +124,8 @@ namespace ProjectBuySmartPhone.Controllers
             return View("Details", blog);
         }
 
-        // ========== CREATE THREAD ==========
-        //[HttpPost("Create")]
-        //[Authorize]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([FromForm] ForumCreateDto dto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        TempData["Error"] = "Vui lòng điền đầy đủ thông tin bài viết.";
-        //        return View("Create", dto);
-        //    }
-
-        //    var userId = CurrentUserId();
-        //    if (userId == null)
-        //    {
-        //        TempData["Error"] = "Bạn cần đăng nhập để đăng bài.";
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    var blog = new Blog
-        //    {
-        //        Title = dto.Title.Trim(),
-        //        Content = dto.Content?.Trim() ?? string.Empty,
-        //        Status = BlogStatus.Published,
-        //        UserId = userId.Value,
-        //        CreatedAt = DateTime.Now,
-        //        UpdatedAt = DateTime.Now
-        //    };
-
-        //    _db.Blogs.Add(blog);
-        //    await _db.SaveChangesAsync();
-
-        //    TempData["Success"] = "Đăng bài thành công!";
-        //    return RedirectToAction(nameof(Details), new { id = blog.BlogId });
-        //}
-
-        //test luôn kh cần login
         [HttpPost("Create")]
-        [AllowAnonymous] // ✅ Cho phép test
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([FromForm] ForumCreateDto dto)
         {
@@ -147,15 +135,19 @@ namespace ProjectBuySmartPhone.Controllers
                 return View("Create", dto);
             }
 
-            // ✅ Gán tạm userId test
-            int userId = 1;
+            var userId = CurrentUserId();
+            if (userId == null)
+            {
+                TempData["Error"] = "Bạn cần đăng nhập để đăng bài.";
+                return RedirectToAction(nameof(Index));
+            }
 
             var blog = new Blog
             {
                 Title = dto.Title.Trim(),
                 Content = dto.Content?.Trim() ?? string.Empty,
                 Status = BlogStatus.Published,
-                UserId = userId,
+                UserId = userId.Value,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             };
@@ -166,6 +158,38 @@ namespace ProjectBuySmartPhone.Controllers
             TempData["Success"] = "Đăng bài thành công!";
             return RedirectToAction(nameof(Details), new { id = blog.BlogId });
         }
+
+        //test luôn kh cần login
+        //[HttpPost("Create")]
+        //[AllowAnonymous] // ✅ Cho phép test
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([FromForm] ForumCreateDto dto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        TempData["Error"] = "Vui lòng điền đầy đủ thông tin bài viết.";
+        //        return View("Create", dto);
+        //    }
+
+        //    // ✅ Gán tạm userId test
+        //    int userId = 1;
+
+        //    var blog = new Blog
+        //    {
+        //        Title = dto.Title.Trim(),
+        //        Content = dto.Content?.Trim() ?? string.Empty,
+        //        Status = BlogStatus.Published,
+        //        UserId = userId,
+        //        CreatedAt = DateTime.Now,
+        //        UpdatedAt = DateTime.Now
+        //    };
+
+        //    _db.Blogs.Add(blog);
+        //    await _db.SaveChangesAsync();
+
+        //    TempData["Success"] = "Đăng bài thành công!";
+        //    return RedirectToAction(nameof(Details), new { id = blog.BlogId });
+        //}
 
         // ========== DELETE THREAD ==========
         [HttpPost("Delete/{id:int}")]
@@ -229,6 +253,14 @@ namespace ProjectBuySmartPhone.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddComment([FromForm] ForumAddCommentDto dto)
         {
+            ViewBag.DebugAuth = User.Identity.IsAuthenticated;
+            ViewBag.DebugUserId = CurrentUserId();
+
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = $"Auth: {User.Identity.IsAuthenticated}, UserId: {CurrentUserId()}";
+                return RedirectToAction(nameof(Details), new { id = dto.BlogId });
+            }
             if (!ModelState.IsValid)
             {
                 TempData["Error"] = "Nội dung bình luận không hợp lệ.";

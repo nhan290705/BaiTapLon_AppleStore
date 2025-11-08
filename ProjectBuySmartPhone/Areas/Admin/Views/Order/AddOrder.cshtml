@@ -102,7 +102,6 @@
                             <label asp-for="ShippingMethod">Phương thức vận chuyển</label>
                             <select asp-for="ShippingMethod" class="form-control border">
                                 <option value="">-- Chọn phương thức --</option>
-                                <!-- ✅ Sửa value cho đúng enum -->
                                 <option value="0">Tiêu chuẩn (3-5 ngày)</option>
                                 <option value="1">Nhanh (1-2 ngày)</option>
                                 <option value="2">Hỏa tốc (trong ngày)</option>
@@ -134,7 +133,6 @@
                     .OrderBy(g => g.Key)
                     .ToList();
 
-                    <!-- Filter by Category -->
                     <div class="mb-4">
                         <label class="font-weight-bold">Lọc theo danh mục:</label>
                         <div class="btn-group flex-wrap" role="group" id="categoryFilter">

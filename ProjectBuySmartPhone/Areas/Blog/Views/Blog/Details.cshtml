@@ -15,18 +15,23 @@
                         <h3 class="card-title mb-0">@Model.Title</h3>
 
                         <!-- ✅ Nút XÓA bài viết (chỉ hiện khi chủ bài hoặc admin đăng nhập) -->
-                        @if (User.Identity != null && User.Identity.IsAuthenticated &&
-                                                (Model.UserId.ToString() == User.FindFirst("uid")?.Value ||
-                                                User.IsInRole("admin")))
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <form asp-action="Delete" asp-route-id="@Model.BlogId" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <button type="submit"
-                                        class="btn btn-danger btn-sm"
-                                        onclick="return confirm('Bạn có chắc muốn xóa bài viết này không?');">
-                                    <i class="fa fa-trash"></i> Xóa
-                                </button>
-                            </form>
+                            var currentUserId = User.FindFirst("idUser")?.Value;
+                            var isOwner = Model.UserId.ToString() == currentUserId;
+                            var isAdmin = User.IsInRole("admin") || User.IsInRole("Admin");
+
+                            @if (isOwner || isAdmin)
+                            {
+                                <form asp-action="Delete" asp-route-id="@Model.BlogId" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Bạn có chắc muốn xóa bài viết này không?');">
+                                        <i class="fa fa-trash"></i> Xóa
+                                    </button>
+                                </form>
+                            }
                         }
                     </div>
 

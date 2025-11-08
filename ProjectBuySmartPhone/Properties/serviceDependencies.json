@@ -5,8 +5,7 @@
     },
     "mssql1": {
       "type": "mssql",
-      "connectionId": "ConnectionStrings:AppleStore",
-      "dynamicId": null
+      "connectionId": "ConnectionStrings:AppleStore"
     }
   }
 }

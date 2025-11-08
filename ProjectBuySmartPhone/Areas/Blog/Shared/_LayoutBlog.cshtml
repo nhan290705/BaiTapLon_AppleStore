@@ -71,13 +71,18 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/Store">Cửa hàng</a></li>
                     <li class="nav-item"><a class="nav-link active" href="/Forum">Diễn đàn</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/Blog">Bài viết</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/
+
+
+
+
+">Bài viết</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     @if (User.Identity != null && User.Identity.IsAuthenticated)
                     {
                         <li class="nav-item">
-                            <a class="nav-link" href="/User/Profile"><i class="fa-solid fa-user"></i> Xin chào, @User.Identity.Name!</a>
+                            <a class="nav-link" href="User/Profile"><i class="fa-solid fa-user"></i> Xin chào, @User.Identity.Name!</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-danger" asp-area="Identity" asp-controller="Logout" asp-action="Index">

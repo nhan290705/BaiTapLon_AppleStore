@@ -63,6 +63,7 @@ app.UseRouting();
 
 app.UseStaticFiles();
 app.UseMiddleware<RefreshJwtMiddleware>();
+app.UseMiddleware<JwtCookieAuthenticationMiddleware>();
 app.UseAuthentication(); //Chien
 app.UseSession();
 app.UseAuthorization();
